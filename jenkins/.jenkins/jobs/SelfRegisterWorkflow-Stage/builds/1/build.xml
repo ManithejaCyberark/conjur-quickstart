@@ -1,0 +1,110 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause plugin="atlassian-bitbucket-server-integration@3.1.0">
+            <triggerRequest>
+              <actor>
+                <displayName>Kirubanidhi Ramachandran</displayName>
+                <emailAddress>ramachandran.kirubanidhi@epa.gov</emailAddress>
+                <name>KRAMACHA</name>
+              </actor>
+              <additionalActions/>
+            </triggerRequest>
+          </com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <hudson.plugins.git.util.BuildData plugin="git@4.10.3">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/selfregisterworkflow/Stage</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.0">
+              <sha1>7d9a855c9c4745fd97610ef03af8c867dcae3ca6</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/selfregisterworkflow/Stage</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>1</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <scmName></scmName>
+      <remoteUrls>
+        <string>ssh://git@bitbucket.epa.gov:2222/eiam/selfregisterworkflow.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+    <com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <bitbucketSCMRepository>
+        <credentialsId></credentialsId>
+        <sshCredentialsId>Manish-SSH-KEY</sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>SelfRegisterWorkflow</repositoryName>
+        <repositorySlug>selfregisterworkflow</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </bitbucketSCMRepository>
+      <branchName>Stage</branchName>
+      <revisionSha1>7d9a855c9c4745fd97610ef03af8c867dcae3ca6</revisionSha1>
+    </com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction>
+    <hudson.plugins.promoted__builds.PromotedBuildAction plugin="promoted-builds@876.v99d29788b_36b_">
+      <owner class="build" reference="../../.."/>
+      <statuses>
+        <hudson.plugins.promoted__builds.Status>
+          <name>Stage Approved</name>
+          <badges>
+            <hudson.plugins.promoted__builds.conditions.ManualCondition_-Badge>
+              <authenticationName>admin</authenticationName>
+              <values/>
+            </hudson.plugins.promoted__builds.conditions.ManualCondition_-Badge>
+          </badges>
+          <timestamp>
+            <time>1654109055395</time>
+            <timezone>America/New_York</timezone>
+          </timestamp>
+          <promotion>1</promotion>
+          <promotionAttempts>
+            <int>1</int>
+          </promotionAttempts>
+        </hudson.plugins.promoted__builds.Status>
+      </statuses>
+    </hudson.plugins.promoted__builds.PromotedBuildAction>
+    <hudson.plugins.promoted__builds__simple.PromoteAction plugin="promoted-builds-simple@1.9">
+      <level>GA release</level>
+      <icon>ga.gif</icon>
+      <levelValue>3</levelValue>
+    </hudson.plugins.promoted__builds__simple.PromoteAction>
+    <hudson.plugins.promoted__builds.conditions.ManualCondition_-ManualApproval plugin="promoted-builds@876.v99d29788b_36b_">
+      <name>Stage Approved</name>
+      <badge reference="../../hudson.plugins.promoted__builds.PromotedBuildAction/statuses/hudson.plugins.promoted__builds.Status/badges/hudson.plugins.promoted__builds.conditions.ManualCondition_-Badge"/>
+    </hudson.plugins.promoted__builds.conditions.ManualCondition_-ManualApproval>
+  </actions>
+  <queueId>65</queueId>
+  <timestamp>1654108015052</timestamp>
+  <startTime>1654108015170</startTime>
+  <result>SUCCESS</result>
+  <duration>5696</duration>
+  <charset>UTF-8</charset>
+  <keepLog>true</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/lib/jenkins/.jenkins/workspace/SelfRegisterWorkflow-Stage</workspace>
+  <hudsonVersion>2.327</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@4.10.3">
+    <authorOrCommitter>false</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</build>

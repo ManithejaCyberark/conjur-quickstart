@@ -1,0 +1,13 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2022-07-22 19:22:31.741 UTC</timestamp>
+  <md5sum>689fae90189425bd9e0544a9f489d767</md5sum>
+  <fileName>Credential id=vault1-LOBUser1-Safe8-secret4 name=ConjurSecret:vault1/LOBUser1/Safe8/secret4 (CyberArk Conjur Provided)</fileName>
+  <usages>
+    <entry>
+      <string>Dev-Team-1/Job1</string>
+      <ranges>1</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>

@@ -1,0 +1,42 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<hudson.plugins.promoted__builds.Promotion plugin="promoted-builds@876.v99d29788b_36b_">
+  <actions>
+    <hudson.plugins.promoted__builds.Promotion_-PromotionParametersAction>
+      <safeParameters class="sorted-set"/>
+      <parameters/>
+      <parameterDefinitionNames class="empty-list"/>
+      <unfilteredParameters/>
+    </hudson.plugins.promoted__builds.Promotion_-PromotionParametersAction>
+    <hudson.plugins.promoted__builds.PromotionTargetAction>
+      <jobName>LocalCyberArkOUD-Prod</jobName>
+      <number>2</number>
+    </hudson.plugins.promoted__builds.PromotionTargetAction>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserCause>
+            <authenticationName>schivuku</authenticationName>
+          </hudson.model.Cause_-UserCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <hudson.plugins.promoted__builds__simple.PromoteAction plugin="promoted-builds-simple@1.9">
+      <levelValue>0</levelValue>
+    </hudson.plugins.promoted__builds__simple.PromoteAction>
+  </actions>
+  <queueId>47</queueId>
+  <timestamp>1652233323845</timestamp>
+  <startTime>1652233323857</startTime>
+  <result>SUCCESS</result>
+  <duration>48033</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/lib/jenkins/.jenkins/workspace/LocalCyberArkOUD-Prod</workspace>
+  <hudsonVersion>2.327</hudsonVersion>
+  <scm class="hudson.scm.NullChangeLogParser"/>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</hudson.plugins.promoted__builds.Promotion>

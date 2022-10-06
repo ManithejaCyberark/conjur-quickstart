@@ -1,0 +1,17 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<com.atlassian.bitbucket.jenkins.internal.applink.oauth.serviceprovider.consumer.PersistentServiceProviderConsumerStore plugin="atlassian-bitbucket-server-integration@3.1.0">
+  <entityMap class="hudson.util.CopyOnWriteMap$Hash">
+    <entry>
+      <string>bitbucket-eiam</string>
+      <com.atlassian.bitbucket.jenkins.internal.applink.oauth.serviceprovider.consumer.Consumer>
+        <key>bitbucket-eiam</key>
+        <name>Bitbucket EIAM</name>
+        <description></description>
+        <callback-url>https://bitbucket.epa.gov/</callback-url>
+        <signature-method>HMAC_SHA1</signature-method>
+        <secret>jenkins</secret>
+      </com.atlassian.bitbucket.jenkins.internal.applink.oauth.serviceprovider.consumer.Consumer>
+    </entry>
+  </entityMap>
+  <configFileName>oauth-consumers.xml</configFileName>
+</com.atlassian.bitbucket.jenkins.internal.applink.oauth.serviceprovider.consumer.PersistentServiceProviderConsumerStore>

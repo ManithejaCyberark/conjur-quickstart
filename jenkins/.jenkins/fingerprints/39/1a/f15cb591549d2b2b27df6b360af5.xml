@@ -1,0 +1,45 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2022-02-15 18:18:02.202 UTC</timestamp>
+  <md5sum>391af15cb591549d2b2b27df6b360af5</md5sum>
+  <fileName>Credential id=Manish-SSH-KEY name=mrangnek</fileName>
+  <usages>
+    <entry>
+      <string>aaes-development</string>
+      <ranges>15-46</ranges>
+    </entry>
+    <entry>
+      <string>Local Service Account Prod</string>
+      <ranges>2-4</ranges>
+    </entry>
+    <entry>
+      <string>namechange-prod</string>
+      <ranges>1</ranges>
+    </entry>
+    <entry>
+      <string>preferrednamechange-stage</string>
+      <ranges>2-3</ranges>
+    </entry>
+    <entry>
+      <string>NameChange-stage</string>
+      <ranges>5-11</ranges>
+    </entry>
+    <entry>
+      <string>SelfRegisterWorkflow-Stage</string>
+      <ranges>1</ranges>
+    </entry>
+    <entry>
+      <string>SelfRegisterWorkflow-Prod</string>
+      <ranges>1</ranges>
+    </entry>
+    <entry>
+      <string>CyberArk-prod</string>
+      <ranges>2-3</ranges>
+    </entry>
+    <entry>
+      <string>AddnEntitlementWorkflow-Stage</string>
+      <ranges>1-3</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>

@@ -1,0 +1,13 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2022-02-09 04:51:23.475 UTC</timestamp>
+  <md5sum>84dc7af51fd27db0da8b2df54ea401c4</md5sum>
+  <fileName>Credential id=84cbdbe1-0a1e-466e-98e4-5f47b156c194 name=schivukuToken/******</fileName>
+  <usages>
+    <entry>
+      <string>aaes-development</string>
+      <ranges>21,26-28</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>

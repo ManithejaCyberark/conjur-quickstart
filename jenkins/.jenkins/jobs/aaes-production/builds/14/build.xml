@@ -1,0 +1,115 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause plugin="atlassian-bitbucket-server-integration@3.1.0">
+            <triggerRequest>
+              <actor>
+                <displayName>Manish Rangnekar</displayName>
+                <emailAddress>rangnekar.manish@epa.gov</emailAddress>
+                <name>mrangnek</name>
+              </actor>
+              <additionalActions/>
+            </triggerRequest>
+          </com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <hudson.plugins.git.util.BuildData plugin="git@4.10.3">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/aaes/prodlive</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.0">
+              <sha1>bb4a56a9f058b76e39499fb6563343ba8db3e918</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/aaes/prodlive</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>14</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <scmName></scmName>
+      <remoteUrls>
+        <string>https://bitbucket.epa.gov/scm/eiam/aaes.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+    <com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <bitbucketSCMRepository>
+        <credentialsId>AAES-Token-ID</credentialsId>
+        <sshCredentialsId></sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>AAES</repositoryName>
+        <repositorySlug>aaes</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </bitbucketSCMRepository>
+      <branchName>prodlive</branchName>
+      <revisionSha1>bb4a56a9f058b76e39499fb6563343ba8db3e918</revisionSha1>
+    </com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction>
+    <hudson.plugins.promoted__builds.PromotedBuildAction plugin="promoted-builds@876.v99d29788b_36b_">
+      <owner class="build" reference="../../.."/>
+      <statuses>
+        <hudson.plugins.promoted__builds.Status>
+          <name>Prod Approved</name>
+          <badges>
+            <hudson.plugins.promoted__builds.conditions.ManualCondition_-Badge>
+              <authenticationName>admin</authenticationName>
+              <values/>
+            </hudson.plugins.promoted__builds.conditions.ManualCondition_-Badge>
+          </badges>
+          <timestamp>
+            <time>1661344167542</time>
+            <timezone>America/New_York</timezone>
+          </timestamp>
+          <promotion>6</promotion>
+          <promotionAttempts>
+            <int>4</int>
+            <int>5</int>
+            <int>6</int>
+          </promotionAttempts>
+        </hudson.plugins.promoted__builds.Status>
+      </statuses>
+    </hudson.plugins.promoted__builds.PromotedBuildAction>
+    <hudson.tasks.MailMessageIdAction plugin="mailer@408.vd726a_1130320">
+      <messageId>&lt;1082821437.1.1661344015645@wamappdev1.rtpnc.epa.gov&gt;</messageId>
+    </hudson.tasks.MailMessageIdAction>
+    <hudson.plugins.promoted__builds__simple.PromoteAction plugin="promoted-builds-simple@1.9">
+      <levelValue>0</levelValue>
+    </hudson.plugins.promoted__builds__simple.PromoteAction>
+    <hudson.plugins.promoted__builds.conditions.ManualCondition_-ManualApproval plugin="promoted-builds@876.v99d29788b_36b_">
+      <name>Prod Approved</name>
+      <badge reference="../../hudson.plugins.promoted__builds.PromotedBuildAction/statuses/hudson.plugins.promoted__builds.Status/badges/hudson.plugins.promoted__builds.conditions.ManualCondition_-Badge"/>
+    </hudson.plugins.promoted__builds.conditions.ManualCondition_-ManualApproval>
+  </actions>
+  <queueId>12</queueId>
+  <timestamp>1661344002271</timestamp>
+  <startTime>1661344002273</startTime>
+  <result>SUCCESS</result>
+  <duration>13487</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/lib/jenkins/.jenkins/workspace/aaes-production</workspace>
+  <hudsonVersion>2.327</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@4.10.3">
+    <authorOrCommitter>false</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set">
+      <string>rangnekar.manish</string>
+    </c>
+  </culprits>
+</build>

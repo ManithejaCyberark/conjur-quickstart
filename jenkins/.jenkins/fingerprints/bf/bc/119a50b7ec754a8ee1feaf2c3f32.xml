@@ -1,0 +1,13 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2022-08-24 16:11:15.551 UTC</timestamp>
+  <md5sum>bfbc119a50b7ec754a8ee1feaf2c3f32</md5sum>
+  <fileName>Credential id=conjurtest name=ConjurSecret:conjurtest (conjurtest)</fileName>
+  <usages>
+    <entry>
+      <string>Dev-Team-1/Job1</string>
+      <ranges>21,29-34</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>

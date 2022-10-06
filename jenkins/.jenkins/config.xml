@@ -1,0 +1,94 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<hudson>
+  <disabledAdministrativeMonitors/>
+  <version>2.327</version>
+  <numExecutors>2</numExecutors>
+  <mode>NORMAL</mode>
+  <useSecurity>true</useSecurity>
+  <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+    <denyAnonymousReadAccess>true</denyAnonymousReadAccess>
+  </authorizationStrategy>
+  <securityRealm class="org.miniorange.saml.MoSAMLAddIdp" plugin="miniorange-saml-sp@1.0.11">
+    <idpEntityId>https://wamssoprd.epa.gov/oam/fed</idpEntityId>
+    <ssoUrl>https://wamssoprd.epa.gov/oamfed/idp/samlv20</ssoUrl>
+    <publicx509Certificate>-----BEGIN CERTIFICATE-----
+MIIB/DCCAWWgAwIBAgIBCjANBgkqhkiG9w0BAQUFADAjMSEwHwYDVQQDExh3YW1hcHBwcmQxLnJ0cG5jLmVwYS5nb3YwHhcNMTgwNTI1MTg0ODM3WhcNMjgwNTIyMTg0ODM3WjAjMSEwHwYDVQQDExh3YW1hcHBwcmQxLnJ0cG5jLmVwYS5nb3YwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAKRn0SK5PbGjEEeX3hGFH9zYaRzRT7QIi8gcRmrA7pCGfoM4/c5f13HDzdGX8q3omtLfcLHpYp9d+r7CkvQHmoShalg8XCVl7SnrQbuT0g8MHUmggjfi4jHmmEkwB+GXC+BHVp29Q9gPT/ndovMksrqkZMImicoAHp/bbptID1HpAgMBAAGjQDA+MAwGA1UdEwEB/wQCMAAwDwYDVR0PAQH/BAUDAwfYADAdBgNVHQ4EFgQUAMKnQ0yRZVYUJVp8e7IZ2crUJKYwDQYJKoZIhvcNAQEFBQADgYEAl1riZ1nqH+JUgR81tD5BXx3cqaroK7id8Nd3hYmp4Ls3tfkBc/9J8l75pz1PhvzRkSii77u0px5cigGFpHRkZ92aWa+DPzZ703RZv5ulpuCvcDF7pyHrew2DKvmsetvmznWxlU/hsWc/K9dHuwmcH75er5/XJhKbTAwX+y+Vc30=
+-----END CERTIFICATE-----</publicx509Certificate>
+    <usernameAttribute>uid</usernameAttribute>
+    <fullnameAttribute></fullnameAttribute>
+    <userAttributeUpdate>false</userAttributeUpdate>
+    <emailAttribute>mail</emailAttribute>
+    <nameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</nameIDFormat>
+    <sslUrl></sslUrl>
+    <loginType>emailLogin</loginType>
+    <regexPattern></regexPattern>
+    <enableRegexPattern>false</enableRegexPattern>
+    <signedRequest>false</signedRequest>
+    <userCreate>false</userCreate>
+    <ssoBindingType>HttpRedirect</ssoBindingType>
+    <sloBindingType>HttpRedirect</sloBindingType>
+    <disableDefaultLogin>false</disableDefaultLogin>
+    <newUserGroup></newUserGroup>
+  </securityRealm>
+  <disableRememberMe>false</disableRememberMe>
+  <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
+  <workspaceDir>${JENKINS_HOME}/workspace/${ITEM_FULL_NAME}</workspaceDir>
+  <buildsDir>${ITEM_ROOTDIR}/builds</buildsDir>
+  <markupFormatter class="hudson.markup.EscapedMarkupFormatter"/>
+  <jdks/>
+  <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
+  <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
+  <clouds/>
+  <quietPeriod>5</quietPeriod>
+  <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
+  <views>
+    <hudson.model.AllView>
+      <owner class="hudson" reference="../../.."/>
+      <name>all</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+    </hudson.model.AllView>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>Test_Ravi</name>
+      <description>Test View creation </description>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="java.lang.String$CaseInsensitiveComparator"/>
+        <string>aaes-production</string>
+        <string>Local Service Account Prod</string>
+      </jobNames>
+      <jobFilters>
+        <hudson.views.StatusFilter>
+          <statusFilter>true</statusFilter>
+        </hudson.views.StatusFilter>
+        <hudson.views.StatusFilter>
+          <statusFilter>true</statusFilter>
+        </hudson.views.StatusFilter>
+      </jobFilters>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <hudson.views.WeatherColumn/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastSuccessColumn/>
+        <hudson.views.LastFailureColumn/>
+        <hudson.views.LastDurationColumn/>
+        <hudson.views.BuildButtonColumn/>
+        <hudson.plugins.promoted__builds.PromotionStatusColumn plugin="promoted-builds@876.v99d29788b_36b_"/>
+      </columns>
+      <recurse>true</recurse>
+    </listView>
+  </views>
+  <primaryView>all</primaryView>
+  <slaveAgentPort>-1</slaveAgentPort>
+  <label></label>
+  <crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">
+    <excludeClientIPFromCrumb>false</excludeClientIPFromCrumb>
+  </crumbIssuer>
+  <nodeProperties/>
+  <globalNodeProperties/>
+  <nodeRenameMigrationNeeded>true</nodeRenameMigrationNeeded>
+</hudson>

@@ -1,0 +1,13 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2022-02-09 23:05:05.593 UTC</timestamp>
+  <md5sum>238e50dc1e54b22a02639b7c94b6567a</md5sum>
+  <fileName>Credential id=6e887ec9-32be-4406-86b3-a8fdefd4deb3 name=schivuku/****** (Bitbucket Git)</fileName>
+  <usages>
+    <entry>
+      <string>aaes-development</string>
+      <ranges>32-40</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>

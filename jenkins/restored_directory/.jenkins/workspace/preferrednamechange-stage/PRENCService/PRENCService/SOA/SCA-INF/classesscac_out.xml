@@ -1,0 +1,33 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Faults>
+   <Fault>
+      <severity>warning</severity>
+      <loc>/ns:composite/ns:component[@name='ChallengeTask/TaskService']</loc>
+      <line/>
+      <col/>
+      <file>C:\Users\schivuku\OneDrive - Environmental Protection Agency (EPA)\Documents\PRESYSADM-ProcessTaskAndAdminVersion - LatestCopy\PRENCService\SOA\composite.xml</file>
+      <name>C:\Users\schivuku\OneDrive - Environmental Protection Agency (EPA)\Documents\PRESYSADM-ProcessTaskAndAdminVersion - LatestCopy\PRENCService\SOA\composite.xml</name>
+      <fix/>
+      <msg>The service "TaskService" exposed by component "ChallengeTask" is not wired to/used by any other component.</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line/>
+      <col/>
+      <file>ApprovalTask.task</file>
+      <name>ApprovalTask.task</name>
+      <fix/>
+      <msg>Error assignee not specified</msg>
+   </Fault>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line/>
+      <col/>
+      <file>ChallengeTask.task</file>
+      <name>ChallengeTask.task</name>
+      <fix/>
+      <msg>Error assignee not specified</msg>
+   </Fault>
+</Faults>

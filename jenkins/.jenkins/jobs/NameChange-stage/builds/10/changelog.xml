@@ -1,0 +1,18 @@
+commit 96b7b904fb03a2810cb0ee3a5385e216bfe0cc50
+tree 0f5ed88903b26944a633f3de0d92fb4d0653e5b1
+parent 93aee3cb0d6b7fcd73219abb88cd5bdd688bedd3
+author schivuku <schivuku@yahoo.com> 2022-08-16 15:55:01 -0400
+committer schivuku <schivuku@yahoo.com> 2022-08-16 15:55:01 -0400
+
+    Removed the "client.Logout" and did new build.
+
+
+:100644 100644 b37a02dd91550d82f314fd7ff426826278929725 3fafe62e802628f742c313ad315ebdf2c98c7b0a M	EMPNCService/.data/00000000/00000004.jdb
+:100644 100644 22ce7e08e21746a733d6eeb9dd7223bbca1a16f8 ce8139b71aa1892ca8e7381cb841954244986ede M	EMPNCService/EMPNCService/SOA/.designer/ApprovalProcess_graphics.xml
+:100644 100644 edcc8467bbf9223cab484f7278a61306a2c22f5a 60f06d316cf7eb2da72c0c9eefcbd0f01bc3ded3 M	EMPNCService/EMPNCService/SOA/ApprovalProcess.bpel
+:100644 100644 7ba6fc4ff5b8af1a6a7d4d2146061d5c809da0d1 1ece1abafc21443688defc22251e2c0af6336f77 M	EMPNCService/EMPNCService/SOA/SCA-INF/EMPNCServiceAccount.diagram.jpg
+:100644 100644 74eb154acd11224ec0b189747632ebd1068fc0ec 131cfca534ce9a6482865b3166d6abb0aabf38cc M	EMPNCService/EMPNCService/SOA/SCA-INF/EMPNCServiceAccount.diagram.xml
+:100644 100644 7fd2a45897bf34e6a7d7896cb1281cbf8aa370b8 2b02ea0cd4bece93d3f820d49e944c4bf3dc7c6c M	EMPNCService/EMPNCService/SOA/SCA-INF/bpel/Approv~0/Model.xml
+:100644 100644 c2f107245dc98aaecfed2457868927c51142d526 0c715bf3b9b61bdf2482978b2dd79c3e8b6bf5e6 M	EMPNCService/EMPNCService/SOA/SCA-INF/bpel/Approv~0/map.jar
+:100644 100644 e75e584eb488b822335f0b1856698ba9a16bec51 b1790a1304abae62424aac2f147a5e5eae4819bd M	EMPNCService/EMPNCService/SOA/SCA-INF/classes/scac.log
+:100644 100644 73cef693a401dd5176de2b510a4faf742aa91840 1f0b721ba79f3daceff20aa4d8ef5bd94f7c47bd M	EMPNCService/EMPNCService/deploy/sca_EMPNCService_rev1.7.jar

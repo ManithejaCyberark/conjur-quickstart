@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!-- 
+ Copyright (c) 2009, 2016, Oracle and/or its affiliates. All rights reserved.
+-->
+<project name="ant-soa-common" default="" basedir=".">
+
+  <property name="mw.home" value="/usr/opt/oracle/product/Middleware_IAM_12c"/>
+
+  <property name="soa.oracle.home" value="${mw.home}/soa"/>
+
+  <property name="common.components.home" value="${mw.home}/oracle_common"/>
+  <fail message="common.components.home: ${common.components.home} doesn't exist.">
+    <condition>
+      <not><available file="${common.components.home}" type="dir"/></not>
+    </condition>
+  </fail>
+
+  <property name="common.components.modules" value="${common.components.home}/modules"/>
+
+  <property name="soa.modules" value="${soa.oracle.home}/soa/modules"/>
+
+  <condition property="oracle.soa.mgmt.home"
+             value="${soa.oracle.home}"
+             else="${oracle.home}">
+    <available file="${soa.oracle.home}/soa/modules/oracle.soa.mgmt_11.1.1/soa-infra-mgmt.jar"/>
+  </condition>
+</project>

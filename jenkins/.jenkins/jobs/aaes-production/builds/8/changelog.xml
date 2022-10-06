@@ -1,0 +1,13 @@
+commit 9fee12a6f39e322ba211f96eb8ca1d0cd28ccd3c
+tree 0f65ebc8f8b9694459fd95b7390274f4fb6e83da
+parent 5e31be481de039254cf391c1c0f13044b5f90401
+author kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-05-11 16:55:54 -0400
+committer kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-05-11 16:55:54 -0400
+
+    Merge new file for auto deploy
+
+
+:100644 100644 8231d50c1cb1dd865314d2d69936aefbab95fa61 7151e5dbcbc4062de75edbe4293257b2d0495ba3 M	AAESCustomization/1.0/plugins/customScheduleTasks/META-INF/aaesSchedulerTasks.xml
+:100644 100644 4d196e37ad247d8f4957a7444ad6883f92456a0a 52f9735d09f48601cec049c25a5981d4a423c8aa M	AAESCustomization/1.0/plugins/customScheduleTasks/plugin.xml
+:000000 100644 0000000000000000000000000000000000000000 1e4b4505cc61b0ceb9c3ea06b2bc79b7a24ba4ae A	AAESCustomization/src/com/aaes/scheduleTasks/AAESNotifyAndProvisionFailedWorkFlowRequestAutoDeploy.java
+:100644 100644 49d8f98b21992bfc30c38f7035d26f3da5149fa7 49d8f98b21992bfc30c38f7035d26f3da5149fa7 R100	AAESCustomization/src/oim/file/custom/plugin.xml	AAESCustomization/src/oim/file/custom/mds/plugin.xml

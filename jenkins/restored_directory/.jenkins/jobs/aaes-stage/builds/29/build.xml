@@ -1,0 +1,78 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <hudson.model.Cause_-UserIdCause>
+            <userId>admin</userId>
+          </hudson.model.Cause_-UserIdCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <hudson.plugins.git.util.BuildData plugin="git@4.10.3">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/aaes/Stage</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.0">
+              <sha1>17253c0accef21a88804f5e8e1a1803c928cc026</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/aaes/Stage</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>29</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <remoteUrls>
+        <string>https://bitbucket.epa.gov/scm/eiam/aaes.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+    <com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <bitbucketSCMRepository>
+        <credentialsId>AAES-Token-ID</credentialsId>
+        <sshCredentialsId></sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>AAES</repositoryName>
+        <repositorySlug>aaes</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </bitbucketSCMRepository>
+      <branchName>Stage</branchName>
+      <revisionSha1>17253c0accef21a88804f5e8e1a1803c928cc026</revisionSha1>
+    </com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction>
+    <hudson.plugins.promoted__builds.PromotedBuildAction plugin="promoted-builds@876.v99d29788b_36b_">
+      <owner class="build" reference="../../.."/>
+      <statuses/>
+    </hudson.plugins.promoted__builds.PromotedBuildAction>
+    <hudson.plugins.promoted__builds__simple.PromoteAction plugin="promoted-builds-simple@1.9">
+      <levelValue>0</levelValue>
+    </hudson.plugins.promoted__builds__simple.PromoteAction>
+  </actions>
+  <queueId>63</queueId>
+  <timestamp>1653498835437</timestamp>
+  <startTime>1653498835444</startTime>
+  <result>SUCCESS</result>
+  <duration>22174</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/lib/jenkins/.jenkins/workspace/aaes-stage</workspace>
+  <hudsonVersion>2.327</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@4.10.3">
+    <authorOrCommitter>false</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</build>

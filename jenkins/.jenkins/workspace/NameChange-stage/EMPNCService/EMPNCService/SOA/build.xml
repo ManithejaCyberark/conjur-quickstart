@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project name="soaDeployAll" default="deployAll">
+<echo>basedir ${basedir}</echo>
+<echo>buildir ${buildir}</echo>
+
+<property environment="env"/>
+<echo>current folder ${env.CURRENT_FOLDER}</echo>
+
+<property file="${env.CURRENT_FOLDER}/build.properties"/>
+
+<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+<import file="${buildir}/ant-sca-deploy.xml"/>
+<import file="${buildir}/ant-sca-package.xml"/>
+<import file="${buildir}/ant-sca-test.xml"/>
+<import file="${buildir}/ant-sca-test.xml"/>
+<import file="${buildir}/ant-sca-mgmt.xml"/>
+
+
+<target name="deployAll">
+<if>
+<equals arg1="${mds.enabled}" arg2="true"/>
+<then>
+<antcall target="deployMDS" inheritall="true"/>
+</then>
+</if>
+<foreach list="${applications}" param="application" target="deployApplication" inheritall="true" inheritrefs="false"/>
+</target>
+
+
+<target name="unDeployMDS">
+<echo>undeploy MDS</echo>
+<foreach list="${mds.applications}" param="mds.application" target="undeployMDSApplication" inheritall="true" inheritrefs="false"/>
+</target>
+
+<target name="deployMDS">
+<echo>undeploy and deploy MDS</echo>
+<if>
+<equals arg1="${mds.undeploy}" arg2="true"/>
+<then>
+<foreach list="${mds.applications}" param="mds.application" target="undeployMDSApplication" inheritall="true" inheritrefs="false"/>
+</then>
+</if>
+<foreach list="${mds.applications}" param="mds.application" target="deployMDSApplication" inheritall="true" inheritrefs="false"/>
+</target>
+
+<target name="deployMDSApplication">
+<echo>deploy MDS application ${mds.application}</echo>
+
+<echo>remove and create local MDS temp</echo>
+<property name="mds.deploy.dir" value="${tmp.output.dir}/${mds.application}"/>
+
+<delete dir="${mds.deploy.dir}"/>
+<mkdir dir="${mds.deploy.dir}"/>
+
+<echo>create zip from file MDS store</echo>
+<zip destfile="${mds.deploy.dir}/${mds.application}_mds.jar" compress="false">
+<fileset dir="${mds.reposistory}" includes="${mds.application}/**"/>
+</zip>
+
+<echo>create zip with MDS jar</echo>
+<zip destfile="${mds.deploy.dir}/${mds.application}_mds.zip" compress="false">
+<fileset dir="${mds.deploy.dir}" includes="*.jar"/>
+</zip>
+
+<propertycopy name="deploy.serverURL" from="${deployment.plan.environment}.serverURL"/>
+<propertycopy name="deploy.overwrite" from="${deployment.plan.environment}.overwrite"/>
+<propertycopy name="deploy.user" from="${deployment.plan.environment}.user"/>
+<propertycopy name="deploy.password" from="${deployment.plan.environment}.password"/>
+<propertycopy name="deploy.forceDefault" from="${deployment.plan.environment}.forceDefault"/>
+
+<echo>deploy MDS app</echo>
+
+<echo>deploy on ${deploy.serverURL} with user ${deploy.user}</echo>
+<echo>deploy sarFile ${mds.deploy.dir}/${mds.application}_mds.zip</echo>
+
+<antcall target="deploy" inheritall="false">
+<param name="wl_home" value="${wl_home}"/>
+<param name="oracle.home" value="${oracle.home}"/>
+<param name="serverURL" value="${deploy.serverURL}"/>
+<param name="user" value="${deploy.user}"/>
+<param name="password" value="${deploy.password}"/>
+<param name="overwrite" value="${deploy.overwrite}"/>
+<param name="forceDefault" value="${deploy.forceDefault}"/>
+<param name="sarLocation" value="${mds.deploy.dir}/${mds.application}_mds.zip"/>
+</antcall>
+</target>
+
+<target name="undeployMDSApplication">
+<echo>undeploy MDS application ${mds.application}</echo>
+
+<propertycopy name="deploy.serverURL" from="${deployment.plan.environment}.serverURL"/>
+<propertycopy name="deploy.overwrite" from="${deployment.plan.environment}.overwrite"/>
+<propertycopy name="deploy.user" from="${deployment.plan.environment}.user"/>
+<propertycopy name="deploy.password" from="${deployment.plan.environment}.password"/>
+<propertycopy name="deploy.forceDefault" from="${deployment.plan.environment}.forceDefault"/>
+
+<echo>undeploy MDS app folder apps/${mds.application} </echo>
+<antcall target="removeSharedData" inheritall="false">
+<param name="wl_home" value="${wl_home}"/>
+<param name="oracle.home" value="${oracle.home}"/>
+<param name="serverURL" value="${deploy.serverURL}"/>
+<param name="user" value="${deploy.user}"/>
+<param name="password" value="${deploy.password}"/>
+<param name="folderName" value="${mds.application}"/>
+</antcall>
+</target>
+
+
+<target name="deployApplication">
+<echo>deploy application ${application}</echo>
+<property file="${env.CURRENT_FOLDER}/${applications.home}/${application}/build.properties"/>
+<foreach list="${projects}" param="project" target="deployProject" inheritall="true" inheritrefs="false"/>
+</target>
+
+<target name="deployProject">
+<echo>deploy project ${project} for environment ${deployment.plan.environment}</echo>
+
+<property name="proj.compositeName" value="${project}"/>
+<property name="proj.compositeDir" value="${env.CURRENT_FOLDER}/${applications.home}/${application}"/>
+<propertycopy name="proj.revision" from="1.6"/>
+<propertycopy name="proj.enabled" from="${project}.enabled"/>
+
+<echo>deploy compositeName ${proj.compositeName}</echo>
+<echo>deploy compositeDir ${proj.compositeDir}</echo>
+
+<antcall target="package" inheritall="false">
+<param name="compositeDir" value="${proj.compositeDir}/${project}"/>
+<param name="compositeName" value="${proj.compositeName}"/>
+<param name="revision" value="${proj.revision}"/>
+<param name="oracle.home" value="${oracle.home}"/>
+<param name="java.passed.home" value="${java.passed.home}"/>
+<param name="wl_home" value="${wl_home}"/>
+<param name="sca.application.home" value="${proj.compositeDir}"/>
+<param name="scac.application.home" value="${proj.compositeDir}"/>
+<param name="scac.input" value="${proj.compositeDir}/${proj.compositeName}/composite.xml"/>
+<param name="scac.output" value="${tmp.output.dir}/${proj.compositeName}.xml"/>
+<param name="scac.error" value="${tmp.output.dir}/${proj.compositeName}.err"/>
+<param name="scac.displayLevel" value="3"/>
+</antcall>
+
+<property name="deploy.sarLocation" value="${proj.compositeDir}/${proj.compositeName}/deploy/sca_${proj.compositeName}_rev${proj.revision}.jar"/>
+<property name="deploy.configplan" value="${proj.compositeDir}/${proj.compositeName}/${proj.compositeName}_cfgplan_${deployment.plan.environment}.xml"/>
+
+<propertycopy name="deploy.serverURL" from="${deployment.plan.environment}.serverURL"/>
+<propertycopy name="deploy.overwrite" from="${deployment.plan.environment}.overwrite"/>
+<propertycopy name="deploy.user" from="${deployment.plan.environment}.user"/>
+<propertycopy name="deploy.password" from="${deployment.plan.environment}.password"/>
+<propertycopy name="deploy.forceDefault" from="${deployment.plan.environment}.forceDefault"/>
+<propertycopy name="deploy.server" from="${deployment.plan.environment}.server"/>
+<propertycopy name="deploy.port" from="${deployment.plan.environment}.port"/>
+
+<echo>deploy on ${deploy.serverURL} with user ${deploy.user}</echo>
+<echo>deploy sarFile ${deploy.sarLocation}</echo>
+
+<antcall target="deploy" inheritall="false">
+<param name="wl_home" value="${wl_home}"/>
+<param name="oracle.home" value="${oracle.home}"/>
+<param name="serverURL" value="${deploy.serverURL}"/>
+<param name="user" value="${deploy.user}"/>
+<param name="password" value="${deploy.password}"/>
+<param name="overwrite" value="${deploy.overwrite}"/>
+<param name="forceDefault" value="${deploy.forceDefault}"/>
+<param name="sarLocation" value="${deploy.sarLocation}"/>
+<param name="configplan" value="${deploy.configplan}"/>
+</antcall>
+
+<echo>unit test sarFile ${proj.compositeName} </echo>
+
+
+<antcall target="test" inheritall="false">
+<param name="scatest.input" value="${project}"/>
+<param name="scatest.format" value="junit"/>
+<param name="scatest.result" value="${env.CURRENT_FOLDER}/${junit.output.dir}"/>
+<param name="jndi.properties.input" value="${deployment.plan.environment}.jndi.properties"/>
+</antcall>
+
+<echo>disable composite ${proj.compositeName} </echo>
+
+<if>
+<equals arg1="${proj.enabled}" arg2="false"/>
+<then>
+<antcall target="stopComposite" inheritall="false">
+<param name="host" value="${deploy.server}"/>
+<param name="port" value="${deploy.port}"/>
+<param name="user" value="${deploy.user}"/>
+<param name="password" value="${deploy.password}"/>
+<param name="compositeName" value="${proj.compositeName}"/>
+<param name="revision" value="${proj.revision}"/>
+</antcall>
+
+</then>
+</if>
+
+
+
+</target>
+</project>

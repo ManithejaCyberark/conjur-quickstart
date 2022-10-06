@@ -1,0 +1,58 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.conjur.jenkins.configuration.ConjurJITJobProperty plugin="conjur-credentials@1.0.13-SNAPSHOT">
+      <inheritFromParent>true</inheritFromParent>
+      <useJustInTime>false</useJustInTime>
+      <authWebServiceId></authWebServiceId>
+      <hostPrefix></hostPrefix>
+      <conjurConfiguration>
+        <applianceURL></applianceURL>
+        <account></account>
+        <credentialID></credentialID>
+        <certificateCredentialID></certificateCredentialID>
+      </conjurConfiguration>
+    </org.conjur.jenkins.configuration.ConjurJITJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>set +x
+echo &quot;$CONJUR_SECRET&quot; &gt; &quot;$WORKSPACE&quot;/private.key
+set -x
+chmod 0600 &quot;$WORKSPACE&quot;/private.key
+sed -i &apos;s/\r$//g&apos; &quot;$WORKSPACE&quot;/private.key
+export GIT_SSH_COMMAND=&quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i $WORKSPACE/private.key -F /dev/null&quot;
+git clone ssh://git@bitbucket.epa.gov:2222/eiam/aaes.git
+</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.40">
+      <deleteDirs>false</deleteDirs>
+      <cleanupParameter></cleanupParameter>
+      <externalDelete></externalDelete>
+      <disableDeferredWipeout>false</disableDeferredWipeout>
+    </hudson.plugins.ws__cleanup.PreBuildCleanup>
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.27.1">
+      <bindings>
+        <org.conjur.jenkins.conjursecrets.ConjurSecretCredentialsBinding plugin="conjur-credentials@1.0.13-SNAPSHOT">
+          <credentialsId>conjurtest</credentialsId>
+          <variable>CONJUR_SECRET</variable>
+        </org.conjur.jenkins.conjursecrets.ConjurSecretCredentialsBinding>
+      </bindings>
+    </org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.16"/>
+  </buildWrappers>
+</project>

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<eventhandlers xmlns="http://www.oracle.com/schema/oim/platform/kernel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.oracle.com/schema/oim/platform/kernel	orchestration-handlers.xsd">
+<action-handler class="com.aaes.user.create.CreateUserPostProcess" entity-type="User" operation="CREATE" name="CreateUserPostProcess" stage="postprocess" order="2000090" sync="FALSE"/>
+<action-handler class="com.aaes.user.modify.FlagHotTerminationSuspension" entity-type="User" operation="DISABLE" name="FlagHotTerminationSuspension" stage="preprocess" order="LAST" sync="FALSE"/>
+<action-handler class="com.aaes.user.modify.UpdateEIDWEnableFlag" entity-type="User" operation="ENABLE" name="UpdateEIDWEnableFlag" stage="postprocess" order="LAST" sync="FALSE"/>
+<action-handler class="com.aaes.user.modify.NameChangesHandler" entity-type="User" operation="MODIFY" name="NameChangeHandlers" stage="postprocess" order="2000090" sync="FALSE"/>
+
+</eventhandlers>
+

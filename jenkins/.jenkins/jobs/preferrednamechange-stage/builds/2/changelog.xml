@@ -1,0 +1,10 @@
+commit b17683737ac20a453c3429ac769866d9d695f8fd
+tree e860ecced0f21588c4e6da00693a31bc685d8dcc
+parent 1df5f9267b1da7543776e2573e08f58f2e788f15
+author schivuku <schivuku@yahoo.com> 2022-05-25 10:30:43 -0400
+committer schivuku <schivuku@yahoo.com> 2022-05-25 10:30:43 -0400
+
+    Removed 1.6 Jar
+
+
+:100644 000000 6c4b1a902a4f355d70e4aa8705ccf9648ffae849 0000000000000000000000000000000000000000 D	PRENCService/PRENCService/deploy/sca_PRENCService_rev1.6.jar

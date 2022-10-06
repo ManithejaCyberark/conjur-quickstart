@@ -1,0 +1,17 @@
+commit aa7cbd79101dac01c8e117ecd00626019700e12d
+tree b8fa824b9e64516f2749467bc6091162c1d75ac1
+parent 96b7b904fb03a2810cb0ee3a5385e216bfe0cc50
+author schivuku <schivuku@yahoo.com> 2022-08-16 18:10:44 -0400
+committer schivuku <schivuku@yahoo.com> 2022-08-16 18:10:44 -0400
+
+    Resolved the "Request Complete" issue in prod by removing "Receive Complete" after sending the last email next to processTask/ScheduleTask java code.
+
+
+:100644 100644 ce8139b71aa1892ca8e7381cb841954244986ede 6746c34578d886e9b8939d182ffe6372b4161bcb M	EMPNCService/EMPNCService/SOA/.designer/ApprovalProcess_graphics.xml
+:100644 100644 60f06d316cf7eb2da72c0c9eefcbd0f01bc3ded3 23e4a6d279885d915b2ca92e1c307d1d3d787076 M	EMPNCService/EMPNCService/SOA/ApprovalProcess.bpel
+:100644 100644 1ece1abafc21443688defc22251e2c0af6336f77 8218408abe5d81ff921279b86c69fb7943a0088f M	EMPNCService/EMPNCService/SOA/SCA-INF/EMPNCServiceAccount.diagram.jpg
+:100644 100644 131cfca534ce9a6482865b3166d6abb0aabf38cc 3d65dc8c23e2a74c1cb7ff2b3bc6ff5e8388ef7b M	EMPNCService/EMPNCService/SOA/SCA-INF/EMPNCServiceAccount.diagram.xml
+:100644 100644 2b02ea0cd4bece93d3f820d49e944c4bf3dc7c6c 57ab9db2a006760051f7d6f2a763aa8de7359a11 M	EMPNCService/EMPNCService/SOA/SCA-INF/bpel/Approv~0/Model.xml
+:100644 100644 0c715bf3b9b61bdf2482978b2dd79c3e8b6bf5e6 f0fadf57caf82df182e78d0819ec89658da73474 M	EMPNCService/EMPNCService/SOA/SCA-INF/bpel/Approv~0/map.jar
+:100644 100644 b1790a1304abae62424aac2f147a5e5eae4819bd d862dd07d829d95d3da6f7a65493b0bcdf66b751 M	EMPNCService/EMPNCService/SOA/SCA-INF/classes/scac.log
+:100644 100644 1f0b721ba79f3daceff20aa4d8ef5bd94f7c47bd c0857885b5cd49509b9c14cb9d10b44245307196 M	EMPNCService/EMPNCService/deploy/sca_EMPNCService_rev1.7.jar

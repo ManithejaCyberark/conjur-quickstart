@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Events xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../metadata/iam-features-notification/NotificationEvent.xsd">
+<EventType name="NotifyExternalUserEvent">
+<Resolver class="com.aaes.notification.AAESNotificationResolver">
+<Param DataType="X2-Entity" EntityName="User" Name="usr_login"/>
+</Resolver>
+</EventType>
+</Events>

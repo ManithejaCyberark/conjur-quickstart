@@ -1,0 +1,1179 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<tns:entity-definition xmlns:tns="http://www.oracle.com/schema/oim/entity">
+<entity-type child-entity="false">LDAPUser</entity-type>
+<provider-instance>
+<repository-instance>Directory Server</repository-instance>
+<provider-type>LDAPDataProvider</provider-type>
+<parameters>
+<parameter name="idattribute">
+<value>orclguid</value>
+</parameter>
+<parameter name="rdnattribute">
+<value>cn</value>
+</parameter>
+<parameter name="base">
+<value>l=amer,dc=oracle,dc=com</value>
+</parameter>
+<parameter name="entityIdentifierObjectclass">
+<value>inetorgperson</value>
+</parameter>
+<parameter name="excludeObjectclass">
+<value>orclappiduser</value>
+</parameter>
+<parameter name="objectclass">
+<value>orclIDXPerson</value>
+<value>epaOrgPerson</value>
+</parameter>
+</parameters>
+</provider-instance>
+<container-capability>
+<enabled>false</enabled>
+</container-capability>
+<entity-attributes>
+<attribute name="FA Territory">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="OIDPerson">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Building">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Extended</attribute-group>
+<description/>
+<metadata-attachment/>
+</attribute>
+<attribute name="Employee Number">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="usr_locale">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Middle Name">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="RoomNumber">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Extended</attribute-group>
+<description>RoomNumber</description>
+<metadata-attachment/>
+</attribute>
+<attribute name="Date Format">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Display Name">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>true</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="usr_timezone">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Mobile">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="usr_locked">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="LDAP Organization">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Currency">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="End Date">
+<type>date</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Pager">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Time Format">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Color Contrast">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="PO Box">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="LDAP GUID">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Accessibility Mode">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Country">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="usr_change_pwd_at_next_logon">
+<type>string</type>
+<required>false</required>
+<searchable>false</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="usr_pwd_expire_date">
+<type>date</type>
+<required>false</required>
+<searchable>false</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Email">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="PersonnelID">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Ucompany">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Common Name">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Locked On">
+<type>date</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Last Name">
+<type>string</type>
+<required>true</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Start Date">
+<type>date</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="First Name">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="usr_manager_key">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Locality Name">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Number Format">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Street">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Embedded Help">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Upn">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Department Number">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Hire Date">
+<type>date</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="User Name Preferred Language">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Home Postal Address">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Telephone Number">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Font Size">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Department">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Extended</attribute-group>
+<description/>
+<metadata-attachment/>
+</attribute>
+<attribute name="Description">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Home Phone">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="LDAP Organization Unit">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="User Status">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Fax">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Postal Code">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="User Login">
+<type>string</type>
+<required>true</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Title">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="City">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Generation Qualifier">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="PreferredFirstName">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Extended</attribute-group>
+<description/>
+<metadata-attachment/>
+</attribute>
+<attribute name="State">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Postal Address">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Initials">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="Role">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="LDAP DN">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="usr_password">
+<type>string</type>
+<required>false</required>
+<searchable>false</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+<attribute name="FA Language">
+<type>string</type>
+<required>false</required>
+<searchable>true</searchable>
+<multi-valued>false</multi-valued>
+<MLS>false</MLS>
+<multi-represented>false</multi-represented>
+<attribute-group>Basic</attribute-group>
+<metadata-attachment/>
+</attribute>
+</entity-attributes>
+<target-fields>
+<field name="uid">
+<type>string</type>
+<required>true</required>
+</field>
+<field name="manager">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="OIDPerson">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclTimeZone">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclguid">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="street">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclNumberFormat">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="userPassword">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="roomnumber">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="homePhone">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="preferredLanguage">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="userPrincipalName">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="postalCode">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="initials">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="description">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclAccountEnabled">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="st">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="employeeType">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="middleName">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="sn">
+<type>string</type>
+<required>true</required>
+</field>
+<field name="employeeID">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="ou">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="homePostalAddress">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclHireDate">
+<type>date</type>
+<required>false</required>
+</field>
+<field name="orclEmbeddedHelp">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclFATerritory">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclCurrency">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="cn">
+<type>string</type>
+<required>true</required>
+</field>
+<field name="company">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="telephoneNumber">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclFALanguage">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="mobile">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="facsimileTelephoneNumber">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="department">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclDisplayNameLanguagePreference">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="givenname">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclAccountLocked">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orcluserlockedon">
+<type>date</type>
+<required>false</required>
+</field>
+<field name="orclFontSize">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="title">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclPwdExpirationDate">
+<type>date</type>
+<required>false</required>
+</field>
+<field name="orclTimeFormat">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="dn">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="postOfficeBox">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclGenerationQualifier">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="pager">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="mail">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="building">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="c">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="o">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="l">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclDateFormat">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclAccessibilityMode">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclpwdchangerequired">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="departmentNumber">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclColorContrast">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclActiveEndDate">
+<type>date</type>
+<required>false</required>
+</field>
+<field name="postalAddress">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="displayName">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="employeeNumber">
+<type>string</type>
+<required>false</required>
+</field>
+<field name="orclActiveStartDate">
+<type>date</type>
+<required>false</required>
+</field>
+<field name="preferredname">
+<type>string</type>
+<required>false</required>
+</field>
+</target-fields>
+<attribute-maps>
+<attribute-map>
+<entity-attribute>FA Territory</entity-attribute>
+<target-field>orclFATerritory</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>OIDPerson</entity-attribute>
+<target-field>OIDPerson</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Building</entity-attribute>
+<target-field>building</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Employee Number</entity-attribute>
+<target-field>employeeNumber</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>usr_locale</entity-attribute>
+<target-field>preferredLanguage</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Middle Name</entity-attribute>
+<target-field>middleName</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>RoomNumber</entity-attribute>
+<target-field>roomnumber</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Date Format</entity-attribute>
+<target-field>orclDateFormat</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Display Name</entity-attribute>
+<target-field>displayName</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>usr_timezone</entity-attribute>
+<target-field>orclTimeZone</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Mobile</entity-attribute>
+<target-field>mobile</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>usr_locked</entity-attribute>
+<target-field>orclAccountLocked</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>LDAP Organization</entity-attribute>
+<target-field>o</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Currency</entity-attribute>
+<target-field>orclCurrency</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>End Date</entity-attribute>
+<target-field>orclActiveEndDate</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Pager</entity-attribute>
+<target-field>pager</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Time Format</entity-attribute>
+<target-field>orclTimeFormat</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Color Contrast</entity-attribute>
+<target-field>orclColorContrast</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>PO Box</entity-attribute>
+<target-field>postOfficeBox</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>LDAP GUID</entity-attribute>
+<target-field>orclguid</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Accessibility Mode</entity-attribute>
+<target-field>orclAccessibilityMode</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Country</entity-attribute>
+<target-field>c</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>usr_change_pwd_at_next_logon</entity-attribute>
+<target-field>orclpwdchangerequired</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>usr_pwd_expire_date</entity-attribute>
+<target-field>orclPwdExpirationDate</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Email</entity-attribute>
+<target-field>mail</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>PersonnelID</entity-attribute>
+<target-field>employeeID</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Ucompany</entity-attribute>
+<target-field>company</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Common Name</entity-attribute>
+<target-field>cn</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Locked On</entity-attribute>
+<target-field>orcluserlockedon</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Last Name</entity-attribute>
+<target-field>sn</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Start Date</entity-attribute>
+<target-field>orclActiveStartDate</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>First Name</entity-attribute>
+<target-field>givenname</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Locality Name</entity-attribute>
+<target-field>l</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>usr_manager_key</entity-attribute>
+<target-field>manager</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Number Format</entity-attribute>
+<target-field>orclNumberFormat</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Street</entity-attribute>
+<target-field>street</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Embedded Help</entity-attribute>
+<target-field>orclEmbeddedHelp</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Upn</entity-attribute>
+<target-field>userPrincipalName</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Department Number</entity-attribute>
+<target-field>departmentNumber</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Hire Date</entity-attribute>
+<target-field>orclHireDate</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>User Name Preferred Language</entity-attribute>
+<target-field>orclDisplayNameLanguagePreference</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Home Postal Address</entity-attribute>
+<target-field>homePostalAddress</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Telephone Number</entity-attribute>
+<target-field>telephoneNumber</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Font Size</entity-attribute>
+<target-field>orclFontSize</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Department</entity-attribute>
+<target-field>department</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Description</entity-attribute>
+<target-field>description</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Home Phone</entity-attribute>
+<target-field>homePhone</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>LDAP Organization Unit</entity-attribute>
+<target-field>ou</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>User Status</entity-attribute>
+<target-field>orclAccountEnabled</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Fax</entity-attribute>
+<target-field>facsimileTelephoneNumber</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Postal Code</entity-attribute>
+<target-field>postalCode</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>User Login</entity-attribute>
+<target-field>uid</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Title</entity-attribute>
+<target-field>title</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>City</entity-attribute>
+<target-field>l</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Generation Qualifier</entity-attribute>
+<target-field>orclGenerationQualifier</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>PreferredFirstName</entity-attribute>
+<target-field>preferredname</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>State</entity-attribute>
+<target-field>st</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Postal Address</entity-attribute>
+<target-field>postalAddress</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Initials</entity-attribute>
+<target-field>initials</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>Role</entity-attribute>
+<target-field>employeeType</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>LDAP DN</entity-attribute>
+<target-field>dn</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>usr_password</entity-attribute>
+<target-field>userPassword</target-field>
+</attribute-map>
+<attribute-map>
+<entity-attribute>FA Language</entity-attribute>
+<target-field>orclFALanguage</target-field>
+</attribute-map>
+</attribute-maps>
+<metadata-attachment/>
+<control-attributes>
+<attribute name="container">
+<type>LDAPContainer</type>
+<required>false</required>
+</attribute>
+</control-attributes>
+</tns:entity-definition>

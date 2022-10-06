@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oimplugins xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<plugins pluginpoint="oracle.iam.scheduler.vo.TaskSupport">
+		    <plugin pluginclass= "com.aaes.scheduleTasks.AAESMoveUsersDisableTask" version="1.0" name="AAESMoveUsersDisableTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESUsersDisableTask" version="2" name="AAESUsersDisableTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESUsersInactivityTask" version="1.0" name="AAESUsersInactivityTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESUsersDisableNotificationTask" version="1.0" name="AAESUsersDisableNotificationTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.aaesADUpdateXtension" version="1.0" name="aaesADUpdateXtension"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESMoveOUDTerminatedUsersTask" version="1.0" name="AAESMoveOUDTerminatedUsersTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.aaesLoadCMSCertsTask" version="1.0" name="aaesLoadCMSCertsTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.aaesProcessOfficeCodeNull" version="1.0" name="aaesProcessOfficeCodeNull"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESLoadIDMSAttrsTask" version="1.0" name="AAESLoadIDMSAttrsTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.aaesProcessPendingOrders" version="1.0" name="aaesProcessPendingOrders"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.aaesProcessCancelOrders" version="1.0" name="aaesProcessCancelOrders"/>
+			<plugin pluginclass="com.aaes.scheduleTasks.DisableExpiredCertAccess" 
+					name="AAESDisableAccessForExpiredCertification" version="1.0" />
+			<plugin pluginclass="com.aaes.scheduleTasks.NotifyPendingCertification" 
+					name="AAESReminderForPendingCertification" version="1.0" />
+            <plugin pluginclass= "com.aaes.scheduleTasks.AAESAddProcessTask" version="1.0" name="AAESAddProcessTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.ServiceAccountStatusReport" version="1.0" name="aaesServiceAccountStatusReport"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESADSystemAdminAcctPendingReqEmailTask" version="1.0" name="aaesADSystemAdminAcctPendingReqEmailTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESCertificationPendingReqEmailTask" version="1.0" name="aaesCertificationPendingReqEmailTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESOUDExtUserPwdExpiryEmailWarningTask" version="1.0" name="aaesOUDExtUserPwdExpiryEmailWarningTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESOUDExtInactiveUserEmailWarnAndDisableTask" version="1.0" name="aaesOUDExtInactiveUserEmailWarnAndDisableTask"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESWAAStatusReport" version="1.0" name="AAESWAAStatusReport"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAEScreateNewUsrTableADtoOIM" version="1.0" name="AAEScreateNewUsrTableADtoOIM"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAEScreateNewUsrTableOUDtoOIM" version="1.0" name="AAEScreateNewUsrTableOUDtoOIM"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESupdateSAaccount" version="1.0" name="AAESupdateSAaccount"/>
+			<plugin pluginclass= "com.aaes.scheduleTasks.AAESdiscrepancyReport" version="1.0" name="AAESdiscrepancyReport"/>
+	</plugins>
+</oimplugins>

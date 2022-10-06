@@ -1,0 +1,11 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<com.atlassian.bitbucket.jenkins.internal.config.BitbucketPluginConfiguration plugin="atlassian-bitbucket-server-integration@3.1.0">
+  <serverList>
+    <atl-bbs-configuration>
+      <adminCredentialsId>AAES-Token</adminCredentialsId>
+      <id>633df95f-3f2a-454f-b36b-0eac48a72535</id>
+      <baseUrl>https://bitbucket.epa.gov/</baseUrl>
+      <serverName>EIAMBitBucket</serverName>
+    </atl-bbs-configuration>
+  </serverList>
+</com.atlassian.bitbucket.jenkins.internal.config.BitbucketPluginConfiguration>

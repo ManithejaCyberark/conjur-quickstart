@@ -1,0 +1,79 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject plugin="workflow-multibranch@2.24">
+  <actions/>
+  <description>CyArkOUD Pipeline</description>
+  <displayName>CyArkOUD</displayName>
+  <properties/>
+  <folderViews class="jenkins.branch.MultiBranchProjectViewHolder" plugin="branch-api@2.6.3">
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+  </folderViews>
+  <healthMetrics/>
+  <icon class="jenkins.branch.MetadataActionFolderIcon" plugin="branch-api@2.6.3">
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+  </icon>
+  <orphanedItemStrategy class="com.cloudbees.hudson.plugins.folder.computed.DefaultOrphanedItemStrategy" plugin="cloudbees-folder@6.17">
+    <pruneDeadBranches>true</pruneDeadBranches>
+    <daysToKeep>5</daysToKeep>
+    <numToKeep>2</numToKeep>
+  </orphanedItemStrategy>
+  <triggers>
+    <com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookMultibranchTrigger plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <spec></spec>
+      <pullRequestTrigger>false</pullRequestTrigger>
+      <refTrigger>true</refTrigger>
+      <version>1</version>
+    </com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookMultibranchTrigger>
+  </triggers>
+  <disabled>false</disabled>
+  <sources class="jenkins.branch.MultiBranchProject$BranchSourceList" plugin="branch-api@2.6.3">
+    <data>
+      <jenkins.branch.BranchSource>
+        <source class="com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCMSource" plugin="atlassian-bitbucket-server-integration@3.1.0">
+          <id>1ec698d3-f9d5-4998-8c8c-c97e17354bc0</id>
+          <traits>
+            <jenkins.plugins.git.traits.BranchDiscoveryTrait plugin="git@4.10.3"/>
+            <jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait plugin="scm-api@2.6.5">
+              <includes>*/development */stage */prodlive</includes>
+              <excludes></excludes>
+            </jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait>
+          </traits>
+          <gitSCMSource>
+            <id>1ec698d3-f9d5-4998-8c8c-c97e17354bc0-git-scm</id>
+            <remote>ssh://git@bitbucket.epa.gov:2222/eiam/oudcyark.git</remote>
+            <credentialsId>Manish-SSH-KEY</credentialsId>
+            <traits>
+              <jenkins.plugins.git.traits.BranchDiscoveryTrait reference="../../../traits/jenkins.plugins.git.traits.BranchDiscoveryTrait"/>
+              <jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait reference="../../../traits/jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait"/>
+              <jenkins.plugins.git.traits.GitBrowserSCMSourceTrait plugin="git@4.10.3">
+                <browser class="hudson.plugins.git.browser.Stash">
+                  <url>https://bitbucket.epa.gov/projects/EIAM/repos/oudcyark</url>
+                </browser>
+              </jenkins.plugins.git.traits.GitBrowserSCMSourceTrait>
+            </traits>
+            <repository>
+              <credentialsId></credentialsId>
+              <sshCredentialsId>Manish-SSH-KEY</sshCredentialsId>
+              <projectKey>EIAM</projectKey>
+              <projectName>Enterprise Identity and Access Management</projectName>
+              <repositoryName>OUDCyArk</repositoryName>
+              <repositorySlug>oudcyark</repositorySlug>
+              <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+              <mirrorName></mirrorName>
+            </repository>
+          </gitSCMSource>
+          <repository reference="../gitSCMSource/repository"/>
+          <webhookRegistered>false</webhookRegistered>
+        </source>
+        <strategy class="jenkins.branch.NamedExceptionsBranchPropertyStrategy">
+          <defaultProperties class="empty-list"/>
+          <namedExceptions class="empty-list"/>
+        </strategy>
+      </jenkins.branch.BranchSource>
+    </data>
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+  </sources>
+  <factory class="org.jenkinsci.plugins.workflow.multibranch.WorkflowBranchProjectFactory">
+    <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
+    <scriptPath>Jenkinsfile</scriptPath>
+  </factory>
+</org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>

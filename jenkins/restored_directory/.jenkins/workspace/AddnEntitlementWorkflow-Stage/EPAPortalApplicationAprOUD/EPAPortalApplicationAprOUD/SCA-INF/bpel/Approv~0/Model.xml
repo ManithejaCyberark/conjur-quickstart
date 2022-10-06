@@ -1,0 +1,1858 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Apr 08 19:27:41 IST 2010
+  Author:  nitpatel
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+--><process name="ApprovalProcess" targetNamespace="http://xmlns.oracle.com/ApprovalApp_jws/EPAPortalApplicationAprOUD/ApprovalProcess" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:client="http://xmlns.oracle.com/ApprovalApp_jws/EPAPortalApplicationAprOUD/ApprovalProcess" xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:ns1="http://wls.ws.workflowservice.platform.iam.oracle/" xmlns:ns2="http://xmlns.oracle.com/bpel/workflow/taskService" xmlns:ns4="http://xmlns.oracle.com/request/RequestDetails" xmlns:ns3="http://xmlns.oracle.com/ApprovalApp/EPAPortalApplicationAprOUD/ApprovalProcess" xmlns:task="http://xmlns.oracle.com/bpel/workflow/task" xmlns:wfcommon="http://xmlns.oracle.com/bpel/workflow/common" xmlns:wf="http://schemas.oracle.com/bpel/extension/workflow" xmlns:ns6="http://xmlns.oracle.com/bpel/workflow/routingSlip" xmlns:ns5="http://xmlns.oracle.com/bpel/workflow/TaskEvidenceService" xmlns:ns7="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20" xmlns:ns10="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns9="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:ns12="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue" xmlns:ns13="http://schemas.oracle.com/bpel/extension/xpath/function/xdk" xmlns:ns11="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions" xmlns:ns8="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns14="http://www.w3.org/2005/08/addressing" xmlns:ns15="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns16="http://xmlns.oracle.com/ias/pcbpel/NotificationService" xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:ess="http://xmlns.oracle.com/scheduler" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns17="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RequestData" id="BpPrc0">
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <bpelx:annotation>
+        <bpelx:analysis>
+            <bpelx:property name="wsdlFile">
+                ApprovalProcess.wsdl
+            </bpelx:property>
+        </bpelx:analysis>
+    </bpelx:annotation>
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="RequestApprovalService" partnerLinkType="client:ApprovalProcess" myRole="ApprovalProcessProvider" partnerRole="ApprovalProcessRequester"/>
+        <partnerLink name="CallbackService" partnerRole="CallbackService_Role" partnerLinkType="ns1:CallbackService_PL"/>
+        <partnerLink myRole="TaskServiceCallbackListener" name="ApprovalTask.TaskService_1" partnerRole="TaskService" partnerLinkType="ns2:TaskService"/>
+        <partnerLink name="RequestWSPartnerLink" partnerLinkType="ns15:RequestDataService" partnerRole="RequestDataServiceProvider"/>
+        <partnerLink name="NotificationService1" partnerLinkType="ns16:NotificationServiceLink" partnerRole="NotificationServiceProvider"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:ApprovalProcessRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:ApprovalProcessResponseMessage"/>
+        <variable name="Invoke_1_callback_InputVariable_1" messageType="ns1:callback"/>
+        <variable name="Invoke_1_callback_OutputVariable_1" messageType="ns1:callbackResponse"/>
+        <variable name="partnerLink" element="ns14:EndpointReference"/>
+        <variable name="ApprovalTask_1_globalVariable" messageType="ns2:taskMessage"/>
+        <variable name="oimurl" type="xsd:string"/>
+        <variable name="groupName" type="xsd:string"/>
+        <variable name="approverRoleName" type="xsd:string"/>
+        <variable name="EmailAttribute" type="xsd:string"/>
+        <variable name="madd" type="xsd:string"/>
+        <variable name="OIMServer" type="xsd:string"/>
+        <variable name="commentc" type="xsd:string"/>
+        <variable name="entitlementApproversEmail" type="xsd:string"/>
+        <variable name="userEmail" type="xsd:string"/>
+        <variable name="entitlementDisplayName" type="xsd:string"/>
+        <variable name="justification" type="xsd:string"/>
+        <variable name="Rejected_Comments" type="xsd:string"/>
+        <variable name="entitlementApproversUserLogin" type="xsd:string"/>
+        <variable name="requestID" messageType="ns15:RequestDataServiceRequestMessage"/>
+        <variable name="Invoke1_getRequestDetails_OutputVariable" messageType="ns15:RequestDataServiceResponseMessage"/>
+        <variable name="eIDWUrl" type="xsd:string"/>
+        <variable name="callbackServiceUrl" type="xsd:string"/>
+        <variable name="requestServiceUrl" type="xsd:string"/>
+        <variable name="EnvPwd" type="xsd:string"/>
+    </variables>
+    
+    <faultHandlers id="BpFhs0">
+        <catchAll id="BpCAl0">
+            <sequence id="BpSeq0">
+                <assign name="AssignPartnerLink" id="BpAss0">
+                    <copy>
+                        <from expression="ora:getFaultAsString()"/>
+                        <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+                    </copy>
+                    <copy>
+                        <from expression="ora:getConversationId()"/>
+                        <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg0"/>
+                    </copy>
+                    <copy>
+                        <from expression="ora:getFaultAsString()"/>
+                        <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg1"/>
+                    </copy>
+                    <copy>
+                        <from>
+                            <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+                                <Address/>
+                            </EndpointReference>
+                        </from>
+                        <to variable="partnerLink"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:url"/>
+                        <to query="/ns14:EndpointReference/ns14:Address" variable="partnerLink"/>
+                    </copy>
+                    <copy>
+                        <from variable="partnerLink"/>
+                        <to partnerLink="CallbackService"/>
+                    </copy>
+                </assign>
+                <invoke name="InvokeErrorCallback" inputVariable="Invoke_1_callback_InputVariable_1" outputVariable="Invoke_1_callback_OutputVariable_1" portType="ns1:CallbackService" partnerLink="CallbackService" operation="callback" id="BpInv0"/>
+            </sequence>
+        </catchAll>
+    </faultHandlers>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main" id="BpSeq1">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in ApprovalProcess.wsdl) --><receive name="receiveInput" partnerLink="RequestApprovalService" portType="client:ApprovalProcess" operation="process" variable="inputVariable" createInstance="yes" id="BpRcv0"/>
+        <bpelx:exec name="NL1" version="1.5" id="BxExe0">
+            System.out.println("Entering Native Logic Additional Entitlement");            
+  
+  
+                                    java.sql.Connection  con = null;                      
+	                            java.sql.Statement stmt = null;  
+                                    java.sql.Statement stmt1 = null;
+  
+				try {           
+					/*String oimUserName = null, oimPassword = null;			          
+					String credentialStoreProvider = "oracle.oim.credmap"; //Map name          
+					String OIMAdminName = "OIMClient"; //Key name          
+					try {                  
+					        //read xelsysadm credential from credential store             
+					        oracle.security.jps.JpsContextFactory jpsCtxFactory = oracle.security.jps.JpsContextFactory.getContextFactory();                           
+					        oracle.security.jps.JpsContext jpsCtx = jpsCtxFactory.getContext();                           
+					        oracle.security.jps.service.credstore.CredentialStore credStore = jpsCtx.getServiceInstance(oracle.security.jps.service.credstore.CredentialStore.class);                           
+					        oracle.security.jps.service.credstore.PasswordCredential cred = (oracle.security.jps.service.credstore.PasswordCredential)credStore.getCredential(credentialStoreProvider,OIMAdminName);                           
+					        if (cred != null) {           
+					        	oimUserName = cred.getName();                           
+					        	oimPassword = String.valueOf(cred.getPassword());                      
+					        } else {                           
+					            System.out.println("Credential not found");                         
+					        }                           
+					                  
+					        System.out.println("Username : " + oimUserName);          
+					        System.out.println("Password : " + oimPassword);          
+					                  
+					} catch (Exception e) {                              
+						System.out.println("Exception when getting the OIMAdmin xelsysadm credential ");           
+						e.printStackTrace();           
+						System.out.println("-----------------------------------------");           
+					              
+					}  */        
+					          
+                                                  
+                                           
+                                        java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();        
+                                        String hostName = localMachine.getHostName().toString();       
+                                       System.out.println("Hostname of local machine: " + hostName);       
+       
+                                           String host = hostName.substring(6, hostName.indexOf(".")-1);        
+                                                  
+                                           System.out.println("Env of local machine: " + host);         
+                                               
+                                             if (host.equals("prd")){                    
+                                                       System.out.println("Prod Hostname of local machine: " + hostName);                    
+                                                       setVariableData("EnvPwd","t3I0We0W5");       
+                                                              
+                                                       String callbackServiceUrl="http://"+hostName+":15000"+"/workflowservice/CallbackService";       
+                                                       setVariableData("callbackServiceUrl",callbackServiceUrl);       
+                                                            
+                                                       System.out.println("callbackServiceUrl: " + callbackServiceUrl);       
+                                               
+                                                       String requestServiceUrl="http://"+hostName+":15000"+"/reqsvc/reqsvc";       
+                                                        setVariableData("requestServiceUrl",requestServiceUrl);       
+                                             
+                                                       System.out.println("requestServiceUrl: " + requestServiceUrl);       
+                                                                             
+                                             }else if (host.equals("stg")) {                    
+                                                       System.out.println("Stage Hostname of local machine: " + hostName);                    
+                                                       setVariableData("EnvPwd","aj3ARa1Z6");          
+                                               
+                                                       String callbackServiceUrl="http://"+hostName+":15000"+"/workflowservice/CallbackService";       
+                                                       setVariableData("callbackServiceUrl",callbackServiceUrl);       
+                                             
+                                                       System.out.println("callbackServiceUrl: " + callbackServiceUrl);      
+                                               
+                                                       String requestServiceUrl="http://"+hostName+":15000"+"/reqsvc/reqsvc";       
+                                                       setVariableData("requestServiceUrl",requestServiceUrl);       
+                                             
+                                                       System.out.println("requestServiceUrl: " + requestServiceUrl);       
+                                               
+                                               
+                                                   }else {          
+                                               
+                                                       System.out.println("Dev Hostname of local machine: " + hostName);                    
+                                                       setVariableData("EnvPwd","TxGy4IX98");         
+                                               
+                                                       String callbackServiceUrl="http://"+hostName+":15000"+"/workflowservice/CallbackService";       
+                                                       setVariableData("callbackServiceUrl",callbackServiceUrl);       
+                                             
+                                                       System.out.println("callbackServiceUrl: " + callbackServiceUrl);      
+                                               
+                                                       String requestServiceUrl="http://"+hostName+":15000"+"/reqsvc/reqsvc";       
+                                                       setVariableData("requestServiceUrl",requestServiceUrl);       
+                                                           
+                                                      System.out.println("requestServiceUrl: " + requestServiceUrl);       
+                                               }        
+                                          
+                                                  
+                                                  
+                                                  
+					String oimUserName = "xelsysadm";                                         
+					System.out.println("Before Getting OIMURL "); 		                          
+		          
+					//oimT3URL ="t3://wamappstg1.rtpnc.epa.gov:15000";                                               
+					//System.out.println("oimURL in NativeLogic is :- "+oimT3URL);	                          
+		          
+					String oimInitialContextFactory = "weblogic.jndi.WLInitialContextFactory";                                               
+					String authLoginConfig = "java.security.auth.login.config";                                               
+					String authLoginConfigPath = "/usr/opt/oracle/product/Middleware_IAM/Oracle_IAM1/server/config/authwl.conf";           
+		          
+					//Getting OIM URL ,removing /workflowservice/callbackservice and appending with /identity            
+					java.lang.Object urlNameReturnedByWorkFlowXML = getVariableData("inputVariable","payload", "/ns3:process/ns4:url");			                    
+					String urlNameReturnedByWorkFlow =  ((oracle.xml.parser.v2.XMLElement)urlNameReturnedByWorkFlowXML).getText();                   
+					System.out.println("URL Name returned by workflow is :" + urlNameReturnedByWorkFlow);           
+					//Appending Identity in OIM URL           
+					String urlNameReturnedByWorkFlowArray[] = urlNameReturnedByWorkFlow.split("/workflowservice/CallbackService");                  
+					String     urlNameReturnedByWorkFlowAppendedWithIdentity = urlNameReturnedByWorkFlowArray[0] + "/identity";                  
+					System.out.println("URL Name appended with Identity :" + urlNameReturnedByWorkFlowAppendedWithIdentity);           
+		          
+					setVariableData("OIMServer",urlNameReturnedByWorkFlowAppendedWithIdentity);           
+		          
+		                        //Getting the OIM t3 URL          
+		                      
+                                    
+                           
+                                         String oimT3URL = "";            
+                                        String oimPassword="";     
+                                                                              
+                                                                           
+                                            if (host.equals("prd")){   
+   
+                                               System.out.println("Prod Hostname of local machine: " + hostName);                   
+                                                oimT3URL = "t3://"+hostName+":15000";      
+                                      
+                                                System.out.println("oimT3URL in NativeLogic from variable is :- " + oimT3URL);         
+                                      
+                                                java.lang.Object oimPasswordXML = getVariableData("EnvPwd");                     
+                                                oimPassword=(String)oimPasswordXML;       
+                                    
+                                    //            System.out.println("oimPassword :- " + oimPassword);     
+                                                     
+                                                    
+                                                                    
+                                     }else if (host.equals("stg")) {    
+   
+                                               System.out.println("Stage Hostname of local machine: " + hostName);                   
+                                               oimT3URL = "t3://"+hostName+":15000";      
+                                            System.out.println("oimT3URL in NativeLogic from variable is :- " + oimT3URL);           
+                                            
+                                           java.lang.Object oimPasswordXML = getVariableData("EnvPwd");                     
+                                              oimPassword=(String)oimPasswordXML;       
+                                      
+                                      //      System.out.println("oimPassword :- " + oimPassword);     
+                                      
+                                      
+                                           }else {         
+                                      
+                                               System.out.println("Dev Hostname of local machine: " + hostName);                   
+                                                     
+                                                     
+                                               oimT3URL = "t3://"+hostName+":16000";      
+                                            System.out.println("oimT3URL in NativeLogic from variable is :- " + oimT3URL);        
+                                      
+                                           java.lang.Object oimPasswordXML = getVariableData("EnvPwd");                     
+                                          oimPassword=(String)oimPasswordXML;       
+                                    
+                                 //         System.out.println("oimPassword :- " + oimPassword);     
+                                      
+                                              }      
+                                                           
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+                                //        String oimT3URL = "";                               
+				//	String tempStr = urlNameReturnedByWorkFlowArray[0].toString();                              
+				//	String[] tempArr = tempStr.split("//");                        
+				//	oimT3URL = "t3://"+tempArr[1];                              
+		                 //       System.out.println("oimT3URL in NativeLogic from variable is :- " + oimT3URL);          
+		          
+					// set up the environment for making the OIM Client invocation     
+   
+   
+					java.util.Hashtable env = new java.util.Hashtable();                                               
+					env.put(oracle.iam.platform.OIMClient.JAVA_NAMING_FACTORY_INITIAL,                                               
+							oimInitialContextFactory);                                               
+					env.put(oracle.iam.platform.OIMClient.JAVA_NAMING_PROVIDER_URL, oimT3URL);                                               
+					env.put(authLoginConfig, authLoginConfigPath);                                               
+					oracle.iam.platform.OIMClient client = new oracle.iam.platform.OIMClient(env);                                               
+					client.login(oimUserName, oimPassword.toCharArray());           
+		                        System.out.println("Connected, OIMClient Handle : " + client);          
+			                  
+				  
+                                //	Thor.API.Operations.tcUserOperationsIntf userintf = client.getService(Thor.API.Operations.tcUserOperationsIntf.class);                 
+		          
+					//Getting entitlement code like.... 84~cn=demotest                                 
+					java.lang.Object roleXML = getVariableData("inputVariable", "payload",                                               
+							"/ns3:process/ns4:RequestTarget");                      
+					String entityName =  ((oracle.xml.parser.v2.XMLElement)roleXML).getText();                 			                    
+					String entityNameWithQuotes = "'" + entityName + "'";           
+					System.out.println("EntityName in NativeLogic is :- "+ entityName);           
+		          
+					//Getting the request id           
+					java.lang.Object  requestIDXML = getVariableData("inputVariable", "payload",                                               
+							"/ns3:process/ns4:RequestID");                      
+					String requestID = ((oracle.xml.parser.v2.XMLElement)requestIDXML).getText();                     
+					String requestIDWithQuotes = "'" + requestID + "'";                     
+					System.out.println("Request Id = " + requestID);           
+		          
+					//Getting the beneficiary user login           
+					java.lang.Object beneficiaryUserLoginXML = getVariableData("inputVariable", "payload",                                               
+							"/ns3:process/ns4:BeneficiaryDetails/ns4:Login");                                                        
+					String beneficiaryUserLogin = ((oracle.xml.parser.v2.XMLElement)beneficiaryUserLoginXML).getText();                 
+					String beneficiaryUserLoginWithQuotes = "'" + beneficiaryUserLogin + "'";           
+					System.out.println("Beneficiary User Login = " + beneficiaryUserLogin);          
+     
+                                        //Getting the beneficiary DisplayName --11/27     
+     
+                                        java.lang.Object beneficiaryUserDisplayNameXML = getVariableData("inputVariable", "payload",                                               
+							"/ns3:process/ns4:BeneficiaryDetails/ns4:DisplayName");                                                        
+					String beneficiaryUserDisplayName = ((oracle.xml.parser.v2.XMLElement)beneficiaryUserDisplayNameXML).getText();                 
+					String beneficiaryUserDisplayNameWithQuotes = "'" + beneficiaryUserDisplayName + "'";           
+					System.out.println("Beneficiary User DisplayName = " + beneficiaryUserDisplayName);      
+     
+		          
+                                        //Getting the beneficiary Email --11/27     
+     
+                                        java.lang.Object beneficiaryUserEmailXML = getVariableData("inputVariable", "payload",                                               
+							"/ns3:process/ns4:BeneficiaryDetails/ns4:Email");                                                        
+					String beneficiaryUserEmail = ((oracle.xml.parser.v2.XMLElement)beneficiaryUserEmailXML).getText();                 
+					String beneficiaryUserEmailWithQuotes = "'" + beneficiaryUserEmail + "'";           
+					System.out.println("Beneficiary User Email = " + beneficiaryUserEmail);      
+     
+     
+     
+					//Getting the Requester user login           
+					java.lang.Object requesterUserLoginXML = getVariableData("inputVariable", "payload",                                               
+							"/ns3:process/ns4:RequesterDetails/ns4:Login");           
+					String requesterUserLogin = ((oracle.xml.parser.v2.XMLElement)requesterUserLoginXML).getText();                 
+					String requesterUserLoginWithQuotes = "'" + requesterUserLogin + "'";               
+					System.out.println("Requester User Login = " + requesterUserLogin);             
+		          
+		          
+					//Setting the OIM Client database           
+					Thor.API.Security.XLClientSecurityAssociation.setClientHandle(client);         
+                                              
+                                        Thor.API.Operations.tcLookupOperationsIntf userlookupintf = client.getService(Thor.API.Operations.tcLookupOperationsIntf.class);       
+				  
+                                //	com.thortech.xl.dataaccess.tcDataProvider dbProvider = new com.thortech.xl.client.dataobj.tcDataBaseClient();           
+       
+					//Retrieving DB userID,DB Password,DB Connection String,ServerKey,eIDWUrl from Lookup.AAES.WorkFlow.Configuration        
+					java.util.HashMap workflowLookupMap = new java.util.HashMap();        
+					try {         
+						System.out.println("Entering to Retrieve Lookup Value");         
+						Thor.API.tcResultSet resultSetLookup = userlookupintf.getLookupValues("Lookup.AAES.WorkFlow.Configuration");         
+		        
+					/*	String lookupDecode="Lookup Definition.Lookup Code Information.Decode";        
+						String lookupCode="Lookup Definition.Lookup Code Information.Code Key";        
+						        
+						for (int i=0 ; i&lt;resultSetLookup.getRowCount() ; i++)         
+						{            
+							resultSetLookup.goToRow(i);        
+							        
+							String   decode = (String)resultSetLookup.getStringValue(lookupDecode);        
+							System.out.println("Decode Value :" + decode);        
+							String    encode = (String)resultSetLookup.getStringValue(lookupCode);        
+							System.out.println("Encode Value :" + encode);        
+							        
+							workflowLookupMap.put(encode,decode);        
+						}   */  
+  
+  
+  
+  
+                                                            String lookupDecode="Lookup Definition.Lookup Code Information.Decode";                
+                                                            String lookupCode="Lookup Definition.Lookup Code Information.Code Key";                
+                                                                            
+                                                            String   decode="";   
+                                                            String    encode="";   
+               
+                                                            for (int i=0 ; i&lt;resultSetLookup.getRowCount() ; i++)                 
+                                                            {                    
+                                                                    resultSetLookup.goToRow(i);                
+                                                                                    
+                                                                       
+                                                                    decode = (String)resultSetLookup.getStringValue(lookupDecode);                
+                                                                    encode = (String)resultSetLookup.getStringValue(lookupCode);    
+               
+                                                                     if(encode !=null &amp;&amp; !encode.isEmpty() &amp;&amp; !encode.equals("DBPassword"))   
+                                                                        {   
+                                                                            System.out.println("Decode Value :" + decode);    
+                                                                            System.out.println("Encode Value :" + encode);    
+                                                                        }   
+                                                                                    
+                                                                    workflowLookupMap.put(encode,decode);                
+                                                            }     
+                                              
+  
+		        
+						setVariableData("eIDWUrl",(String)workflowLookupMap.get("eIDWUrl"));        
+					}         
+					catch(Exception e)         
+					{         
+						System.out.println("Exception when retrieving lookup table");           
+						System.out.println(e);           
+						e.printStackTrace();            
+						System.out.println("--------------------------------------");            
+					}         
+       
+                                    
+                                    
+                                         try {                
+							//Connecting to staging database and trying to execute update statement					                   
+							Class.forName("oracle.jdbc.OracleDriver");                         
+							con=java.sql.DriverManager.getConnection((String)workflowLookupMap.get("DBConnectionString"),(String)workflowLookupMap.get("DBUserID"),(String)workflowLookupMap.get("DBPassword"));                       
+						//	stmt=con.createStatement();                       
+						//	stmt.executeUpdate(updateRequestTablePendingApprovalQuery);                       
+						}                       
+						catch(Exception e){					                   
+							System.out.println("Exception on trying to update database");                   
+							System.out.println(e);                   
+							e.printStackTrace();                    
+							System.out.println("--------------------------------------");                   
+		                
+						}       
+       
+       
+       
+       
+       
+       
+       
+		          
+					try {         
+						//When SVC_REST_WAA account come as requester, update the Requester key as beneficiary key            
+						if (requesterUserLogin.equals("SVC_REST_WAA"))               
+						{					               
+							String beneficiaryUserKeyQuery="select usr_key from usr where usr_login like "+ beneficiaryUserLoginWithQuotes;               
+							System.out.println("The beneficiaryUserKeyQuery is :"+ beneficiaryUserKeyQuery);               
+		          
+							String value="";               
+							String beneficiaryUserKey="";               
+		          
+                          
+                                                          
+                          
+                                                            stmt = con.prepareStatement(beneficiaryUserKeyQuery);       
+	                             java.sql.ResultSet     resultsetbeneficiaryUserKey = stmt.executeQuery(beneficiaryUserKeyQuery);       
+	                  java.sql.ResultSetMetaData	    mdBeneficiaryUserKey = resultsetbeneficiaryUserKey.getMetaData();  
+  
+  
+                                                            int numRecords=0;     
+	                                                 int numColumns = mdBeneficiaryUserKey.getColumnCount();       
+	                                                  System.out.println("Column Count:- "+numColumns);  
+  
+  
+                                                              while(  resultsetbeneficiaryUserKey.next())      
+	                                                       {      
+	                                                            numRecords=numRecords+1;     
+							         for(int j = 1; j &lt;= numColumns; j++)                                                                 
+							          {						                                
+                                                                      String columnName = mdBeneficiaryUserKey.getColumnName(j);                                              
+                                                                      System.out.println("collumnname:- "+columnName); 	                                           
+                                                               
+                                                                     beneficiaryUserKey=resultsetbeneficiaryUserKey.getString(j);  
+                                                               
+                                                               
+                                                             //         value = resultsetbeneficiaryUserKey.getString(j);                                               
+                                                             //         setVariableData("entitlementDisplayName",value);                                           
+                                                                     System.out.println("The beneficiaryUserKey value is :-"+beneficiaryUserKey);                             
+							          }                            
+                                                                }      
+	    
+	    
+	                                          System.out.println("Record Count:- "+numRecords);     
+	                                                 
+                                                         
+                                                               System.out.println("Before update");               
+								String beneficiaryUserKeyWithQuotes = "'" + beneficiaryUserKey + "'";               
+								String updateRequestTablePendingApprovalQuery = "update request set requester_key=" + beneficiaryUserKeyWithQuotes + " where request_key =" + requestIDWithQuotes;               
+								System.out.println("updateRequestTablePendingApprovalQuery is :" + updateRequestTablePendingApprovalQuery);   
+  
+  
+                                                                 stmt = con.createStatement();              
+                                                                 stmt.executeUpdate(updateRequestTablePendingApprovalQuery);   
+  
+                                                               }  
+                                                        }  
+   								catch(Exception e){            
+									System.out.println("Exception when retrieving beneficiary user key (or) update request table");           
+									e.printStackTrace();           
+									System.out.println("-----------------------------------------");           
+								}                
+								  
+                /*          
+                          
+							com.thortech.xl.dataaccess.tcDataSet usersDataSetForUserKey = new com.thortech.xl.dataaccess.tcDataSet(); //store result set of query               
+							usersDataSetForUserKey.setQuery(dbProvider, beneficiaryUserKeyQuery);                     
+							usersDataSetForUserKey.executeQuery();                
+		          
+							int numColumns = usersDataSetForUserKey.getColumnCount();                                             
+							int numRecords = usersDataSetForUserKey.getTotalRowCount();                                             
+		          
+							System.out.println("Column Count:- "+numColumns);                                        
+							System.out.println("Record Count:- "+numRecords);                                        
+							//iterate through each record                                             
+							for(int i = 0; i &lt; numRecords; i++)                                             
+							{                                            
+								usersDataSetForUserKey.goToRow(i);                                             
+								//iterate through each column of a record                         
+								for(int j = 0; j &lt; numColumns; j++)                                             
+								{                                             
+									String columnName = usersDataSetForUserKey.getColumnName(j);                          
+									System.out.println("collumnname:- " + columnName); 	                       
+									beneficiaryUserKey = usersDataSetForUserKey.getString(j);     //removed string 08/25                      
+									System.out.println("The beneficiaryUserKey value is :-"+beneficiaryUserKey);                             
+								}                                  
+		          
+							}                         
+		          
+							try{						           
+								System.out.println("Before update");               
+								String beneficiaryUserKeyWithQuotes = "'" + beneficiaryUserKey + "'";               
+								String updateRequestTablePendingApprovalQuery = "update request set requester_key=" + beneficiaryUserKeyWithQuotes + " where request_key =" + requestIDWithQuotes;               
+								System.out.println("updateRequestTablePendingApprovalQuery is :" + updateRequestTablePendingApprovalQuery);               
+		          
+								java.sql.Connection  con=null;             
+								java.sql.Statement stmt=null;             
+		          
+								try{                
+									Class.forName("oracle.jdbc.OracleDriver");                
+									con = java.sql.DriverManager.getConnection((String)workflowLookupMap.get("DBConnectionString"),(String)workflowLookupMap.get("DBUserID"),(String)workflowLookupMap.get("DBPassword"));              
+									stmt = con.createStatement();              
+									stmt.executeUpdate(updateRequestTablePendingApprovalQuery);              
+								}           
+								catch(Exception e){            
+									System.out.println("Exception when updating the request table");           
+									e.printStackTrace();           
+									System.out.println("-----------------------------------------");           
+								}                
+								finally{             
+									stmt.close();             
+									con.close();             
+								}             
+							}              
+							catch(Exception e){            
+								System.out.println("Exception updating the database ");           
+								e.printStackTrace();           
+								System.out.println("-----------------------------------------");           
+							}                
+						}              
+					            
+					catch(java.lang.Exception e)               
+					{               
+						System.out.println("Exception when selecting and updating the database");           
+						e.printStackTrace();               
+						System.out.println("-----------------------------------------");           
+					}               
+		        */ 
+					     
+					     
+					//Getting beneficiary usertelephonenumber using beneficiarylogin - 11/27     
+					String beneficiaryUserTelephoneNumber="";     
+					try{     
+     
+							String beneficiaryUserTelephoneNumberQuery="select USR_TELEPHONE_NUMBER from usr where usr_login like "+ beneficiaryUserLoginWithQuotes;      
+							System.out.println("The beneficiaryUserTelephoneNumberQuery is :"+ beneficiaryUserTelephoneNumberQuery);               
+		          
+							String value="";               
+							               
+		          
+                          
+                                                            stmt = con.prepareStatement(beneficiaryUserTelephoneNumberQuery);       
+	                             java.sql.ResultSet     resultsetbeneficiaryUserTelephoneNumber = stmt.executeQuery(beneficiaryUserTelephoneNumberQuery);       
+	                  java.sql.ResultSetMetaData	    mdBeneficiaryUserTelephoneNumber = resultsetbeneficiaryUserTelephoneNumber.getMetaData();  
+  
+  
+                                                            int numRecords=0;     
+	                                                 int numColumns = mdBeneficiaryUserTelephoneNumber.getColumnCount();       
+	                                                  System.out.println("Column Count:- "+numColumns);  
+  
+  
+                                                              while(  resultsetbeneficiaryUserTelephoneNumber.next())      
+	                                                       {      
+	                                                            numRecords=numRecords+1;     
+							         for(int j = 1; j &lt;= numColumns; j++)                                                                 
+							          {						                                
+                                                                      String columnName = mdBeneficiaryUserTelephoneNumber.getColumnName(j);                                              
+                                                                      System.out.println("collumnname:- "+columnName); 	                                           
+                                                               
+                                                                     beneficiaryUserTelephoneNumber=resultsetbeneficiaryUserTelephoneNumber.getString(j); 
+                                                             System.out.println("The beneficiaryUserTelephoneNumber value is :-"+beneficiaryUserTelephoneNumber);  
+                                                                                     
+							          }                            
+                                                                }      
+                          
+                          System.out.println("Record Count:- "+numRecords);   
+  
+  
+  
+  
+  
+                                                             System.out.println("Before update justification column");                 
+         
+				String requestJustification ="'"+"Requester Contact Information:"+"'"+"||"+"CHR(10)"+"||"+"'"+"Name :"+" "+beneficiaryUserDisplayName+"'"+"||"+"CHR(10)"+"||"+"'"+"Email :"+" "+beneficiaryUserEmail+"'"+"||"+"CHR(10)"+"||"+"'"+"Phone :"+" "+beneficiaryUserTelephoneNumber+"'";             
+				String updateRequestTablePendingApprovalQuery="update request set request_justification="+requestJustification+" where request_key ="+requestIDWithQuotes;               
+         
+				System.out.println("updateRequestTablePendingApprovalQuery is :"+updateRequestTablePendingApprovalQuery);    
+  
+  
+//Updatin justification with beneficiary info in request table using request id-11/27     
+  
+                                        stmt=con.createStatement();                
+					stmt.executeUpdate(updateRequestTablePendingApprovalQuery);      
+  
+                                   }                
+				catch(Exception e){					            
+					System.out.println("Exception on trying to retrieve telephone number (or) update database with justification comments");            
+					System.out.println(e);            
+					e.printStackTrace();             
+					System.out.println("--------------------------------------");            
+         
+				}           
+  
+  
+  
+                        /*  
+                          
+							com.thortech.xl.dataaccess.tcDataSet usersDataSetForBeneficiaryUserTelephoneNumber = new com.thortech.xl.dataaccess.tcDataSet(); //store result set of query               
+							usersDataSetForBeneficiaryUserTelephoneNumber.setQuery(dbProvider, beneficiaryUserTelephoneNumberQuery);                     
+							usersDataSetForBeneficiaryUserTelephoneNumber.executeQuery();                
+		          
+							int numColumns = usersDataSetForBeneficiaryUserTelephoneNumber.getColumnCount();                                             
+							int numRecords = usersDataSetForBeneficiaryUserTelephoneNumber.getTotalRowCount();                                             
+		          
+							System.out.println("Column Count:- "+numColumns);                                        
+							System.out.println("Record Count:- "+numRecords);                                        
+							//iterate through each record                                             
+							for(int i = 0; i &lt; numRecords; i++)                                             
+							{                                            
+								usersDataSetForBeneficiaryUserTelephoneNumber.goToRow(i);                                             
+								//iterate through each column of a record                         
+								for(int j = 0; j &lt; numColumns; j++)                                             
+								{                                             
+									String columnName = usersDataSetForBeneficiaryUserTelephoneNumber.getColumnName(j);                          
+									System.out.println("collumnname:- " + columnName); 	                       
+									beneficiaryUserTelephoneNumber = usersDataSetForBeneficiaryUserTelephoneNumber.getString(j);     //removed string 08/25                      
+									System.out.println("The beneficiaryUserTelephoneNumber value is :-"+beneficiaryUserTelephoneNumber);                             
+								}                                  
+		          
+							}                         
+						}catch (Exception e) {                                             
+						System.out.println("Exception when getting beneficiaryUserTelephoneNumber from the database");           
+						e.printStackTrace();               
+						System.out.println("-----------------------------------------");           
+					}       
+					     
+					     
+					   */  
+					     
+					     
+					//Updatin justification with beneficiary info in request table using request id-11/27     
+	  
+        /*				     
+					try {                 
+				//Updating  justification column in request table with Requester info            
+				System.out.println("Before update justification column");                 
+         
+				String requestJustification ="'"+"Requester Contact Information:"+"'"+"||"+"CHR(10)"+"||"+"'"+"Name :"+" "+beneficiaryUserDisplayName+"'"+"||"+"CHR(10)"+"||"+"'"+"Email :"+" "+beneficiaryUserEmail+"'"+"||"+"CHR(10)"+"||"+"'"+"Phone :"+" "+beneficiaryUserTelephoneNumber+"'";             
+				String updateRequestTablePendingApprovalQuery="update request set request_justification="+requestJustification+" where request_key ="+requestIDWithQuotes;               
+         
+				System.out.println("updateRequestTablePendingApprovalQuery is :"+updateRequestTablePendingApprovalQuery);                 
+         
+				java.sql.Connection  con = null;               
+				java.sql.Statement stmt = null;               
+         
+				try {         
+					//Connecting to staging database and trying to execute update statement					            
+					Class.forName("oracle.jdbc.OracleDriver");                  
+					con=java.sql.DriverManager.getConnection((String)workflowLookupMap.get("DBConnectionString"),(String)workflowLookupMap.get("DBUserID"),(String)workflowLookupMap.get("DBPassword"));                
+					stmt=con.createStatement();                
+					stmt.executeUpdate(updateRequestTablePendingApprovalQuery);                
+				}                
+				catch(Exception e){					            
+					System.out.println("Exception on trying to update database with justification comments");            
+					System.out.println(e);            
+					e.printStackTrace();             
+					System.out.println("--------------------------------------");            
+         
+				}                  
+				finally {            
+					stmt.close();               
+					con.close();               
+				}               
+			}            
+			catch(Exception e){             
+				System.out.println("Exception on trying to Framing update database query");            
+				System.out.println(e);            
+				System.out.println("--------------------------------------");            
+			}    
+  
+  
+*/  
+  
+  
+					//Getting the justification           
+			/*		String      justificationQuery = "select request_justification from request where request_id like "+ requestIDWithQuotes;                   
+					try {	                         
+						System.out.println("Justification Query:- " + justificationQuery);                    
+						String value = "";                    
+						com.thortech.xl.dataaccess.tcDataSet usersDataSet = new com.thortech.xl.dataaccess.tcDataSet(); //store result set of query                                             
+						usersDataSet.setQuery(dbProvider, justificationQuery);                                              
+						usersDataSet.executeQuery();                                             
+		          
+						int numColumns = usersDataSet.getColumnCount();                                             
+						int numRecords = usersDataSet.getTotalRowCount();                                             
+						System.out.println("Column Count:- "+numColumns);                                        
+						System.out.println("Record Count:- "+numRecords);                                        
+						//iterate through each record                                             
+						for(int i = 0; i &lt; numRecords; i++)                                             
+						{                                             
+							usersDataSet.goToRow(i);                                             
+							//iterate through each column of a record                         
+							for(int j = 0; j &lt; numColumns; j++)                                             
+							{                                             
+								String columnName = usersDataSet.getColumnName(j);                          
+								System.out.println("collumnname:- "+columnName); 	                       
+								value = usersDataSet.getString(j);     //removed string 08/25                      
+								setVariableData("justification",value);                       
+								System.out.println("The justification value is :-" + value);                             
+							}                                  
+						}                           
+					} catch (Exception e) {              
+						System.out.println("Exception when getting justification from the database");           
+						e.printStackTrace();               
+						System.out.println("-----------------------------------------");           
+					} */    
+  
+  
+  
+  
+		          
+					//Getting the entitlement Display name like HERONET           
+				  
+                                	String entitlementDisplayNameQuery = "select entity_display_name from catalog where ENTITY_NAME like "+ entityNameWithQuotes;           
+					String retrieveApproverRoleIDQuery="select approver_role from catalog where ENTITY_NAME like "+ entityNameWithQuotes;    //forming query to retrieving role id using entitlement name from catalog                   
+					  
+                                          
+                                          
+                                        try {	                         
+						System.out.println("Entitlement DisplayName Query:- "+entitlementDisplayNameQuery);                    
+						String value="";                    
+						  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                    stmt = con.prepareStatement(entitlementDisplayNameQuery);       
+	                             java.sql.ResultSet     resultsetEntitlementDisplayName = stmt.executeQuery(entitlementDisplayNameQuery);       
+	                  java.sql.ResultSetMetaData	    mdEntitlementDisplayName = resultsetEntitlementDisplayName.getMetaData();  
+  
+  
+                                                            int numRecords=0;     
+	                                                 int numColumns = mdEntitlementDisplayName.getColumnCount();       
+	                                                  System.out.println("Column Count:- "+numColumns);  
+  
+  
+                                                              while(  resultsetEntitlementDisplayName.next())      
+	                                                       {      
+	                                                            numRecords=numRecords+1;     
+							         for(int j = 1; j &lt;= numColumns; j++)                                                                 
+							          {						                                
+                                                                      String columnName = mdEntitlementDisplayName.getColumnName(j);                                              
+                                                                      System.out.println("collumnname:- "+columnName); 	                                           
+                                                               
+                                                                     value=resultsetEntitlementDisplayName.getString(j); 
+  
+                                                                    setVariableData("entitlementDisplayName",value);  
+  
+  
+                                                            System.out.println("The entitlementDisplayName value is :-"+value);   
+                                                                                     
+							          }                            
+                                                                }      
+                          
+                          System.out.println("Record Count:- "+numRecords);   
+                                                  
+                                        
+                                      /*            
+                                                  
+                                                com.thortech.xl.dataaccess.tcDataSet usersDataSet = new com.thortech.xl.dataaccess.tcDataSet(); //store result set of query                                             
+						usersDataSet.setQuery(dbProvider, entitlementDisplayNameQuery);                                              
+						usersDataSet.executeQuery();                                             
+		          
+						int numColumns = usersDataSet.getColumnCount();                                             
+						int numRecords = usersDataSet.getTotalRowCount();                                             
+		          
+						System.out.println("Column Count:- "+numColumns);                                        
+						System.out.println("Record Count:- "+numRecords);                                        
+						//iterate through each record                                             
+						for(int i = 0; i &lt; numRecords; i++)                                             
+						{                                             
+							usersDataSet.goToRow(i);                                             
+							//iterate through each column of a record                         
+							for(int j = 0; j &lt; numColumns; j++)                                             
+							{                                             
+								String columnName = usersDataSet.getColumnName(j);                          
+								System.out.println("collumnname:- "+columnName); 	                       
+								value = usersDataSet.getString(j);     //removed string 08/25                      
+								setVariableData("entitlementDisplayName",value);                       
+								System.out.println("The entitlementDisplayName value is :-"+value);                             
+							}                                  
+						} */  
+  
+					} catch (Exception e) {                                             
+						System.out.println("Exception when getting entitlement display name from the database");           
+						e.printStackTrace();               
+						System.out.println("-----------------------------------------");           
+					}                           
+		          
+					//Getting the approver role name           
+					try {                    
+						String approverRoleName = "";                    
+						String retrieveApproverRoleIDQueryWithQuotes = "(" + retrieveApproverRoleIDQuery + ")";                       
+						String approverRoleNameQuery = "select UGP_ROLENAME from UGP where UGP_KEY in " + retrieveApproverRoleIDQueryWithQuotes;                       
+						System.out.println("Query in NativeLogic is == "+approverRoleNameQuery);                        
+		          
+                                                String value="";          
+                          
+                          
+                          
+                          
+                                                                                       stmt = con.prepareStatement(approverRoleNameQuery);       
+	                             java.sql.ResultSet     resultsetApproverRoleName = stmt.executeQuery(approverRoleNameQuery);       
+	                  java.sql.ResultSetMetaData	    mdApproverRoleName = resultsetApproverRoleName.getMetaData();  
+  
+  
+                                                            int numRecords=0;     
+	                                                 int numColumns = mdApproverRoleName.getColumnCount();       
+	                                                  System.out.println("Column Count:- "+numColumns);  
+  
+  
+                                                              while(  resultsetApproverRoleName.next())      
+	                                                       {      
+	                                                            numRecords=numRecords+1;     
+							         for(int j = 1; j &lt;= numColumns; j++)                                                                 
+							          {						                                
+                                                                      String columnName = mdApproverRoleName.getColumnName(j);                                              
+                                                                      System.out.println("collumnname:- "+columnName); 	                                           
+                                                               
+                                                                     value=resultsetApproverRoleName.getString(j); 
+  
+                                                                 setVariableData("approverRoleName",approverRoleName);                       
+								System.out.println("The approverRoleName value is :-"+approverRoleName);   
+  
+  
+                                                             
+                                                                                     
+							          }                            
+                                                                }      
+                          
+                          System.out.println("Record Count:- "+numRecords);   
+                                                  
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                        /*  
+                          
+                          
+						com.thortech.xl.dataaccess.tcDataSet usersDataSet = new com.thortech.xl.dataaccess.tcDataSet(); //store result set of query                                             
+						usersDataSet.setQuery(dbProvider, approverRoleNameQuery);                                              
+						usersDataSet.executeQuery();                                             
+		          
+						int numColumns = usersDataSet.getColumnCount();                                             
+						int numRecords = usersDataSet.getTotalRowCount();                                             
+		          
+						System.out.println("Column Count:- "+numColumns);                                        
+						System.out.println("Record Count:- "+numRecords);                                        
+						//iterate through each record				             
+						for(int i = 0; i &lt; numRecords; i++)                                             
+						{                                             
+							usersDataSet.goToRow(i);                                             
+							//iterate through each column of a record                                             
+							for(int j = 0; j &lt; numColumns; j++)                                             
+							{                                             
+								String columnName = usersDataSet.getColumnName(j);                          
+								approverRoleName = usersDataSet.getString(j);     //removed string 08/25                      
+								setVariableData("approverRoleName",approverRoleName);                       
+								System.out.println("The approverRoleName value is :-"+approverRoleName);                             
+							}                                  
+						}   */        
+					} catch (Exception e) {                                             
+						System.out.println("Exception when getting approver role name from the database");           
+						e.printStackTrace();               
+						System.out.println("-----------------------------------------");           
+					}            
+		          
+	      
+              
+              
+              
+              
+					try {        
+        
+							String entitlementApproversLoginStatusEmailQuery= "SELECT  usr_status,usr_login,usr_email,usr_manager_key FROM   catalog catloginfo,usr usrinfo,usg usginfo,ugp ugpinfo WHERE  usrinfo.usr_key = usginfo.usr_key  AND usginfo.ugp_key = ugpinfo.ugp_key  AND  ugpinfo.ugp_key = catloginfo.approver_role AND catloginfo.entity_name LIKE "+ entityNameWithQuotes;       
+							String entitlementApproversManagerStatusQuery="SELECT usr_status from usr where usr_key in (select usr_manager_key from usr where usr_login like upper(";     
+                                                            
+                                                            
+                                                        String entitlementApproversLoginStatusEmailQueryWithquotes="("+entitlementApproversLoginStatusEmailQuery+")";        
+							System.out.println("entitlementApproversLoginStatusEmailQuery in NativeLogic is == "+entitlementApproversLoginStatusEmailQueryWithquotes);         
+        
+        
+        
+        
+        
+                                                                                                     stmt = con.prepareStatement(entitlementApproversLoginStatusEmailQueryWithquotes);       
+	                             java.sql.ResultSet     resultsetEntitlementApproversLoginStatusEmail = stmt.executeQuery(entitlementApproversLoginStatusEmailQueryWithquotes);       
+	                  java.sql.ResultSetMetaData	 mdresultsetEntitlementApproversLoginStatusEmail = resultsetEntitlementApproversLoginStatusEmail.getMetaData();        
+	                      
+        
+        
+        
+      /*  
+        
+							com.thortech.xl.dataaccess.tcDataSet entitlementApproversLoginStatusEmailDataSet = new com.thortech.xl.dataaccess.tcDataSet();        
+   							entitlementApproversLoginStatusEmailDataSet.setQuery(dbProvider,entitlementApproversLoginStatusEmailQueryWithquotes);        
+   							entitlementApproversLoginStatusEmailDataSet.executeQuery();        
+           
+   							int numColumns = entitlementApproversLoginStatusEmailDataSet.getColumnCount();                                                           
+   							int numRecords = entitlementApproversLoginStatusEmailDataSet.getTotalRowCount();                                                           
+          
+   							System.out.println("Column Count:- "+numColumns);                                                      
+   							System.out.println("Record Count:- "+numRecords);                                                      
+         
+   							*/  
+                                                          
+                                                          
+                                                          
+                                                         int numRecords=0;     
+	                         int numColumns = mdresultsetEntitlementApproversLoginStatusEmail.getColumnCount();       
+	                          System.out.println("Column Count:- "+numColumns);      
+                                                          
+                                                          
+                                                        String entitlementApproversEmail="";          
+                                                        String entitlementApproversUserLogin="";       
+                                                        String approversStatus="";       
+                                                        String approversManagerStatus="";     
+      
+                                java.lang.Object entitlementDisplayNameXML = getVariableData("entitlementDisplayName");             
+                                String entitlementDisplayNameStr=(String)entitlementDisplayNameXML;       
+         
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+                     if(resultsetEntitlementApproversLoginStatusEmail !=null)    
+	             {    
+	                 
+	                         while(  resultsetEntitlementApproversLoginStatusEmail.next())     
+	                           {     
+	                                numRecords=numRecords+1;     
+	                                for(int j = 1; j &lt;= numColumns; j++)                                                                 
+	                                	{						                                
+												String columnName = mdresultsetEntitlementApproversLoginStatusEmail.getColumnName(j);                                              
+											//	System.out.println("columnname:- "+columnName); 	                                           
+												approversStatus = resultsetEntitlementApproversLoginStatusEmail.getString(j);         
+	    
+												System.out.println("columnname: "+columnName+" approversStatus:- "+approversStatus);   
+	                                             
+                                                     if (approversStatus!=null &amp;&amp; !approversStatus.isEmpty() &amp;&amp; approversStatus.equals("Active"))        
+	                                              {     
+		    
+		                                                String tempapproversLoginId=resultsetEntitlementApproversLoginStatusEmail.getString(2);       
+		                                                 System.out.println("Temp Approvers LoginId:"+tempapproversLoginId);       
+		                                                     
+		                                                 String tempApproversManagerKey=resultsetEntitlementApproversLoginStatusEmail.getString(4);      
+		                                                 System.out.println("Temp Approvers Manager Key:"+tempApproversManagerKey);       
+		    
+	    
+	                                                       if (tempApproversManagerKey !=null &amp;&amp; !tempApproversManagerKey.isEmpty())            
+	                                                           {            
+	                                                               String   entitlementApproversManagerStatusQueryWithQuotes=entitlementApproversManagerStatusQuery+"'"+tempapproversLoginId+"'))";     
+	                                                               System.out.println("The entitlementApproversManagerStatusQuery value is :-"+entitlementApproversManagerStatusQueryWithQuotes);             
+	    
+	                                                                                       stmt1 = con.prepareStatement(entitlementApproversManagerStatusQueryWithQuotes);       
+	                                                               	java.sql.ResultSet     resultsetEntitlementApproversManagerStatus = stmt1.executeQuery(entitlementApproversManagerStatusQueryWithQuotes);       
+	                                                               	java.sql.ResultSetMetaData	 mdresultsetEntitlementApproversManagerStatus = resultsetEntitlementApproversManagerStatus.getMetaData();      
+	    
+	                                                                   int numRecords_1=0;     
+	                                                                int numColumns_1 = mdresultsetEntitlementApproversManagerStatus.getColumnCount();       
+	                                                                    System.out.println("Column Count:- "+numColumns_1);      
+	    
+	                                                                     if(resultsetEntitlementApproversManagerStatus !=null)     
+	                                                                       {     
+	                                                                                 while(  resultsetEntitlementApproversManagerStatus.next())     
+	                                                                                    {     
+	                                                                                        numRecords_1=numRecords_1+1;     
+	                                                                                        for(int k = 1; k &lt;= numColumns_1; k++)                                                                 
+	                                                                                          {			     
+	                                                                                             String columnName_1 = mdresultsetEntitlementApproversManagerStatus.getColumnName(k);                                              
+	                                                                                        //        System.out.println("columnname:- "+columnName_1); 	                                           
+			     
+	                                                                                                approversManagerStatus = resultsetEntitlementApproversLoginStatusEmail.getString(k);        
+	                                                                                                   
+	                                                                                                System.out.println("columnname: "+columnName_1+" approversManagerStatus : "+approversManagerStatus);   
+	    
+	                                                                                    //check manager status active            
+	                                                                                            	if(approversManagerStatus!=null &amp;&amp; !approversManagerStatus.isEmpty() &amp;&amp; approversManagerStatus.equals("Active"))            
+                                                                                                              {            
+                                                                                                                                 //if approver and approvers manager active then add to the entitlementapproversuserlogin,email            
+                                                                                                                  System.out.println(" tempapproversLoginId:"+tempapproversLoginId+" Approvers Manager Status is ACTIVE ");            
+                                                                                                                  entitlementApproversUserLogin = entitlementApproversUserLogin + resultsetEntitlementApproversLoginStatusEmail.getString(++j) + ",";                
+                                                                                                                  entitlementApproversEmail = entitlementApproversEmail + resultsetEntitlementApproversLoginStatusEmail.getString(++j) + ",";               
+                                                                                                                }              
+                                                                                                        	else            
+                                                                                                                {            
+                                                                                                                    System.out.println(" tempapproversLoginId:"+tempapproversLoginId+"Approvers Manager Status is DISABLED ");            
+                                                                                                                }          
+	                                                                                              }    
+                                                                                            }    
+                                                                                }  
+                                                                                else  
+                                                                                {  
+                                                                                        //if approver status is active and approvers manager status is empty or null then add to the entitlementapproversuserlogin,email            
+                                                                                         System.out.println(" tempapproversLoginId:"+tempapproversLoginId+" Approvers Manager Status is Empty or Null ");            
+                                                                                        entitlementApproversUserLogin = entitlementApproversUserLogin + resultsetEntitlementApproversLoginStatusEmail.getString(++j) + ",";                
+                                                                                        entitlementApproversEmail = entitlementApproversEmail + resultsetEntitlementApproversLoginStatusEmail.getString(++j) + ",";                
+                                                                                }  
+                                                  
+  
+	                                                              }    
+                                                                    else     
+                                                                      {     
+                                                                            //if  approvers manager key is null            
+                                                                             System.out.println("Approvers Manager Key is NULL (or) Empty : "+tempapproversLoginId);            
+                                                                             entitlementApproversUserLogin = entitlementApproversUserLogin + resultsetEntitlementApproversLoginStatusEmail.getString(++j) + ",";                
+                                                                             entitlementApproversEmail = entitlementApproversEmail + resultsetEntitlementApproversLoginStatusEmail.getString(++j) + ",";               
+		                                                      }            
+		                                                 
+	                                                    }     
+	                                                    else            
+	                                                    {            
+	                                                                System.out.println("Approvers Status is Disabled : "+resultsetEntitlementApproversLoginStatusEmail.getString(2));            
+	                                                    }            
+	                                                                
+	                                               }     
+	                                    }     
+	                                   
+	      if ((entitlementApproversUserLogin.equals("")) &amp;&amp;  (entitlementApproversEmail.equals("")))             
+		{              
+		System.out.println("All approvers are in Disabled status for Entitlement :"+entitlementDisplayNameStr);              
+		}              
+		else              
+		{              
+						entitlementApproversEmail=entitlementApproversEmail.substring(0,entitlementApproversEmail.length()-1);                                          
+						setVariableData("entitlementApproversEmail",entitlementApproversEmail);                                           
+						System.out.println("The entitlementApproversEmail value is :-"+entitlementApproversEmail);                
+		              
+		                            entitlementApproversUserLogin=entitlementApproversUserLogin.substring(0,entitlementApproversUserLogin.length()-1);                                          
+						setVariableData("entitlementApproversUserLogin",entitlementApproversUserLogin);                                           
+						System.out.println("The entitlementApproversUserLogin value is :-"+entitlementApproversUserLogin);              
+		}              
+		}              
+		else              
+		{              
+		System.out.println("No approvers attached to Entitlement :"+entitlementDisplayNameStr);              
+		}              
+					     
+                       
+                       
+                       
+                       
+                       
+                       
+                       
+                     /*  
+                                if(numRecords!=0)        
+                                {        
+				          
+        
+                                	//iterate through each row of a record                                    
+                                	for(int i = 0; i &lt; numRecords; i++)                                                           
+                                	{                                                           
+                                		entitlementApproversLoginStatusEmailDataSet.goToRow(i);                                     
+					        
+                                		int j = 0;                                   
+                                                        
+                                                approversStatus=entitlementApproversLoginStatusEmailDataSet.getString(j);      
+    
+                                        //Check if approvers status is "Active"     
+                                              if (approversStatus.equals("Active"))       
+		                                                {       
+		                                                          
+		                                                     String tempapproversLoginId=entitlementApproversLoginStatusEmailDataSet.getString(1);     
+     
+		                                                    System.out.println("Temp Approvers LoginId:"+tempapproversLoginId);     
+     
+		                                                     String tempApproversManagerKey=entitlementApproversLoginStatusEmailDataSet.getString(3);     
+     
+		                                                    System.out.println("Temp Approvers Manager Key:"+tempApproversManagerKey);     
+     
+		                                        //Check if manager key is  null     
+     
+		                                     //                if (tempApproversManagerKey !=null)     
+                                                                 if (tempApproversManagerKey !=null &amp;&amp; !tempApproversManagerKey.isEmpty())     
+		                                                     {     
+		                                                          
+		                                                          
+     
+		                                                     com.thortech.xl.dataaccess.tcDataSet entitlementApproversManagerStatusDataSet = new com.thortech.xl.dataaccess.tcDataSet();       
+		       
+		                                                    String   entitlementApproversManagerStatusQueryWithQuotes=entitlementApproversManagerStatusQuery+"'"+tempapproversLoginId+"'))";     
+		                                                          
+		                                                     System.out.println("The entitlementApproversManagerStatusQuery value is :-"+entitlementApproversManagerStatusQueryWithQuotes);      
+		                                                         
+		                                                     entitlementApproversManagerStatusDataSet.setQuery(dbProvider,entitlementApproversManagerStatusQueryWithQuotes);       
+		       
+		                                                //If approvers is active status then execute query to check manager status     
+		                                                     entitlementApproversManagerStatusDataSet.executeQuery();      
+     
+		                                                     int numManagerStatusRecords = entitlementApproversManagerStatusDataSet.getTotalRowCount();         
+     
+		                                                    System.out.println("Number of Manager Status Row : "+numManagerStatusRecords);     
+     
+		                                                 //check atleast returns 1 row with Active/Disabled. If result set empty or 0 then manager key was null for approvers     
+		                                                     if (numManagerStatusRecords!=0)     
+		                                                       {     
+		                                                                         
+		                                                            for(int k = 0; k &lt; numManagerStatusRecords; k++)                                                          
+					                                     	{                                                          
+							                          entitlementApproversManagerStatusDataSet.goToRow(k);                                    
+							       
+							                          int l = 0;        
+     
+		                                                                  approversManagerStatus=entitlementApproversManagerStatusDataSet.getString(0);       
+     
+		                                                        //check manager status active     
+		                                                                      if(approversManagerStatus.equals("Active"))     
+		                                                     
+		                                                                      {     
+		                                                          
+		                                                     //if approver and approvers manager active then add to the entitlementapproversuserlogin,email     
+     
+     
+		                                                                      System.out.println("Approvers Manager Status is ACTIVE : "+tempapproversLoginId);     
+     
+								                     entitlementApproversUserLogin = entitlementApproversUserLogin + entitlementApproversLoginStatusEmailDataSet.getString(++j) + ",";         
+		                                                          
+		                                                                      entitlementApproversEmail = entitlementApproversEmail + entitlementApproversLoginStatusEmailDataSet.getString(++j) + ",";        
+		                                                                       }       
+		                                                                      else     
+		                                                                            {     
+		                                                                                System.out.println("Approvers Manager Status is DISABLED : "+tempapproversLoginId);     
+		                                                                            }     
+		                                                                    }     
+		                                                        }     
+		                                                }     
+		                                                  else     
+		                                                    {     
+		                                                        //if  approvers manager key is null     
+     
+		                                                            System.out.println("Approvers Manager Key is NULL (or) Empty : "+tempapproversLoginId);     
+     
+		                                                             entitlementApproversUserLogin = entitlementApproversUserLogin + entitlementApproversLoginStatusEmailDataSet.getString(++j) + ",";         
+		                                                          
+		                                                                      entitlementApproversEmail = entitlementApproversEmail + entitlementApproversLoginStatusEmailDataSet.getString(++j) + ",";        
+     
+		                                                    }     
+		                                        }     
+                                                        else     
+                                                        {     
+                                                                    System.out.println("Approvers Status is Disabled : "+entitlementApproversLoginStatusEmailDataSet.getString(1));     
+                                                        }     
+                                                             
+                                                        
+					                                  
+                                	}                       
+        
+                                	if ((entitlementApproversUserLogin.equals("")) &amp;&amp;  (entitlementApproversEmail.equals("")))       
+                                	{        
+                                		System.out.println("All approvers are in Disabled status for Entitlement :"+entitlementDisplayNameStr);        
+                                	}        
+                                	else        
+                                	{        
+                                		entitlementApproversEmail=entitlementApproversEmail.substring(0,entitlementApproversEmail.length()-1);                                    
+                                		setVariableData("entitlementApproversEmail",entitlementApproversEmail);                                     
+                                		System.out.println("The entitlementApproversEmail value is :-"+entitlementApproversEmail);          
+        
+                                		entitlementApproversUserLogin=entitlementApproversUserLogin.substring(0,entitlementApproversUserLogin.length()-1);                                    
+                                		setVariableData("entitlementApproversUserLogin",entitlementApproversUserLogin);                                     
+                                		System.out.println("The entitlementApproversUserLogin value is :-"+entitlementApproversUserLogin);        
+                                	}        
+                                }        
+                                else        
+                                {        
+                                	System.out.println("No approvers attached to Entitlement :"+entitlementDisplayNameStr);        
+                                }    */  
+  
+  
+  
+						}                                    
+			catch(Exception e) {               
+				System.out.println("Exception on trying to get Approvers Email or Login Value");             
+				System.out.println(e);             
+				e.printStackTrace();              
+				System.out.println("--------------------------------------");                                                             
+			}                                         
+          
+          
+        
+        
+          
+		      
+        
+              
+              
+              
+              
+              
+              
+              
+        /*				//Getting approvers emails            
+					try {                      
+						String entitlementApproversEmailQuery="";                
+						entitlementApproversEmailQuery = "SELECT  usr_email FROM   catalog catloginfo,usr usrinfo,usg usginfo,ugp ugpinfo WHERE  usrinfo.usr_key = usginfo.usr_key  AND usginfo.ugp_key = ugpinfo.ugp_key  AND  ugpinfo.ugp_key = catloginfo.approver_role AND catloginfo.entity_name LIKE "+ entityNameWithQuotes;                       
+		          
+						String entitlementApproversEmailQueryWithquotes="("+entitlementApproversEmailQuery+")";                       
+						System.out.println("entitlementApproversEmailQuery in NativeLogic is == "+entitlementApproversEmailQueryWithquotes);                        
+		          
+						com.thortech.xl.dataaccess.tcDataSet entitlementApproversDataSet = new com.thortech.xl.dataaccess.tcDataSet(); //store result set of query                                             
+						entitlementApproversDataSet.setQuery(dbProvider, entitlementApproversEmailQueryWithquotes);                                              
+						entitlementApproversDataSet.executeQuery();                       
+		          
+						int numColumns = entitlementApproversDataSet.getColumnCount();                                             
+						int numRecords = entitlementApproversDataSet.getTotalRowCount();                                             
+						System.out.println("Column Count:- "+numColumns);                                        
+						System.out.println("Record Count:- "+numRecords);                                        
+		          
+						String entitlementApproversEmail="";                      
+		          
+						//iterate through each row of a record                      
+						for(int i = 0; i &lt; numRecords; i++)                                             
+						{                                             
+							entitlementApproversDataSet.goToRow(i);                       
+							for(int j=0; j&lt;numColumns; j++)                      
+							{                      
+								entitlementApproversEmail = entitlementApproversEmail + entitlementApproversDataSet.getString(j) + ",";                       
+							}                      
+						}                      
+		          
+						entitlementApproversEmail = entitlementApproversEmail.substring(0,entitlementApproversEmail.length()-1);                      
+		          
+						setVariableData("entitlementApproversEmail",entitlementApproversEmail);                       
+						System.out.println("The entitlementApproversEmail value is :-" + entitlementApproversEmail);                      
+		          
+					}                      
+					catch(com.thortech.xl.dataaccess.tcDataSetException e) {                                             
+						System.out.println("Exception when getting approvers email from the database");           
+						e.printStackTrace();               
+						System.out.println("-----------------------------------------");			           
+					}                           
+		          
+					//Getting approver's login to make it as APPROVE and REJECT instead of CLAIM           
+					try {                      
+						String entitlementApproversUserLoginQuery;                
+						entitlementApproversUserLoginQuery = "SELECT  usr_login FROM   catalog catloginfo,usr usrinfo,usg usginfo,ugp ugpinfo WHERE  usrinfo.usr_key = usginfo.usr_key  AND usginfo.ugp_key = ugpinfo.ugp_key  AND  ugpinfo.ugp_key = catloginfo.approver_role AND catloginfo.entity_name LIKE "+ entityNameWithQuotes;                       
+		          
+						String entitlementApproversUserLoginQueryWithquotes = "(" + entitlementApproversUserLoginQuery + ")";                       
+						System.out.println("entitlementApproversUserLoginQuery in NativeLogic is == " + entitlementApproversUserLoginQueryWithquotes);                        
+		          
+						com.thortech.xl.dataaccess.tcDataSet entitlementApproversUserLoginDataSet = new com.thortech.xl.dataaccess.tcDataSet(); //store result set of query                                             
+						entitlementApproversUserLoginDataSet.setQuery(dbProvider, entitlementApproversUserLoginQueryWithquotes);                                              
+						entitlementApproversUserLoginDataSet.executeQuery();                       
+		          
+						int numColumns = entitlementApproversUserLoginDataSet.getColumnCount();                                             
+						int numRecords = entitlementApproversUserLoginDataSet.getTotalRowCount();                                             
+						System.out.println("Column Count:- "+numColumns);                                        
+						System.out.println("Record Count:- "+numRecords);                                        
+		          
+						String entitlementApproversUserLogin="";                      
+						//iterate through each row of a record                      
+						for(int i = 0; i &lt; numRecords; i++)                                             
+						{                                             
+							entitlementApproversUserLoginDataSet.goToRow(i);                       
+							for(int j=0; j&lt;numColumns; j++)                      
+							{                      
+								entitlementApproversUserLogin = entitlementApproversUserLogin + entitlementApproversUserLoginDataSet.getString(j) + ",";                       
+							}                      
+						}                      
+						entitlementApproversUserLogin = entitlementApproversUserLogin.substring(0, entitlementApproversUserLogin.length() - 1);                      
+						setVariableData("entitlementApproversUserLogin", entitlementApproversUserLogin);                       
+						System.out.println("The entitlementApproversUserLogin value is :-" + entitlementApproversUserLogin);                      
+					}                      
+					catch(Exception e) {                                             
+						System.out.println("Exception when getting approvers login from the database");           
+						e.printStackTrace();               
+						System.out.println("-----------------------------------------");                                             
+					}      */      
+      
+      
+      
+					client.logout();                                             
+				}                                               
+				catch (java.lang.Exception e)                                               
+				{                                               
+					System.out.println("Exception for Main try");                                               
+					e.printStackTrace();                                               
+					System.out.println("----------------------");                                               
+				}  
+                              finally {                   
+	                                           try{      
+											         if(stmt!=null)      
+													 { stmt.close();        
+	                                                  }      
+	                                               }catch(Exception e)      
+	                                              {      
+												   e.printStackTrace();      
+	                                              }      
+  
+                                                    try{      
+											         if(stmt1!=null)      
+													 { stmt1.close();        
+	                                                  }      
+	                                               }catch(Exception e)      
+	                                              {      
+												   e.printStackTrace();      
+	                                              }      
+  
+                                              
+												   try{      
+											         if(stmt!=null)      
+													 { con.close();         
+	                                                  }      
+	                                               }catch(Exception e)      
+	                                              {      
+												   e.printStackTrace();      
+	                                              }      
+							                     
+                                        }
+        </bpelx:exec>
+        <assign name="Assign1" id="BpAss1">
+            <copy>
+                <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable" part="payload" query="/ns3:process/ns4:RequestID"/>
+                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="requestID" part="RequestId" query="/ns17:RequestId"/>
+            </copy>
+        </assign><assign name="AssignRequestWSURL" id="BpAss2">
+            <copy>
+                <from><EndpointReference xmlns="http://www.w3.org/2005/08/addressing"><Address/>
+                    </EndpointReference>
+              </from>
+                <to variable="partnerLink"/>
+            </copy>
+            <copy>
+                <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="requestServiceUrl"/>
+                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="partnerLink" query="/ns14:EndpointReference/ns14:Address"/>
+            </copy>
+            <copy>
+                <from variable="partnerLink"/>
+                <to partnerLink="RequestWSPartnerLink"/>
+            </copy>
+        </assign><invoke name="Invoke1" partnerLink="RequestWSPartnerLink" inputVariable="requestID" outputVariable="Invoke1_getRequestDetails_OutputVariable" portType="ns15:RequestDataService" operation="getRequestDetails" id="BpInv1"/>
+        <assign name="AssignRequestWSURL" id="BpAss3">
+            <copy>
+                <from><EndpointReference xmlns="http://www.w3.org/2005/08/addressing"><Address/>
+                    </EndpointReference>
+              </from>
+                <to variable="partnerLink"/>
+            </copy>
+            <copy>
+                <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="requestServiceUrl"/>
+                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="partnerLink" query="/ns14:EndpointReference/ns14:Address"/>
+            </copy>
+            <copy>
+                <from variable="partnerLink"/>
+                <to partnerLink="RequestWSPartnerLink"/>
+            </copy>
+        </assign>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+   <scope name="ApprovalTask_1" wf:key="ApprovalTask_1_globalVariable" id="BpScp0">
+            <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:workflow"/>
+            </bpelx:annotation>
+            <variables>
+                <variable name="initiateTaskInput" messageType="ns2:initiateTaskMessage"/>
+                <variable name="initiateTaskResponseMessage" messageType="ns2:initiateTaskResponseMessage"/>
+            </variables>
+            <sequence id="BpSeq2"><scope name="Pmompt_Manager" id="BpScp1">
+      <bpelx:annotation>
+         <bpelx:pattern patternName="bpelx:email"/>
+      </bpelx:annotation>
+      <variables>
+         <variable name="varNotificationReq" messageType="ns16:EmailNotificationRequest"/>
+         <variable name="varNotificationResponse" messageType="ns16:ArrayOfResponse"/>
+         <variable name="NotificationServiceFaultVariable" messageType="ns16:NotificationServiceErrorMessage"/>
+      </variables>
+      <sequence name="Sequence2" id="BpSeq3">
+         <assign name="EmailParamsAssign" id="BpAss4">
+                            <copy>
+                                <from expression="string('Default')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:FromAccountName"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Bcc"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Cc"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:ReplyToAddress"/>
+                            </copy>
+                            <copy>
+                                <from expression="concat('Request for ',bpws:getVariableData('entitlementDisplayName'),' Application Access')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Subject"/>
+                            </copy>
+                            <copy>
+                                <from expression="concat(bpws:getVariableData('entitlementApproversEmail'),string(' '))" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:To"/>
+                            </copy>
+                            <copy>
+                                <from expression="concat('Dear ', string(' '), 'Community Manager',',','&lt;BR> &lt;BR>A potential user',',',string(' '),bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:FirstName'),string(' '),bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:LastName'),' has requested access to the  ',bpws:getVariableData('entitlementDisplayName'),string(' '),'Community.','&lt;BR> &lt;BR> To approve or reject the request for access,','&lt;BR>','1. Log into the WAA site at &lt;a href=',bpws:getVariableData('eIDWUrl'),'>',bpws:getVariableData('eIDWUrl'),'&lt;/a>','&lt;BR>2. Click on Community Access','&lt;BR>3. Select Pending Access','&lt;BR>4. Click the Pending Approvals tile','&lt;BR>5. Select the appropriate request from the list','&lt;BR> &lt;BR>Sincerely,','&lt;BR>EPA WAA Manager')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:ContentBody"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('text/html; charset=UTF-8')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:MimeType"/>
+                            </copy>
+                        </assign>
+         <invoke name="InvokeNotificationService" portType="ns16:NotificationService" partnerLink="NotificationService1" inputVariable="varNotificationReq" outputVariable="varNotificationResponse" operation="sendEmailNotification" id="BpInv2"/><assign name="EmailParamsAssign" id="BpAss5">
+                            <copy>
+                                <from expression="string('Default')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:FromAccountName"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Bcc"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Cc"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('')"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:ReplyToAddress"/>
+                            </copy>
+                            <copy>
+                                <from expression="concat('Request for ',bpws:getVariableData('entitlementDisplayName'),string(' '),'Application Access')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Subject"/>
+                            </copy>
+                            <copy>
+                                <from expression="bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:Email')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:To"/>
+                            </copy>
+                            <copy>
+                                <from expression="concat('Dear ',bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:FirstName'),string(' '),bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:LastName'),',','&lt;BR>&lt;BR>Your request for access to the ',bpws:getVariableData('entitlementDisplayName'),' application has been received. You will be notified when the Community Manager approves your request.','&lt;BR>&lt;BR>If you have questions regarding your access, please contact EPA Enterprise IT Service Desk via email at epacallcenter@epa.gov or by phone at 1-866-411-4EPA (4372).', '&lt;BR> &lt;BR> Sincerely,','&lt;BR>EPA WAA Manager')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:ContentBody"/>
+                            </copy>
+                            <copy>
+                                <from expression="string('text/html; charset=UTF-8')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:MimeType"/>
+                            </copy>
+                        </assign><invoke name="InvokeNotificationService" portType="ns16:NotificationService" partnerLink="NotificationService1" inputVariable="varNotificationReq" outputVariable="varNotificationResponse" operation="sendEmailNotification" id="BpInv3"/></sequence>
+   </scope><assign name="ApprovalTask_1_AssignTaskAttributes" id="BpAss6">
+                    <copy>
+                        <from expression="number(3)"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:priority"/>
+                    </copy>
+                    <copy>
+                        <from><payload xmlns="http://xmlns.oracle.com/bpel/workflow/task">
+ <Parameter1/>
+ <RequestID/>
+ <RequestModel/>
+ <RequestTarget/>
+ <url/>
+	<RequesterDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/> 
+	<BeneficiaryDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/> 
+	<ObjectDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/> 
+	<OtherDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/> 
+ <RequesterDisplayName/>
+ <BeneficiaryDisplayName/>
+ <Requester/>
+</payload></from>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:RequestID"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequestID"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:RequestModel"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequestModel"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:RequestTarget"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequestTarget"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:url"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:url"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:BeneficiaryDetails"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:RequesterDetails"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:BeneficiaryDetails"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:BeneficiaryDetails"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:ObjectDetails"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:ObjectDetails"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:OtherDetails"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:OtherDetails"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:BeneficiaryDetails/ns4:Login"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:Requester"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:BeneficiaryDetails/ns4:Login"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:creator"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:BeneficiaryDetails/ns4:DisplayName"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequesterDisplayName"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:BeneficiaryDetails/ns4:DisplayName"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:BeneficiaryDisplayName"/>
+                    </copy>
+                    <copy bpelx:insertMissingToData="yes">
+                        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="inputVariable" part="payload" query="/ns3:process/ns4:BeneficiaryDetails/ns4:Email"/>
+                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:BeneficiaryEmail"/>
+                    </copy>
+                    <copy>
+                        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:RequestID"/>
+                        <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:identificationKey"/>
+                    </copy>
+                    <copy>
+                        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="entitlementApproversUserLogin"/>
+                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:Parameter1"/>
+                    </copy>
+                    <copy bpelx:insertMissingToData="yes" bpelx:ignoreMissingFromData="yes">
+                        <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="entitlementDisplayName"/>
+                        <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:entitlementDisplayName"/>
+                    </copy>
+                </assign>
+                <invoke name="initiateTask_ApprovalTask_1" partnerLink="ApprovalTask.TaskService_1" portType="ns2:TaskService" operation="initiateTask" inputVariable="initiateTaskInput" outputVariable="initiateTaskResponseMessage" id="BpInv4"/>
+                <receive name="receiveCompletedTask_ApprovalTask_1" partnerLink="ApprovalTask.TaskService_1" portType="ns2:TaskServiceCallback" operation="onTaskCompleted" variable="ApprovalTask_1_globalVariable" createInstance="no" id="BpRcv1"/>
+            </sequence>
+        </scope>
+        <switch name="taskSwitch" id="BpSwt0">
+            <case condition="bpws:getVariableData('ApprovalTask_1_globalVariable', 'payload', '/task:task/task:systemAttributes/task:state') = 'COMPLETED' and bpws:getVariableData('ApprovalTask_1_globalVariable', 'payload', '/task:task/task:systemAttributes/task:outcome') = 'REJECT'">
+                <bpelx:annotation>
+                    <bpelx:pattern>Task outcome is REJECT</bpelx:pattern>
+                    <bpelx:general>
+                        <bpelx:property name="userLabel">Task outcome is REJECT</bpelx:property>
+                    </bpelx:general>
+                </bpelx:annotation>
+                <sequence id="BpSeq4">
+                    <assign id="BpAss7">
+                        <copy>
+                            <from expression="string('rejected')"/>
+                            <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+                        </copy>
+                        <copy>
+                            <from expression="ora:getConversationId()"/>
+                            <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg0"/>
+                        </copy>
+                        <copy>
+                            <from expression="string('rejected')"/>
+                            <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg1"/>
+                        </copy>
+                        <copy>
+                            <from expression="bpws:getVariableData('ApprovalTask_1_globalVariable','payload','/task:task/task:userComment/task:comment')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                            <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="Rejected_Comments"/>
+                        </copy>
+                    </assign>
+                    <scope name="Prompt_Requester_Rejected_Email" id="BpScp2">
+                        <bpelx:annotation>
+                            <bpelx:pattern patternName="bpelx:email"/>
+                        </bpelx:annotation>
+                        <variables>
+                            <variable name="varNotificationReq" messageType="ns16:EmailNotificationRequest"/>
+                            <variable name="varNotificationResponse" messageType="ns16:ArrayOfResponse"/>
+                            <variable name="NotificationServiceFaultVariable" messageType="ns16:NotificationServiceErrorMessage"/>
+                        </variables>
+                        <sequence name="Sequence3" id="BpSeq5">
+                            <assign name="EmailParamsAssign" id="BpAss8">
+                                <copy>
+                                    <from expression="string('Default')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:FromAccountName"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Bcc"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Cc"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:ReplyToAddress"/>
+                                </copy>
+                                <copy>
+                                    <from expression="bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:Email')"/>
+                                    <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:To"/>
+                                </copy>
+                                <copy>
+                                    <from expression="concat('Rejected - Request for ', bpws:getVariableData('entitlementDisplayName'),' Application Access')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Subject"/>
+                                </copy>
+                                <copy>
+                                    <from expression="concat('Dear ',bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:FirstName'),string(' '),bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:LastName'),',','&lt;BR> &lt;BR>Unfortunately, your request for access to the  ',bpws:getVariableData('entitlementDisplayName'),' Community  has been rejected based on the information you provided.','&lt;BR>&lt;BR>If you have questions regarding your request, please contact EPA Enterprise IT Service Desk  via email at  epacallcenter@epa.gov or phone at 1-866-411-4EPA','&lt;BR> &lt;BR> Sincerely,','&lt;BR>EPA WAA Manager')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:ContentBody"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('text/html; charset=UTF-8')"/>
+                                    <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:MimeType"/>
+                                </copy>
+                            </assign>
+                            <invoke name="InvokeNotificationService" inputVariable="varNotificationReq" outputVariable="varNotificationResponse" partnerLink="NotificationService1" portType="ns16:NotificationService" operation="sendEmailNotification" id="BpInv5"/>
+                        </sequence>
+                    </scope>
+                </sequence>
+            </case>
+            <case condition="bpws:getVariableData('ApprovalTask_1_globalVariable', 'payload', '/task:task/task:systemAttributes/task:state') = 'COMPLETED' and bpws:getVariableData('ApprovalTask_1_globalVariable', 'payload', '/task:task/task:systemAttributes/task:outcome') = 'APPROVE'">
+                <bpelx:annotation>
+                    <bpelx:pattern>Task outcome is APPROVE</bpelx:pattern>
+                    <bpelx:general>
+                        <bpelx:property name="userLabel">Task outcome is APPROVE</bpelx:property>
+                    </bpelx:general>
+                </bpelx:annotation>
+                <sequence id="BpSeq6">
+                    <assign id="BpAss9">
+                        <copy>
+                            <from expression="string('approved')"/>
+                            <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+                        </copy>
+                        <copy>
+                            <from expression="ora:getConversationId()"/>
+                            <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg0"/>
+                        </copy>
+                        <copy>
+                            <from expression="string('approved')"/>
+                            <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg1"/>
+                        </copy>
+                    </assign>
+                    <scope name="Prompt_Requester_Approved_Email" id="BpScp3">
+                        <bpelx:annotation>
+                            <bpelx:pattern patternName="bpelx:email"/>
+                        </bpelx:annotation>
+                        <variables>
+                            <variable name="varNotificationReq" messageType="ns16:EmailNotificationRequest"/>
+                            <variable name="varNotificationResponse" messageType="ns16:ArrayOfResponse"/>
+                            <variable name="NotificationServiceFaultVariable" messageType="ns16:NotificationServiceErrorMessage"/>
+                        </variables>
+                        <sequence name="Sequence4" id="BpSeq7">
+                            <assign name="EmailParamsAssign" id="BpAss10">
+                                <copy>
+                                    <from expression="string('Default')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:FromAccountName"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Bcc"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Cc"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('')"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:ReplyToAddress"/>
+                                </copy>
+                                <copy>
+                                    <from expression="concat('Approved - Request for ',bpws:getVariableData('entitlementDisplayName'),' Application Access')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Subject"/>
+                                </copy>
+                                <copy>
+                                    <from expression="bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:Email')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:To"/>
+                                </copy>
+                                <copy>
+                                    <from expression="concat('Dear ',bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:FirstName'),string(' '),bpws:getVariableData('inputVariable','payload','/ns3:process/ns4:BeneficiaryDetails/ns4:LastName'),',','&lt;BR>&lt;BR>Your request for access to the  ',bpws:getVariableData('entitlementDisplayName'),' Community  has been approved. The next time you log in to the EPA WAA you will be able to access the Community.','&lt;BR>&lt;BR>If you have any problems with your access, please contact the Community Manager.','&lt;BR>&lt;BR>Sincerely,','&lt;BR>EPA WAA Manager')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:ContentBody"/>
+                                </copy>
+                                <copy>
+                                    <from expression="string('text/html; charset=UTF-8')" bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"/>
+                                    <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns16:Content/ns16:MimeType"/>
+                                </copy>
+                            </assign>
+                            <invoke name="InvokeNotificationService" portType="ns16:NotificationService" partnerLink="NotificationService1" inputVariable="varNotificationReq" outputVariable="varNotificationResponse" operation="sendEmailNotification" id="BpInv6"/>
+                        </sequence>
+                    </scope>
+                </sequence>
+            </case>
+            <otherwise>
+                <sequence id="BpSeq8">
+                    <assign id="BpAss11">
+                        <copy>
+                            <from expression="bpws:getVariableData('ApprovalTask_1_globalVariable','payload','/task:task/task:systemAttributes/task:state')"/>
+                            <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+                        </copy>
+                        <copy>
+                            <from expression="ora:getConversationId()"/>
+                            <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg0"/>
+                        </copy>
+                        <copy>
+                            <from expression="bpws:getVariableData('ApprovalTask_1_globalVariable','payload','/task:task/task:systemAttributes/task:state')"/>
+                            <to variable="Invoke_1_callback_InputVariable_1" part="parameters" query="/ns1:callback/arg1"/>
+                        </copy>
+                    </assign>
+                </sequence>
+            </otherwise>
+        </switch>
+        <bpelx:exec name="ReFinding-Current-HostServiceURL" version="1.5" id="BxExe1">
+            try{       
+       
+       
+    java.lang.Object oldcallbackServiceUrlXML = getVariableData("callbackServiceUrl");                     
+					String oldcallbackServiceUrl=(String)oldcallbackServiceUrlXML;       
+    
+System.out.println("oldcallbackServiceUrl :- " + oldcallbackServiceUrl);     
+   
+   
+   
+java.lang.Object oldrequestServiceUrlXML = getVariableData("requestServiceUrl");                     
+					String oldrequestServiceUrl=(String)oldrequestServiceUrlXML;       
+    
+System.out.println("oldrequestServiceUrl :- " + oldrequestServiceUrl);    
+   
+   
+       
+       
+       
+   java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();        
+   String hostName = localMachine.getHostName().toString();       
+   System.out.println("Hostname of local machine: " + hostName);       
+       
+   String host = hostName.substring(6, hostName.indexOf(".")-1);        
+          
+   System.out.println("Env of local machine: " + host);         
+       
+     if (host.equals("prd")){                    
+               System.out.println("Prod Hostname of local machine: " + hostName);                    
+               setVariableData("EnvPwd","t3I0We0W5");       
+                      
+               String callbackServiceUrl="http://"+hostName+":15000"+"/workflowservice/CallbackService";       
+               setVariableData("callbackServiceUrl",callbackServiceUrl);       
+                    
+               System.out.println("callbackServiceUrl: " + callbackServiceUrl);       
+       
+               String requestServiceUrl="http://"+hostName+":15000"+"/reqsvc/reqsvc";       
+                setVariableData("requestServiceUrl",requestServiceUrl);       
+     
+               System.out.println("requestServiceUrl: " + requestServiceUrl);       
+                                     
+     }else if (host.equals("stg")) {                    
+               System.out.println("Stage Hostname of local machine: " + hostName);                    
+               setVariableData("EnvPwd","aj3ARa1Z6");          
+       
+               String callbackServiceUrl="http://"+hostName+":15000"+"/workflowservice/CallbackService";       
+               setVariableData("callbackServiceUrl",callbackServiceUrl);       
+     
+               System.out.println("callbackServiceUrl: " + callbackServiceUrl);      
+       
+               String requestServiceUrl="http://"+hostName+":15000"+"/reqsvc/reqsvc";       
+               setVariableData("requestServiceUrl",requestServiceUrl);       
+     
+               System.out.println("requestServiceUrl: " + requestServiceUrl);       
+       
+       
+           }else {          
+       
+               System.out.println("Dev Hostname of local machine: " + hostName);                    
+               setVariableData("EnvPwd","TxGy4IX98");         
+       
+               String callbackServiceUrl="http://"+hostName+":16000"+"/workflowservice/CallbackService";       
+               setVariableData("callbackServiceUrl",callbackServiceUrl);       
+     
+               System.out.println("callbackServiceUrl: " + callbackServiceUrl);      
+       
+               String requestServiceUrl="http://"+hostName+":16000"+"/reqsvc/reqsvc";       
+               setVariableData("requestServiceUrl",requestServiceUrl);       
+                   
+              System.out.println("requestServiceUrl: " + requestServiceUrl);       
+       }        
+}       
+catch(Exception e) {                 
+						System.out.println("Exception on trying to form webservice url");               
+						System.out.println(e);               
+						e.printStackTrace();                
+						System.out.println("--------------------------------------");                                                               
+					}
+        </bpelx:exec>
+        <assign name="Assign_1" id="BpAss12">
+            <copy>
+                <from>
+                    <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+                        <Address/>
+                    </EndpointReference>
+                </from>
+                <to variable="partnerLink"/>
+            </copy>
+            <copy>
+                <from bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="callbackServiceUrl"/>
+                <to bpelx:language="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0" variable="partnerLink" query="/ns14:EndpointReference/ns14:Address"/>
+            </copy>
+            <copy>
+                <from variable="partnerLink"/>
+                <to partnerLink="CallbackService"/>
+            </copy>
+        </assign>
+        <invoke name="Invoke_1" inputVariable="Invoke_1_callback_InputVariable_1" outputVariable="Invoke_1_callback_OutputVariable_1" partnerLink="CallbackService" portType="ns1:CallbackService" operation="callback" id="BpInv7"/>
+        <invoke name="callbackClient" partnerLink="RequestApprovalService" portType="client:ApprovalProcessCallback" operation="processResponse" inputVariable="outputVariable" id="BpInv8"/>
+    </sequence>
+</process>

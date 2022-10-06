@@ -1,0 +1,83 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Get and build Development Branch</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCM" plugin="atlassian-bitbucket-server-integration@3.1.0">
+    <gitSCM plugin="git@4.10.3">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs class="singleton-list">
+        <hudson.plugins.git.UserRemoteConfig>
+          <name>aaes</name>
+          <url>https://bitbucket.epa.gov/scm/eiam/aaes.git</url>
+          <credentialsId>AAES-Token-ID</credentialsId>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>*/development</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <browser class="hudson.plugins.git.browser.Stash">
+        <url>https://bitbucket.epa.gov/projects/EIAM/repos/aaes</url>
+      </browser>
+      <submoduleCfg class="empty-list"/>
+      <extensions/>
+    </gitSCM>
+    <branches reference="../gitSCM/branches"/>
+    <extensions/>
+    <id>587f5a33-f960-4e6c-962b-0cd0e961d914</id>
+    <repositories>
+      <com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCMRepository>
+        <credentialsId>AAES-Token-ID</credentialsId>
+        <sshCredentialsId></sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>AAES</repositoryName>
+        <repositorySlug>aaes</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCMRepository>
+    </repositories>
+    <isWebhookRegistered>true</isWebhookRegistered>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerImpl plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <spec></spec>
+      <pullRequestTrigger>false</pullRequestTrigger>
+      <refTrigger>true</refTrigger>
+      <version>1</version>
+    </com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerImpl>
+    <com.cloudbees.jenkins.plugins.BitBucketTrigger plugin="bitbucket@214.v2fd4234d0554">
+      <spec></spec>
+      <overrideUrl></overrideUrl>
+      <buildOnCreatedBranch>false</buildOnCreatedBranch>
+    </com.cloudbees.jenkins.plugins.BitBucketTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd AAESCustomization
+ant build</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.Mailer plugin="mailer@408.vd726a_1130320">
+      <recipients>rangnekar.manish@epa.gov</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>true</sendToIndividuals>
+    </hudson.tasks.Mailer>
+  </publishers>
+  <buildWrappers>
+    <hudson.tasks.AntWrapper plugin="ant@1.13">
+      <installation>ANT_HOME</installation>
+    </hudson.tasks.AntWrapper>
+  </buildWrappers>
+</project>

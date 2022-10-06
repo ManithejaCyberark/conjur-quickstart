@@ -1,0 +1,472 @@
+<project basedir=".." name="IAM-PROJECT-BUILD" default="build"
+         xmlns:ac="antlib:net.sf.antcontrib">
+ <description>Compiles and Create AAES Provisioning Release Package</description>
+ <taskdef uri="antlib:net.sf.antcontrib"
+          resource="net/sf/antcontrib/antlib.xml"></taskdef>	  
+<!--property file="build.properties"/-->
+ <property name="release.version" value="1.0"/> 
+ <property name="project.home" value="${basedir}/AAESCustomization"/>
+ <property name="debug" value="on"/>
+ <property name="lib.dir" value="${project.home}//lib"/>
+ <property name="dist.dir" value="${project.home}/dist"/>
+ <property name="dist.oim.jar.dir" value="${dist.dir}/OIM/jars"/>
+ <property name="dist.oim.javatask.dir"
+           value="${dist.dir}/OIM/jars/JavaTasks"/>
+ <property name="dist.oim.schedtask.dir"
+           value="${dist.dir}/OIM/jars/ScheduleTask"/>
+ <property name="dist.oim.thirdparty.dir"
+           value="${dist.dir}/OIM/jars/ThirdParty"/>
+<property name="dist.oim.notification.dir"
+           value="${project.home}/${release.version}/plugins/customNotification"/>	   
+	
+ <property name="plugins.customScheduleTasks.dir"
+           value="${project.home}/${release.version}/plugins/customScheduleTasks"/>
+	
+ <property name="plugins.notification.dir"
+           value="${project.home}/${release.version}/plugins/customNotificationResolver"/>
+
+ <property name="plugin.dir" value="${dist.dir}/OIM/plugins"/>
+ <property name="log.dir" value="${dist.dir}/log"/>
+
+ <property name="src.dir" value="${basedir}/AAESCustomization/src"/>
+
+ <property name="build.dir" value="${project.home}/build"/>
+ <property name="build.deploy.dir" value="${build.dir}/deploy"/>
+ <property name="build.classes.dir" value="${build.dir}/classes"/>
+
+ <property name="work.dir" value="${build.dir}/work"/>
+
+ <property name="build.dist.JavaTasks.dir" value="${dist.dir}/JavaTasks"/>
+ <property name="build.deploy.JavaTask.dir"
+           value="${build.deploy.dir}/JavaTask"/>
+ <property name="build.deploy.ThirdParty.dir"
+           value="${build.deploy.dir}/ThirdParty"/>
+ <property name="build.deploy.ScheduleTask.dir"
+           value="${build.deploy.dir}/ScheduleTask"/>
+
+<property name="shared.lib.dir" value="${project.home}//lib"/>
+ 
+ <property name="tmp.output.dir" value="{project.home}/build"/>
+ 
+ <property name="oracle.home" value="${instance.oracle.home}"/>
+  <property name="build.deploy.EventHandlers.dir"
+           value="${build.dir}/OIM/Artifacts/EventHandlers"/>
+		   
+  <property name="build.deploy.EventHandlers.plugindir"
+           value="${src.dir}/oim/file/custom"/>	
+  <property name="build.deploy.notification.dir"
+           value="${build.dir}/OIM/Artifacts/Notification"/>	
+  <property name="build.deploy.username.dir"
+           value="${build.dir}/OIM/Artifacts/UserNameGeneration"/>	
+<property name="message.file" value="build.txt" />		   
+ <!--property name="release.version" value="${instance.release.version}"/>
+  <property name="release.package.version" value="${instance.release.package.version}"/-->  
+ <path id="project.class.path">
+  <fileset dir="${lib.dir}">
+   <include name="**/*.jar"/>
+  </fileset>
+  <fileset dir="${shared.lib.dir}">
+   <include name="**/*.jar"/>
+  </fileset>
+ </path>
+ 
+<property name="wls.home" value="/usr/opt/oracle/product/Middleware_IAM_12c/wlserver"/>
+<property name="oim.home" value="/usr/opt/oracle/product/Middleware_IAM_12c/idm/server"/>
+<property name="login.config" value="/usr/opt/oracle/product/Middleware_IAM_12c/idm/designconsole/config/authwl.conf"/>
+<property name="mw.home" value="/usr/opt/oracle/product/Middleware_IAM_12c"/>
+<property name="DOMAIN.HOME" value="/usr/opt/oracle/product/Middleware_IAM_12c/user_projects/domains/oim_domain"/>
+<property name="OIM.Username" value="xelsysadm"/>
+<property name="OIM.UserPassword" value="aj3ARa1Z6"/>
+<property name="ServerURL" value="t3://wamappstg1.rtpnc.epa.gov:15000"/>
+<property name="PluginZipToRegister" value="${plugin.dir}/customScheduleTaskPlugin.zip"/>
+<property name="ext.dir" value="${oim.home}/ext"/>
+<property name="platform.dir" value="${oim.home}/platform"/>
+<property name="APP_SERVER" value="wweblogic"/>
+<property name="APPSERVER_TYPE" value="wls"/> 
+<property name="NAMING_FACTORY" value="weblogic.jndi.WLInitialContextFactory"/>
+<property name="JarToRegister" value="${build.deploy.JavaTask.dir}/Provisioning.jar"/>
+
+
+ <property name="gen.classpath" refid="project.class.path"/>
+ 
+ <!-- ===========================================
+				** Clean Directory **	
+		=========================================-->
+ <target description="Clean All" name="clean">
+  <echo message="=========== CLEAN START =============="></echo>
+  <delete dir="${build.classes.dir}"/>
+  <delete dir="${build.deploy.dir}"/>
+  <delete dir="${build.dir}"/>
+  <delete dir="${dist.dir}"/>
+ 	<delete dir="${project.home}/deploy"/>
+ 	  
+ 	<echo message="=========== CLEAN END =============="></echo>
+ 	<!--echo message="Shared LIB is ${shared.lib.dir}"></echo-->
+ </target>
+ <!-- ================ END ================== -->
+ <!-- ===========================================
+				** Make Directory **	
+		=========================================-->
+<taskdef resource="net/sf/antcontrib/antlib.xml"/>  		
+ <target description="Initialize Build Directories" name="init" depends="clean">
+ 
+
+<echo message="=========== INIT START===============" ></echo>
+ 	<echo>Release ${release.version}</echo>
+  <mkdir dir="${build.dir}"/>
+  <mkdir dir="${dist.dir}"/>
+  <mkdir dir="${dist.dir}/OIM"/>
+  <mkdir dir="${plugin.dir}"/>
+  <mkdir dir="${dist.oim.jar.dir}"/>
+  <mkdir dir="${dist.oim.javatask.dir}"/>
+  <mkdir dir="${dist.oim.schedtask.dir}"/>
+  <mkdir dir="${dist.oim.thirdparty.dir}"/>
+
+  <mkdir dir="${build.classes.dir}"/>
+  <mkdir dir="${build.deploy.dir}"/>
+  <mkdir dir="${work.dir}"/>
+  <mkdir dir="${build.deploy.JavaTask.dir}"/>
+  <mkdir dir="${build.deploy.ThirdParty.dir}"/>
+  <mkdir dir="${build.deploy.ScheduleTask.dir}"/>
+  <mkdir dir="${build.deploy.EventHandlers.dir}"/>
+
+  <echo message="=========== INIT echo =============="></echo>  
+ </target>
+	
+ <!-- ===========================================
+				** Build JAVA Task **	
+		=========================================-->
+ <target description="Building java task" name="JavaTasks">
+  <echo message="=========== JAVA TASK START =============="></echo>
+  <delete dir="${build.classes.dir}/com/inc/javaTasks"/>
+  <javac debug="${debug}" deprecation="false" destdir="${build.classes.dir}"
+         srcdir="${src.dir}">
+   <classpath refid="project.class.path"/>
+   <include name="**/com/aaes/javaTasks/**/*.java"/>
+   <include name="**/com/aaes/utils/**/*.java"/>
+  </javac>
+  
+  <jar basedir="${build.dir}/classes"
+       jarfile="${build.deploy.JavaTask.dir}/Provisioning.jar">
+   <include name="**/com/aaes/javaTasks/**/*.class"/>
+   <include name="**/com/aaes/utils/*.class"/>
+   <include name="**/com/aaes/utils/trans/**/*.class"/>
+  </jar>
+  <copy verbose="true" overwrite="true" todir="${dist.oim.javatask.dir}"
+        file="${build.deploy.JavaTask.dir}/Provisioning.jar"/>
+		<copy verbose="true" overwrite="true" todir="${dist.oim.javatask.dir}"
+ 	        file="${lib.dir}/Common.jar"/>
+  <echo message="=========== JAVA TASK END =============="></echo>
+ </target>
+
+	
+	<!-- TARGET 3rd Party Jar -->
+ <target description="Building Third Party Jar" name="ThirdParty">
+  <echo message="=========== THIRD PARTY TASK START =============="></echo>
+  <javac debug="${debug}" deprecation="false" destdir="${build.classes.dir}"
+         srcdir="${src.dir}">
+   <classpath refid="project.class.path"/>
+   <include name="**/com/aaes/utils/**/*.java"/>
+   <include name="**/com/aaes/utils/trans/**/*.java"/>
+  </javac>
+  <jar basedir="${build.dir}/classes"
+       jarfile="${build.deploy.ThirdParty.dir}/ThirdParty.jar">
+   <include name="**/com/aaes/utils/*.class"/>
+   <include name="**/com/aaes/utils/trans/**/*.class"/>
+  </jar>
+  
+  <echo message="===========  THIRD PARTY END =============="></echo>
+ </target>
+ <!-- ===========================================
+				** Build Schedule Task **	
+		=========================================-->
+ <target description="Building Scheduled tasks" name="ScheduleTask">
+  <echo message="=========== SCHEDULE TASK START =============="></echo>
+    <javac debug="${debug}" deprecation="false" destdir="${build.classes.dir}"
+         srcdir="${src.dir}">
+   <classpath refid="project.class.path"/>
+   <include name="**/com/aaes/scheduleTasks/**/*.java"/>
+  </javac>
+  <mkdir dir="${build.deploy.ScheduleTask.dir}/lib"/>
+  <mkdir dir="${build.deploy.ScheduleTask.dir}/config"/>
+  <mkdir dir="${build.deploy.ScheduleTask.dir}/resource"/>
+  <mkdir dir="${build.deploy.ScheduleTask.dir}/META-INF"/>
+  <jar basedir="${build.dir}/classes"
+       jarfile="${build.deploy.ScheduleTask.dir}/lib/scheduleTasks.jar">
+   <include name="**/com/aaes/scheduleTasks/**/*.class"/>
+  </jar>
+  <copy verbose="true" overwrite="true" todir="${dist.oim.schedtask.dir}"
+        file="${build.deploy.ScheduleTask.dir}/lib/scheduleTasks.jar"/>
+  <copy verbose="true" overwrite="true"
+        todir="${build.deploy.ScheduleTask.dir}/lib"
+        file="${build.deploy.ThirdParty.dir}/ThirdParty.jar"/>
+ 	
+ 	<copy verbose="true" overwrite="true"
+ 	        todir="${build.deploy.ScheduleTask.dir}/lib"
+ 	        file="${build.deploy.JavaTask.dir}/Provisioning.jar"/>
+ 	
+  <copy verbose="true" overwrite="true" 
+	      todir="${build.deploy.ScheduleTask.dir}/lib" 
+	      file="${shared.lib.dir}/ldapbp.jar" />
+  <copy verbose="true" overwrite="true" 
+	      todir="${build.deploy.ScheduleTask.dir}/lib" 
+		  file="${shared.lib.dir}/mssql-jdbc-6.4.0.jre8.jar"/>
+  <copy verbose="true" overwrite="true" todir="${build.deploy.ScheduleTask.dir}"
+        file="${plugins.customScheduleTasks.dir}/plugin.xml"/>
+  <copy verbose="true" overwrite="true" todir="${build.deploy.ScheduleTask.dir}/META-INF"
+        file="${plugins.customScheduleTasks.dir}/META-INF/aaesSchedulerTasks.xml"/>
+  <zip destfile="${plugin.dir}/customScheduleTaskPlugin.zip"
+       basedir="${build.deploy.ScheduleTask.dir}"/>
+  <echo message="=========== SCHEDUE TASK END =============="></echo>
+ </target>
+ <!-- ================ END ================== -->
+ 
+ 
+  <!-- ================ START ================== -->
+
+ 
+ 
+  <!-- ===========================================
+				** Build EventHandlers**	
+		=========================================-->
+ <target description="Building EventHandlers" name="EventHandlers">
+  <echo message="=========== Building Eventhandlers =============="></echo>
+    <javac debug="${debug}" deprecation="false" destdir="${build.classes.dir}"
+         srcdir="${src.dir}">
+   <classpath refid="project.class.path"/>
+   <include name="**/com/aaes/**/*.java"/>
+  </javac>
+  <mkdir dir="${build.deploy.EventHandlers.dir}/lib"/>
+  <mkdir dir="${build.deploy.EventHandlers.dir}/META-INF"/>
+  <jar basedir="${build.dir}/classes"  
+       jarfile="${build.deploy.EventHandlers.dir}/lib/AAESGenerateAttributes.jar">
+   <include name="**/com/aaes/javaTasks/transformation/**/*.class"/>
+   <include name="**/com/aaes/user/**/*.class"/>
+   <include name="**/com/aaes/utils/**/*.class"/>
+  </jar>
+  <copy verbose="true" overwrite="true" todir="${build.deploy.EventHandlers.dir}/META-INF"
+        file="${src.dir}/oim/file/custom/EventHandlers.xml"/>
+ 	  <copy verbose="true" overwrite="true" todir="${build.deploy.EventHandlers.dir}/lib"
+ 	  	file="${src.dir}/oim/file/custom/plugin.xml"/>	
+ 	
+  <copy verbose="true" overwrite="true" todir="${build.deploy.EventHandlers.dir}"
+        file="${src.dir}/oim/file/custom/plugin.xml"/>		
+  <zip destfile="${plugin.dir}/AAESCustEventHandlers.zip"
+       basedir="${build.deploy.EventHandlers.dir}"/>
+  <echo message="=========== EventhAndlers Plugin created TASK END =============="></echo>
+ </target>
+ <!-- ================ END ================== -->
+ 
+ 
+ 
+  <!-- ===========================================
+				** Build Notification Resolver Plugin **	
+		=========================================-->
+ <target description="Building Notification Resolver" name="notification">
+  <echo message="=========== Notification Resolver START =============="></echo>
+    <javac debug="${debug}" deprecation="false" destdir="${build.classes.dir}"
+         srcdir="${src.dir}">
+   <classpath refid="project.class.path"/>
+   <include name="**/com/aaes/notification/**/*.java"/>
+  </javac>
+  <mkdir dir="${build.deploy.notification.dir}/lib"/>
+  <jar basedir="${build.dir}/classes"
+       jarfile="${build.deploy.notification.dir}/lib/notificationResolver.jar">
+   <include name="**/com/aaes/notification/**/*.class"/>
+  </jar>
+ 
+  <copy verbose="true" overwrite="true" todir="${build.deploy.notification.dir}"
+        file="${project.home}/${release.version}/plugins/customNotificationResolver/plugin.xml"/>		
+  <zip destfile="${plugin.dir}/customNotificationPlugin.zip"
+       basedir="${build.deploy.notification.dir}"/>
+  <echo message="=========== Notification Resolver Task END =============="></echo>
+ </target>
+ <!-- ================ END ================== -->
+ 
+ 
+ 
+ 
+   <!-- ===========================================
+				** Build UserName Generation Plugin **	
+		=========================================-->
+ <target description="Building UserName Plugin" name="userName">
+  <echo message="=========== UserName Generation Plugin Build START =============="></echo>
+    <javac debug="${debug}" deprecation="false" destdir="${build.classes.dir}"
+         srcdir="${src.dir}">
+   <classpath refid="project.class.path"/>
+   <include name="**/com/aaes/custom/userlogin/**/*.java"/>
+  </javac>
+  <mkdir dir="${build.deploy.username.dir}/lib"/>
+  <jar basedir="${build.dir}/classes"
+       jarfile="${build.deploy.username.dir}/lib/AAESUserLoginGeneration.jar">
+   <include name="**/com/aaes/custom/userlogin/**/*.class"/>
+   <include name="**/com/aaes/utils/**/*.class"/>
+   <include name="**/com/aaes/javaTasks/transformation/GenerateUserLogin.class"/>
+  </jar>
+ 
+  <copy verbose="true" overwrite="true" todir="${build.deploy.username.dir}"
+        file="${project.home}/${release.version}/plugins/customUserNameGeneration/plugin.xml"/>		
+  <zip destfile="${plugin.dir}/UserNameGeneration.zip"
+       basedir="${build.deploy.username.dir}"/>
+  <echo message="=========== UserName Generation Plugin Build END =============="></echo>
+ </target>
+ <!-- ================ END ================== -->
+ 
+	<!-- Static Content -->
+ <target description="Copying static Content" name="static">
+  <echo message="=========== Copying Configuration files =============="></echo>
+ 
+<copy verbose="true" overwrite="true" todir="${dist.dir}/OIM/resources">	
+  <fileset dir="${project.home}/${release.version}/Events" includes="**"/>  
+ </copy>
+ <copy verbose="true" overwrite="true" todir="${dist.dir}/OIM/resources/notes">	
+  <fileset dir="${project.home}/${release.version}/notes" includes="**"/>  
+ </copy>
+ 
+  <copy verbose="true" overwrite="true" todir="${dist.dir}/OIM/resources/sandboxes">	
+  <fileset dir="${project.home}/${release.version}/sandboxes" includes="**"/>  
+ </copy>
+  <echo message="===========  Copied static Contents =============="></echo>
+ </target>
+ 
+ 
+ <target name="dist" description="Build Release Package">
+  <echo message=" ===========Build Package Version ${release.version} ==========="></echo>
+
+ 	<!-- jar up classes into dist -->
+  <tstamp>
+      <format property="TODAY_MY" pattern="yyyyMMdd"  locale="en,US" />
+  </tstamp>
+ 
+  <echo message=" ===========Build Package Release date ${TODAY_MY} ==========="></echo>
+	
+
+ 	<!-- Copy 3rd Party to DIST -->
+
+ 	<copy verbose="true" overwrite="true" todir="${dist.oim.thirdparty.dir}"
+ 	        file="${build.deploy.ThirdParty.dir}/ThirdParty.jar"/>
+
+ 	<!-- Copy Scheduled Tasks to DIST -->
+ 	   
+ 	<copy todir="${dist.dir}/OIM/plugins" file="${plugin.dir}/customScheduleTaskPlugin.zip"/>
+ 	
+  <!-- Create Package -->
+<property environment="env"/>
+<property name="env.HOSTNAME" value="${env.COMPUTERNAME}"/>
+
+		<echo file="${dist.dir}/OIM/resources/notes/${message.file}" append="true"> EPA Build Release  Version ${release.version} 	on ${TODAY_MY} by ${user.name} on ${env.HOSTNAME}
+		</echo>
+
+	<mkdir dir="${project.home}/deploy"/>
+ 	 <zip destfile="${project.home}/deploy/Release_${release.version}_${TODAY_MY}.zip" basedir="${dist.dir}" />
+	  <echo message="			**************************************************************************************		"></echo>
+	  <echo message="			**************************************************************************************		"></echo>
+	  <echo message=" 			EPA Build Release  Version ${release.version} 	on ${TODAY_MY} by ${user.name} on ${env.HOSTNAME} "></echo>
+
+
+	  <echo message=" 			Build File 	 ${project.home}/deploy/Release_${release.version}_${TODAY_MY}.zip"></echo>
+	  <echo message="			**************************************************************************************		"></echo>
+
+	  <echo message=" 			**************************************************************************************"></echo>
+   
+ </target>
+
+ <target name="deployJavaTasks" description="--> Deploys Provisioning.jar to OIM">
+
+ <java classname="oracle.iam.platformservice.utils.JarUploadUtility" fork="true" classpathref="project.class.path">
+                               <jvmarg value="-Xdebug" />
+                                <sysproperty key="XL.HomeDir" value="${oim.home}" />
+                                <sysproperty key="OIM.Username" value="${OIM.Username}" />
+                                <sysproperty key="ServerURL" value="${ServerURL}" />
+                                <sysproperty key="java.security.auth.login.config" value="${login.config}" />
+                                <sysproperty key="java.util.logging.config.class" value="oracle.core.ojdl.logging.LoggingConfiguration" />
+                                <sysproperty key="java.net.preferIPv4Stack" value="true" />
+                                <sysproperty key="MW_HOME" value="${mw.home}" />
+                                <sysproperty key="oracle.core.ojdl.logging.config.file" value="${mw.home}/oracle_common/modules/oracle.ovd/domain_config/logging/ovd-logging.xml" />
+                                <sysproperty key="ctxFactory" value="weblogic.jndi.WLInitialContextFactory"     />
+                                <sysproperty key="oracle.security.jps.config" value="${DOMAIN_HOME}/config/fmwconfig/jps-config-jse.xml"     />
+                                <sysproperty key="APP_SERVER" value="weblogic" />
+                                <sysproperty key="APPSERVER_TYPE" value="wls"/>
+                                <arg line="-username ${OIM.Username} -password ${OIM.UserPassword} -serverURL ${ServerURL} -ctxFactory weblogic.jndi.WLInitialContextFactory -JavaTasks ${JarToRegister}"/>
+                               <!--
+                                 <arg value="-username ${OIM.Username}"/>
+                                <arg value="-password ${OIM.UserPassword}"/>
+                                <arg value="-serverURL ${ServerURL}"/>
+                                <arg value="-ctxFactory weblogic.jndi.WLInitialContextFactory"/>
+                                <arg value="-JavaTasks ${JarToRegister}"/> 
+                                -->
+
+
+
+
+                                 <redirector     error="redirector.err" errorproperty="redirector.err"
+                                                output="redirector.out" outputproperty="redirector.out" />
+    </java>
+
+ </target>
+
+ <target name="deployScheduleTasks" description="--> Registers the plugin to OIM">
+
+                        <echo>
+*******************************************************************************
+                        REGISTRATION TOOL TO REGISTER
+*******************************************************************************
+This tool can be used to register or unregister plugins to OIM.
+
+Edit the ant.properties file to set the properties.
+Invoke the corresponding ant targets (register or unregister) to perform registration or unregistration correspondingly.
+
+Following are the additional system properties accepted by the utility. They would be prompted if not passed at the time of invoking the utility.
+
+                OIM.Username (User ID of the oim user)
+                ServerURL (URL of the server. WLS : t3://&lt;host&gt;:&lt;port&gt; WAS : corbaloc:iiop:&lt;host&gt;:&lt;port&gt; )
+                PluginZipToRegister (Complete name with path of the plugin file. Required for registering a plugin.)
+
+Set the other properties in ant.properties file:
+                wls.home/was.home
+                oim.home
+                login.config
+
+                        </echo>
+                        <input message="Enter the oim user id: " addproperty="OIM.Username"/>
+                        <input message="Enter the oim user password: " addproperty="OIM.UserPassword">
+                                <handler classname="oracle.iam.platform.utils.ant.PasswordInputHandler" classpathref="project.class.path"/>
+                        </input>
+                        <input message="Enter the server url [WLS : t3://&lt;host&gt;:&lt;port&gt; WAS : corbaloc:iiop:&lt;host&gt;:&lt;port&gt; )]: " addproperty="ServerURL"/>
+                        <input message="Enter name (complete file name with path) of the plugin file: " addproperty="PluginZipToRegister"/>
+                        <antcall  target="-register-to-wls-server"/>
+                </target>
+
+
+<target name="-register-to-wls-server" description="--> Registers the plugin to OIM" if="wls.home" unless="was.home">
+                        <tstamp>
+                                <format property="TIMESTAMP" pattern="yyyyMMddHHmmss"/>
+                        </tstamp>
+                        <echo file="${TIMESTAMP}.tmp">${OIM.UserPassword}</echo>
+                        <echo>${gen.classpath}</echo>
+                        <java classname="oracle.iam.platformservice.utils.PluginUtility" fork="true" classpathref="project.class.path" input="${TIMESTAMP}.tmp">
+                                <jvmarg value="-Xdebug" />
+                                <sysproperty key="XL.HomeDir" value="${oim.home}" />
+                                <sysproperty key="OIM.Username" value="${OIM.Username}" />
+                                <sysproperty key="ServerURL" value="${ServerURL}" />
+                                <sysproperty key="PluginZipToRegister" value="${PluginZipToRegister}" />
+                                <sysproperty key="java.security.auth.login.config" value="${login.config}" />
+                                <sysproperty key="ctxFactory" value="weblogic.jndi.WLInitialContextFactory"     />
+                                <sysproperty key="APP_SERVER" value="weblogic" />
+                                <sysproperty key="APPSERVER_TYPE" value="wls"/>
+                                <arg value="REGISTER"/>
+                                <redirector     error="redirector.err" errorproperty="redirector.err"
+                                                output="redirector.out" outputproperty="redirector.out" />
+                        </java>
+                        <delete file="${TIMESTAMP}.tmp"/>
+                                <!--
+                                      <echo>${redirector.err}</echo>
+                                <echo>${redirector.out}</echo>
+                              -->
+                </target> 
+ 
+ <target description=" Build All package" name="build"
+         depends="init,clean,JavaTasks,ThirdParty,ScheduleTask,notification,EventHandlers,userName,static,dist"/>
+
+      
+</project>

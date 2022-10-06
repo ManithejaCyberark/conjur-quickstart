@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+  <task>
+    <name>AAESMoveUsersDisableTask</name>
+    <class>com.aaes.scheduleTasks.AAESMoveUsersDisableTask</class>
+    <description>Move Disable Users after 365 days</description>
+    <retry>2</retry>
+    <parameters>
+       <string-param required="true" encrypted="false" helpText="DisableDays">DisableDays</string-param>
+       <string-param required="true" encrypted="false" helpText="excludeGroupMembers">excludeGroupMembers</string-param>
+       <string-param required="true" encrypted="false" helpText="serviceAcctNames">serviceAcctNames</string-param>
+       <string-param required="true" encrypted="false" helpText="executeMoveDisabledTask">executeMoveDisabledTask</string-param>
+       <string-param required="true" encrypted="false" helpText="templateName">templateName</string-param>
+       <string-param required="true" encrypted="false" helpText="recipentsDL">recipentsDL</string-param>
+       <string-param required="true" encrypted="false" helpText="pwdLastSetDays">pwdLastSetDays</string-param>
+       <string-param required="true" encrypted="false" helpText="whenCreatedDays">whenCreatedDays</string-param>
+	   <string-param required="false" encrypted="false" helpText="disableFilter">disableFilter</string-param>
+    </parameters>
+ </task>
+ <task>
+    <name>AAESUsersDisableTask</name>
+    <class>com.aaes.scheduleTasks.AAESUsersDisableTask</class>
+    <description>Getting Terminated Users from AD then Disable Users in OIM</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" helpText="uSNChanged">uSNChanged</string-param>
+      <string-param required="true" helpText="taskName">taskName</string-param>
+    </parameters>
+ </task>
+ <task>
+    <name>AAESUsersInactivityTask</name>
+    <class>com.aaes.scheduleTasks.AAESUsersInactivityTask</class>
+    <description>Disable Inactivity Users in OIM</description>
+    <retry>2</retry>
+    <parameters>
+       <string-param required="true" encrypted="false" helpText="InactivityDays">InactivityDays</string-param>
+	   <string-param required="true" encrypted="false" helpText="excludeGroupMembers">excludeGroupMembers</string-param>
+       <string-param required="true" encrypted="false" helpText="serviceAcctNames">serviceAcctNames</string-param>
+       <string-param required="true" encrypted="false" helpText="executeInactivityTask">executeInactivityTask</string-param>
+       <string-param required="true" encrypted="false" helpText="templateName">templateName</string-param>
+       <string-param required="true" encrypted="false" helpText="recipentsDL">recipentsDL</string-param>
+       <string-param required="true" encrypted="false" helpText="pwdLastSetDays">pwdLastSetDays</string-param>
+       <string-param required="true" encrypted="false" helpText="whenCreatedDays">whenCreatedDays</string-param>
+	   <string-param required="false" encrypted="false" helpText="xtraFilter">xtraFilter</string-param>
+   </parameters>
+ </task>
+ <task>
+    <name>AAESUsersDisableNotificationTask</name>
+    <class>com.aaes.scheduleTasks.AAESUsersDisableNotificationTask</class>
+    <description>AAESUsers Disable NotificationTask</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="DisableDays">DisableDays</string-param>
+      <string-param required="true" encrypted="false" helpText="emailTemplateName">emailTemplateName</string-param>
+    </parameters>
+ </task>
+ <task>
+    <name>AAESMoveOUDTerminatedUsersTask</name>
+    <class>com.aaes.scheduleTasks.AAESMoveOUDTerminatedUsersTask</class>
+    <description>AAESMoveOUD Terminated UsersTask</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="terminatedDays">terminatedDays</string-param>
+	  <string-param required="true" encrypted="false" helpText="executeMoveOUDTerminateUsers">executeMoveOUDTerminateUsers</string-param>
+	  <string-param required="true" encrypted="false" helpText="templateName">templateName</string-param>
+      <string-param required="true" encrypted="false" helpText="recipentsDL">recipentsDL</string-param>
+	  <string-param required="false" encrypted="false" helpText="custFilter">custFilter</string-param>
+	  </parameters> 
+ </task>
+ <task>
+    <name>aaesADUpdateXtension</name>
+    <class>com.aaes.scheduleTasks.aaesADUpdateXtension</class>
+    <description>aaesADUpdateXtension ext10</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="ADResource">ADResource</string-param>
+	  <string-param required="true" encrypted="false" helpText="OIMResource">OIMResource</string-param>
+	  <string-param required="true" encrypted="false" helpText="HRResource">HRResource</string-param>
+	  <string-param required="true" encrypted="false" helpText="ADDBCreateLookup">ADDBCreateLookup</string-param>
+	  <string-param required="true" encrypted="false" helpText="HRDBConfigLookup">HRDBConfigLookup</string-param>
+	  <string-param required="true" encrypted="false" helpText="ADStageTable">ADStageTable</string-param>
+	  <string-param required="true" encrypted="false" helpText="UpdateAD">UpdateAD</string-param>
+	  <string-param required="true" encrypted="false" helpText="UpdateUser">UpdateUser</string-param>
+	  <string-param required="true" encrypted="false" helpText="HRStageQuery">HRStageQuery</string-param>
+	  <string-param required="true" encrypted="false" helpText="HRStageTable">HRStageTable</string-param>
+	  <string-param required="true" encrypted="false" helpText="Incrementalquery">Incrementalquery</string-param>
+	  <string-param required="true" encrypted="false" helpText="HRReconKeyFeild01">HRReconKeyFeild01</string-param>
+	  <string-param required="true" encrypted="false" helpText="emailTemplateName">emailTemplateName</string-param>
+	  <string-param required="true" encrypted="false" helpText="ADsearchBase">ADsearchBase</string-param>
+    </parameters>
+ </task>
+   <task>
+    <name>AAESUsersList4FilterTask</name>
+    <class>com.aaes.scheduleTasks.AAESUsersList4FilterTask</class>
+    <description>Get AD Users Filter List </description>
+    <retry>2</retry>
+    <parameters>
+	   <string-param required="true" encrypted="false" helpText="excludeGroupMembers">excludeGroupMembers</string-param>
+       <string-param required="true" encrypted="false" helpText="serviceAcctNames">serviceAcctNames</string-param>
+       <string-param required="true" encrypted="false" helpText="templateName">templateName</string-param>
+       <string-param required="true" encrypted="false" helpText="recipentsDL">recipentsDL</string-param>
+       <string-param required="true" encrypted="false" helpText="custFilter">custFilter</string-param>
+	   <string-param required="true" encrypted="false" helpText="inputFile">inputFile</string-param>
+    </parameters> 
+ </task>
+ <task>
+    <name>aaesLoadCMSCertsTask</name>
+    <class>com.aaes.scheduleTasks.aaesLoadCMSCertsTask</class>
+    <description>Load Users CMS Certificate</description>
+    <retry>2</retry>
+    <parameters>
+	   <string-param required="true" encrypted="false" helpText="itResCMS">itResCMS</string-param>
+       <string-param required="true" encrypted="false" helpText="cmsQuery">cmsQuery</string-param>
+	   <string-param required="true" encrypted="false" helpText="cmsUniqueQuery">cmsUniqueQuery</string-param>
+	   <string-param required="true" encrypted="false" helpText="cmsCertsDefaultsLookups">cmsCertsDefaultsLookups</string-param>
+    </parameters>
+ </task>
+ <task>
+    <name>aaesProcessOfficeCodeNull</name>
+    <class>com.aaes.scheduleTasks.aaesProcessOfficeCodeNull</class>
+    <description>Process OfficeCodeNull</description>
+    <retry>2</retry>
+    <parameters>
+       <string-param required="true" encrypted="false" helpText="itReseBiz">itReseBiz</string-param>
+       <string-param required="true" encrypted="false" helpText="ebzQuery">ebzQuery</string-param>
+       <string-param required="true" encrypted="false" helpText="reconDefaultsLookups">reconDefaultsLookups</string-param>
+    </parameters>
+ </task>
+ <task>
+    <name>AAESLoadIDMSAttrsTask</name>
+    <class>com.aaes.scheduleTasks.AAESLoadIDMSAttrsTask</class>
+    <description>Load IDMS Attributes</description>
+    <retry>2</retry>
+    <parameters>
+	   <string-param required="true" encrypted="false" helpText="itResIDMS">itResIDMS</string-param>
+       <string-param required="true" encrypted="false" helpText="idmsQuery">idmsQuery</string-param>
+       <string-param required="true" encrypted="false" helpText="oimQuery">oimQuery</string-param>
+       <string-param required="true" encrypted="false" helpText="uniqueColName">uniqueColName</string-param>
+	   <string-param required="true" encrypted="false" helpText="idmsAttrsLookups">idmsAttrsLookups</string-param>
+    </parameters>
+ </task>
+ <task>
+    <name>aaesProcessPendingOrders</name>
+    <class>com.aaes.scheduleTasks.aaesProcessPendingOrders</class>
+    <description>Process Pending Orders</description>
+    <retry>2</retry>
+    <parameters>
+	   <string-param required="true" encrypted="false" helpText="itResPendOrder">itResPendOrder</string-param>
+       <string-param required="true" encrypted="false" helpText="itReseBiz">itReseBiz</string-param>
+       <string-param required="true" encrypted="false" helpText="pocQuery">pocQuery</string-param>
+       <string-param required="true" encrypted="false" helpText="ebzQuery">ebzQuery</string-param>
+       <string-param required="true" encrypted="false" helpText="reconDefaultsLookups">reconDefaultsLookups</string-param>
+       <string-param required="true" encrypted="false" helpText="EmailRecipient">EmailRecipient</string-param>
+       <string-param required="true" encrypted="false" helpText="EmailSender">EmailSender</string-param>
+    </parameters>
+ </task>
+ <task>
+    <name>aaesProcessCancelOrders</name>
+    <class>com.aaes.scheduleTasks.aaesProcessCancelOrders</class>
+    <description>Process Cancel Orders</description>
+    <retry>2</retry>
+    <parameters>
+	   <string-param required="true" encrypted="false" helpText="itResCancelOrder">itResCancelOrder</string-param>
+       <string-param required="true" encrypted="false" helpText="itReseBiz">itReseBiz</string-param>
+       <string-param required="true" encrypted="false" helpText="pcoQuery">pcoQuery</string-param>
+       <string-param required="true" encrypted="false" helpText="ebzQuery">ebzQuery</string-param>
+       <string-param required="true" encrypted="false" helpText="reconDefaultsLookups">reconDefaultsLookups</string-param>
+    </parameters>
+ </task>
+   <task>
+    <name>AAESReminderForPendingCertification</name>
+    <class>com.aaes.scheduleTasks.NotifyPendingCertification</class>
+    <description>Send reminder for pending certification to users</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="Certification Definition Name">Certification Definition Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Application Instance Name">Application Instance Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Account Status">Account Status</string-param>
+      <string-param required="true" encrypted="false" helpText="Job Name">Job Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Last Sent">Last Sent</string-param>
+      <string-param required="true" encrypted="false" helpText="Recipents, Other than benificiarys themself">Recipents</string-param>
+	  <string-param required="true" encrypted="false" helpText="Truncate Processed Records YES/NO">Truncate Processed Records</string-param>
+	<string-param required="true" encrypted="false" helpText="Staging Table Name">Table Name</string-param>
+	<string-param required="true" encrypted="false" helpText="Refresh Storage YES/NO">Refresh Storage</string-param>
+	<string-param required="true" encrypted="false" helpText="No Of Reminders in integer">No Of Reminders</string-param>
+	<string-param required="true" encrypted="false" helpText="Create Table, YES/NO">Create Table</string-param>
+	<string-param required="true" encrypted="false" helpText="Reminder After Days, No of days integer">Reminder After Days</string-param>
+    </parameters>
+ </task>
+  <task>
+    <name>AAESDisableAccessForExpiredCertification</name>
+    <class>com.aaes.scheduleTasks.DisableExpiredCertAccess</class>
+    <description>Disable Access if Certification Expired</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="Certification Definition Name">Certification Definition Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Application Instance Name">Application Instance Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Account Status">Account Status</string-param>
+      <string-param required="true" encrypted="false" helpText="Job Name">Job Name</string-param>
+    </parameters>
+ </task>
+<task>
+    <name>AAESAddProcessTask</name>
+    <class>com.aaes.scheduleTasks.AAESAddProcessTask</class>
+    <description>Load IDMS Attributes</description>
+    <retry>2</retry>
+    <parameters>
+        <string-param required="true" encrypted="false" helpText="Account Name">Account Name</string-param>
+        <string-param required="true" encrypted="false" helpText="Users Query">Users Query</string-param>
+        <string-param required="true" encrypted="false" helpText="Process Task Name">Process Task Name</string-param>
+    </parameters>
+</task>
+<task>
+    <name>aaesServiceAccountStatusReport</name>
+    <class>com.aaes.scheduleTasks.ServiceAccountStatusReport</class>
+    <description>Send Serve Account Status report</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="Certification Definition Name">Certification Definition Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Application Instance Name">Application Instance Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Account Status">Account Status</string-param>
+      <string-param required="true" encrypted="false" helpText="Job Name">Job Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Last Sent">Last Sent</string-param>
+      <string-param required="true" encrypted="false" helpText="Recipents, Other than benificiarys themself">Recipents</string-param>
+    </parameters>
+</task>
+<task>
+    <name>aaesADSystemAdminAcctPendingReqEmailTask</name>
+    <class>com.aaes.scheduleTasks.AAESADSystemAdminAcctPendingReqEmailTask</class>
+    <description>Send System Admin Acct Pending Req Email to ISO IMO</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="Certification Definition Name">Certification Definition Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Application Instance Name">Application Instance Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Account Status">Account Status</string-param>
+      <string-param required="true" encrypted="false" helpText="Job Name">Job Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Last Sent">Last Sent</string-param>
+      <string-param required="true" encrypted="false" helpText="Recipents, Other than benificiarys themself">Recipents</string-param>
+    </parameters>
+</task>
+<task>
+    <name>aaesCertificationPendingReqEmailTask</name>
+    <class>com.aaes.scheduleTasks.AAESCertificationPendingReqEmailTask</class>
+    <description>Send Certification Acct Pending Req Email to ISO IMO</description>
+    <retry>2</retry>
+    <parameters>
+      <string-param required="true" encrypted="false" helpText="Certification Definition Name">Certification Definition Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Application Instance Name">Application Instance Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Account Status">Account Status</string-param>
+      <string-param required="true" encrypted="false" helpText="Job Name">Job Name</string-param>
+	  <string-param required="true" encrypted="false" helpText="Last Sent">Last Sent</string-param>
+      <string-param required="true" encrypted="false" helpText="Recipents, Other than benificiarys themself">Recipents</string-param>
+    </parameters>
+</task>
+</scheduledTasks>

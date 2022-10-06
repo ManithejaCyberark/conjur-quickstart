@@ -1,0 +1,35 @@
+commit 3489187d260111bc97db9786918b19fd89dd9193
+tree 94b9057daa8366479b11c77ff6c9b6c6d258ee84
+parent 0fc46bea113515ed75521042218dfff6e99cd075
+author kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-07-01 21:29:30 -0400
+committer kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-07-01 21:29:30 -0400
+
+    Merge to deploy
+
+
+:100644 100644 4b957288b9d8149296779e67ca544c216c77a6e9 cdff33d5cc724582a702732265d3b4948db934e9 M	AAESCustomization/src/com/aaes/scheduleTasks/aaesProvisionBAPO365GroupinAD.java
+commit 0fc46bea113515ed75521042218dfff6e99cd075
+tree 62b395880a8c53993d6cb2b4b34b665b4a832304
+parent 003975bc939329c44ebc4a96a95eaeb6edabc393
+author kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-07-01 19:54:05 -0400
+committer kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-07-01 19:54:05 -0400
+
+    Merge for user name change
+
+
+:100644 100644 3935b71b911433033dc77bf67a9c83ab13328265 53024cc019d1f389cb132c3c4ce12f185b018ae1 M	AAESCustomization/src/com/aaes/scheduleTasks/AAESUserNameChangeTask.java
+commit 003975bc939329c44ebc4a96a95eaeb6edabc393
+tree c27de83df3865df11e362b61c4b069b931e08115
+parent a07a4646693de615c8cebbfaeeee8885a5065f18
+author kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-07-01 19:32:01 -0400
+committer kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-07-01 19:32:01 -0400
+
+    Merge for 1.)BAP O365 to read /write to BAp DB. 2.) Remove member.3.)User Name and change
+
+
+:100644 100644 7151e5dbcbc4062de75edbe4293257b2d0495ba3 486e2ed2ae30c38515719deff637395c07e242d9 M	AAESCustomization/1.0/plugins/customScheduleTasks/META-INF/aaesSchedulerTasks.xml
+:000000 100644 0000000000000000000000000000000000000000 1a64e71dae695099946be9dc23801b9359b1e79e A	AAESCustomization/lib/jsch-0.1.55.jar
+:100644 100644 5c748a86fb821720d24222b1b6529d9fae224ea1 92abbc4f2c653d9e3995f6bce11411f67691011d M	AAESCustomization/src/com/aaes/javaTasks/ActiveDirectory.java
+:100644 100644 6efad6f89dd5260912f696510627446a81bf4100 3935b71b911433033dc77bf67a9c83ab13328265 M	AAESCustomization/src/com/aaes/scheduleTasks/AAESUserNameChangeTask.java
+:100644 100644 93528152c3075097031bd7af4f447ce34be08a23 4b957288b9d8149296779e67ca544c216c77a6e9 M	AAESCustomization/src/com/aaes/scheduleTasks/aaesProvisionBAPO365GroupinAD.java
+:100644 100644 e7de1e7984ea7236757a19083f55fcd77ed9a859 b75996a7e59c55ac8b6eba1ba4ebe26c43bc231f M	AAESCustomization/src/com/aaes/utils/OIMUtils.java

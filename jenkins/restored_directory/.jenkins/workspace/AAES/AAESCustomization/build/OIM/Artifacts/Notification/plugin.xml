@@ -1,0 +1,5 @@
+<oimplugins xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<plugins pluginpoint="oracle.iam.notification.impl.NotificationEventResolver">
+	    <plugin pluginclass="com.aaes.notification.AAESNotificationResolver" version="1.0" name="AAES User Notification Resolver"/>
+    </plugins>
+</oimplugins>

@@ -1,0 +1,67 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <description>AWS Prod workflow</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.promoted__builds.JobPropertyImpl plugin="promoted-builds@876.v99d29788b_36b_">
+      <activeProcessNames>
+        <string>Prod Approved</string>
+      </activeProcessNames>
+    </hudson.plugins.promoted__builds.JobPropertyImpl>
+  </properties>
+  <scm class="com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCM" plugin="atlassian-bitbucket-server-integration@3.1.0">
+    <gitSCM plugin="git@4.10.3">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs class="singleton-list">
+        <hudson.plugins.git.UserRemoteConfig>
+          <name>DirectoryAWSWORKFLOW</name>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>*/prodlive</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <browser class="hudson.plugins.git.browser.Stash">
+        <url></url>
+      </browser>
+      <submoduleCfg class="empty-list"/>
+      <extensions/>
+    </gitSCM>
+    <branches reference="../gitSCM/branches"/>
+    <extensions/>
+    <id>e0b9c0f0-b34a-45b0-aad9-0c151cb3e5c2</id>
+    <repositories>
+      <com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCMRepository>
+        <credentialsId></credentialsId>
+        <sshCredentialsId></sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>DirectoryAWSWORKFLOW</repositoryName>
+        <repositorySlug>DirectoryAWSWORKFLOW</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCMRepository>
+    </repositories>
+    <isWebhookRegistered>false</isWebhookRegistered>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command></command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.tasks.AntWrapper plugin="ant@1.13">
+      <installation>ANT_HOME</installation>
+    </hudson.tasks.AntWrapper>
+  </buildWrappers>
+</project>

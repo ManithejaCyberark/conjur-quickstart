@@ -1,0 +1,32 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<hudson.plugins.promoted__builds.PromotionProcess plugin="promoted-builds@876.v99d29788b_36b_">
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <conditions>
+    <hudson.plugins.promoted__builds.conditions.ManualCondition>
+      <users>schivuku</users>
+      <parameterDefinitions/>
+    </hudson.plugins.promoted__builds.conditions.ManualCondition>
+  </conditions>
+  <icon>star-gold</icon>
+  <isVisible></isVisible>
+  <buildSteps>
+    <hudson.tasks.Shell>
+      <command>cd PRENCService
+ant</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </buildSteps>
+  <buildWrappers>
+    <hudson.tasks.AntWrapper plugin="ant@1.13">
+      <installation>ANT_HOME</installation>
+    </hudson.tasks.AntWrapper>
+  </buildWrappers>
+</hudson.plugins.promoted__builds.PromotionProcess>

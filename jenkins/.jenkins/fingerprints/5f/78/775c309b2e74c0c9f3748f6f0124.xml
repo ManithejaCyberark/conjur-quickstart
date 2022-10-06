@@ -1,0 +1,21 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<fingerprint>
+  <timestamp>2022-05-04 20:08:20.804 UTC</timestamp>
+  <md5sum>5f78775c309b2e74c0c9f3748f6f0124</md5sum>
+  <fileName>Credential id=AAES-Token-ID name=mrangnek/****** (AAES-Personal Access Token)</fileName>
+  <usages>
+    <entry>
+      <string>aaes-development</string>
+      <ranges>48</ranges>
+    </entry>
+    <entry>
+      <string>aaes-stage</string>
+      <ranges>29-42</ranges>
+    </entry>
+    <entry>
+      <string>aaes-production</string>
+      <ranges>2-17</ranges>
+    </entry>
+  </usages>
+  <facets/>
+</fingerprint>

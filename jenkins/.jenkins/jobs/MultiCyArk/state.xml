@@ -1,0 +1,30 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<jenkins.branch.MultiBranchProject_-State plugin="branch-api@2.6.3">
+  <sourceActions>
+    <entry>
+      <string>1ec698d3-f9d5-4998-8c8c-c97e17354bc0</string>
+      <list>
+        <com.atlassian.bitbucket.jenkins.internal.status.BitbucketRepositoryMetadataAction plugin="atlassian-bitbucket-server-integration@3.1.0">
+          <repository>
+            <credentialsId></credentialsId>
+            <sshCredentialsId>Manish-SSH-KEY</sshCredentialsId>
+            <projectKey>EIAM</projectKey>
+            <projectName>Enterprise Identity and Access Management</projectName>
+            <repositoryName>OUDCyArk</repositoryName>
+            <repositorySlug>oudcyark</repositorySlug>
+            <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+            <mirrorName></mirrorName>
+          </repository>
+          <defaultBranch>
+            <displayId>master</displayId>
+            <id>refs/heads/master</id>
+            <type>BRANCH</type>
+            <isDefault>true</isDefault>
+            <latestChangeset>b8630df6023323ed5308b1c1b358d05b2352e2a9</latestChangeset>
+            <latestCommit>b8630df6023323ed5308b1c1b358d05b2352e2a9</latestCommit>
+          </defaultBranch>
+        </com.atlassian.bitbucket.jenkins.internal.status.BitbucketRepositoryMetadataAction>
+      </list>
+    </entry>
+  </sourceActions>
+</jenkins.branch.MultiBranchProject_-State>

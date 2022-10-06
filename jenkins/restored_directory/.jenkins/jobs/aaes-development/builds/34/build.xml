@@ -1,0 +1,80 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause plugin="atlassian-bitbucket-server-integration@3.1.0">
+            <triggerRequest>
+              <actor>
+                <displayName>Michael Glover</displayName>
+                <emailAddress>glover.michael@epa.gov</emailAddress>
+                <name>mglover</name>
+              </actor>
+              <additionalActions/>
+            </triggerRequest>
+          </com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <hudson.plugins.git.util.BuildData plugin="git@4.10.3">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/aaes/development</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.0">
+              <sha1>d20b96d8ec0d47bcdb8d5beb4730438b9eddff4e</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/aaes/development</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>34</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <remoteUrls>
+        <string>ssh://git@bitbucket.epa.gov:2222/eiam/aaes.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+    <com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <bitbucketSCMRepository>
+        <credentialsId></credentialsId>
+        <sshCredentialsId>Manish-SSH-KEY</sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>AAES</repositoryName>
+        <repositorySlug>aaes</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </bitbucketSCMRepository>
+      <branchName>development</branchName>
+      <revisionSha1>d20b96d8ec0d47bcdb8d5beb4730438b9eddff4e</revisionSha1>
+    </com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction>
+  </actions>
+  <queueId>108</queueId>
+  <timestamp>1647892200993</timestamp>
+  <startTime>1647892200997</startTime>
+  <result>SUCCESS</result>
+  <duration>7484</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/lib/jenkins/.jenkins/workspace/aaes-development</workspace>
+  <hudsonVersion>2.327</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@4.10.3">
+    <authorOrCommitter>false</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set">
+      <string>glover.michael</string>
+    </c>
+  </culprits>
+</build>

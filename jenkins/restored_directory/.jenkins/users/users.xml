@@ -1,0 +1,38 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<hudson.model.UserIdMapper>
+  <version>1</version>
+  <idToDirectoryNameMap class="concurrent-hash-map">
+    <entry>
+      <string>kiru</string>
+      <string>kiru_6379046173956560802</string>
+    </entry>
+    <entry>
+      <string>glover.michael</string>
+      <string>glovermichael_967442948942906347</string>
+    </entry>
+    <entry>
+      <string>admin</string>
+      <string>admin_6729786650171493268</string>
+    </entry>
+    <entry>
+      <string>ramachandran.kirubanidhi</string>
+      <string>ramachandranki_8256586716016031295</string>
+    </entry>
+    <entry>
+      <string>schivuku</string>
+      <string>schivuku_454729417141222637</string>
+    </entry>
+    <entry>
+      <string>rkolluru</string>
+      <string>rkolluru_1239781481903456727</string>
+    </entry>
+    <entry>
+      <string>manish</string>
+      <string>manish_6735253694578516155</string>
+    </entry>
+    <entry>
+      <string>rangnekar.manish</string>
+      <string>rangnekarmanis_3967386302871007786</string>
+    </entry>
+  </idToDirectoryNameMap>
+</hudson.model.UserIdMapper>

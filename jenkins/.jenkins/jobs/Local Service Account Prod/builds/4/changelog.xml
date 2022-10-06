@@ -1,0 +1,20 @@
+commit bc9b5515369de88e9ae48a2615eee67dab6fd883
+tree 696b99d26aaabd5ea35ae99ab3755ffa00f9c5c9
+parent 5a6bd9596367e8b6696fcd063d79abddbe4feac6
+author schivuku <schivuku@yahoo.com> 2022-08-01 17:45:59 -0400
+committer schivuku <schivuku@yahoo.com> 2022-08-01 17:45:59 -0400
+
+    Production deployment
+
+
+:100644 100644 db59a85792df8711025ba131c7a95fbf675638a3 16e7b34b3d04575d96802f9c483609ddd56e35a7 M	LSCYService/LSCYService/SOA/.designer/ApprovalProcess_graphics.xml
+:100644 100644 f3b0eac1f8b31f4c0e8196283d37836c0ca3ac4d 2b4d0b400b956d47e58fe0607c8770d69b8287ec M	LSCYService/LSCYService/SOA/.taskeditor/ApprovalTask_graphics.xml
+:100644 100644 6eb8227c4874698aac1933fd3738c8e67808ea87 fdb25ee2fd1aea696e3c8454d8266172c1b47827 M	LSCYService/LSCYService/SOA/ApprovalProcess.bpel
+:100644 100644 a3fafc89409962f408bbeb7ecdad3171ea86bbb4 0515d2c270a2264f1bc855b9263750d940106e0b M	LSCYService/LSCYService/SOA/ApprovalTask.task
+:100644 100644 fb90ff4fa31ab6c3ac0a59bd9cbf5ecb8ce91818 1ece1abafc21443688defc22251e2c0af6336f77 M	LSCYService/LSCYService/SOA/SCA-INF/LSCYServiceAccount.diagram.jpg
+:100644 100644 91973ca094d041a1e23a1fadfafddace5bf8a3fb ab58490539075b3c65ed991187d61edb833fde4a M	LSCYService/LSCYService/SOA/SCA-INF/LSCYServiceAccount.diagram.xml
+:100644 100644 36939d4d831732e180133827ab491238a96c205d 37cbb1614d40809d7f7d12c59f2fc23d23db322c M	LSCYService/LSCYService/SOA/SCA-INF/bpel/Approv~0/Model.xml
+:100644 100644 7cea7b3fbc3f54803a3788ce7591e78aef85561e 626ca6cfab8d1dedeb5a2693c289461bf8de4e56 M	LSCYService/LSCYService/SOA/SCA-INF/bpel/Approv~0/map.jar
+:100644 100644 dd24e503cee4c40ccaa54e16919ebe1a3d62f069 c483e65547d259e63767d4a060a0a957af660b39 M	LSCYService/LSCYService/SOA/SCA-INF/classes/scac.log
+:100644 100644 9aa89297970d9eade75268cab3c277da9b11eaa6 c78039b28c64269aa841f076c71043ba5a9a2f98 M	LSCYService/LSCYService/SOA/composite.xml
+:100644 100644 497dd383f8994bc4b6618a90b560ac356439853d 3b078d315c1e96b697547827096c3bef89e366f4 R099	LSCYService/LSCYService/deploy/sca_LSCYService_rev1.0.jar	LSCYService/LSCYService/deploy/sca_LSCYService_rev1.1.jar

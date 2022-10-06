@@ -1,0 +1,10 @@
+commit d20b96d8ec0d47bcdb8d5beb4730438b9eddff4e
+tree 137e989f5c112076a99793e280ffb91e3ec603bf
+parent b256086c93550f08c5f5d858c027843db95c323e
+author Michael Glover <glover.michael@epa.gov> 2022-03-21 15:50:00 -0400
+committer Michael Glover <glover.michael@epa.gov> 2022-03-21 15:50:00 -0400
+
+    Created initial .gitlab-ci.yaml pipeline file
+
+
+:100644 100644 30d74d258442c7c65512eafab474568dd706c430 d1d3cd5557246e0e9c88914838aa8217405baf79 M	AAESCustomization/.gitlab-ci.yml

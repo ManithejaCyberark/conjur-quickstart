@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project name="ant-sca-deploy" default="deploy" basedir=".">
+  <!-- must have these properties available -->
+  <!-- This script will be placed under ${oracle.home}/bin -->
+  <property name="user" value="weblogic"/>
+  <property name="password" value="aj3ARa1Z6"/>
+  <property name="serverURL" value="http://wamappstg1.rtpnc.epa.gov:9101"/>
+  <property name="sarLocation" value="./EMPNCService/deploy/sca_EMPNCService_rev1.7.jar"/>
+  <property name="overwrite" value="true"/>
+  <record name="output.txt" loglevel="verbose" action="start" />
+
+  <condition property="oracle.home" value="/usr/opt/oracle/product/Middleware_IAM_12c/soa">
+    <not>
+      <isset property="oracle.home"/>
+    </not>
+  </condition>
+
+  <import file="ant-soa-common.xml"/>
+
+  <echo message="oracle.home = ${oracle.home}"/>
+  <condition property="bea.home" value="${oracle.home}/..">
+    <not>
+      <isset property="bea.home"/>
+    </not>
+  </condition>
+
+  <!-- jars needed to run deploy sar task -->
+  <path id="deploy.tasks.class.path">
+    <fileset dir="${oracle.soa.mgmt.home}/soa/modules">
+      <include name="oracle.soa.mgmt_11.1.1/soa-infra-mgmt.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/tracking-api.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/tracking-core.jar"/> 
+      <include name="commons-cli-1.1.jar"/>
+    </fileset>
+
+    <fileset dir="${common.components.home}/modules">
+      <include name="oracle.toplink_12.1.2/eclipselink.jar"/>
+      <include name="com.sun.xml.bind.jaxb-impl_2.2.jar"/>
+      <include name="oracle.http_client_11.1.1.jar"/>
+      <include name="oracle.xdk_12.1.2/xmlparserv2.jar"/>
+    </fileset>
+
+    <fileset dir="${bea.home}">
+      <include name="wlserver/server/lib/weblogic.jar"/>
+    </fileset>
+  </path>
+
+  <property name="deploy.tasks.class.path" refid="deploy.tasks.class.path"/>
+
+  <path id="merge.updates.tasks.class.path">
+    <fileset dir="${bea.home}">
+     <include name="wlserver/server/lib/pcl2.jar"/>
+    </fileset>
+
+    <fileset dir="${common.components.home}/modules">
+      <include name="com.oracle.webservices.fabric-common-api.jar"/>
+      <include name="oracle.logging-utils.jar"/>
+      <include name="org.apache.commons.digester_1.8.jar"/>
+      <include name="org.apache.commons.logging_1.1.1.jar"/>
+      <include name="org.apache.commons.logging_1.2.jar"/>
+      <include name="thirdparty/commons-beanutils-1.9.3.jar"/>
+      <include name="oracle.jrf/jrf-api.jar"/>
+      <include name="oracle.dms/dms.jar"/>
+      <include name="com.oracle.webservices.orawsdl-api.jar"/>
+      <include name="com.oracle.webservices.fmw.wsclient-impl.jar"/>
+      <include name="com.oracle.webservices.fmw.wsclient-rt-impl.jar"/>
+      <include name="oracle.xdk/xml.jar"/>
+      <include name="commonj.sdo.jar"/>
+      <include name="oracle.xdk/xmlparserv2.jar"/>
+      <include name="oracle.adf.model/adfm.jar"/>
+      <include name="features/com.oracle.db.jdbc-dms.jar"/>
+      <include name="oracle.jmx/jmxframework.jar"/>
+      <include name="oracle.jmx/jmxspi.jar"/>
+      <include name="oracle.wsm.common/wsm-policy-core.jar"/>
+    </fileset>
+
+    <fileset dir="${soa.modules}">
+      <include name="oracle.soa.fabric_11.1.1/fabric-runtime.jar"/>
+      <include name="oracle.soa.workflow_11.1.1/bpm-services.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/soa-infra-tools.jar"/>
+      <include name="oracle.rules_11.1.1/rulesdk2.jar"/>
+      <include name="oracle.rules_11.1.1/rl.jar"/>
+    </fileset>
+  </path>
+  <property name="merge.updates.tasks.class.path" refid="merge.updates.tasks.class.path"/>
+
+  <taskdef name="deployComposite" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.DeployCompositeTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+  <taskdef name="undeployComposite" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.UndeployCompositeTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+  <taskdef name="undeployRetiredComposites" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.UndeployRetiredCompositesTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+
+  <taskdef name="exportComposite" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.ExportCompositeTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+  <taskdef name="exportUpdates" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.ExportUpdatesTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+  <taskdef name="importUpdates" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.ImportUpdatesTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+  <taskdef name="exportSharedData" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.ExportSharedDataTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+  <taskdef name="removeSharedData" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.RemoveSharedDataTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+  <taskdef name="mergeUpdates" classname="oracle.integration.platform.blocks.deploy.servlet.client.ant.MergeUpdatesTask">
+    <classpath>
+      <pathelement path="${deploy.tasks.class.path}"/>
+      <pathelement path="${merge.updates.tasks.class.path}"/>
+    </classpath>
+  </taskdef>
+
+  <condition property="realm" value="null">
+    <not>
+      <isset property="realm"/>
+    </not>
+  </condition>
+  <condition property="password" value="null">
+    <and>
+      <not>
+	<isset property="password"/>
+      </not>
+      <not>
+	<equals arg1="true" arg2="${stdinpassword}" casesensitive="false" trim="true"/>
+      </not>
+    </and>
+  </condition>
+  <condition property="overwrite" value="false">
+    <not>
+      <isset property="overwrite"/>
+    </not>
+  </condition>
+  <condition property="forceDefault" value="true">
+    <not>
+      <isset property="forceDefault"/>
+    </not>
+  </condition>
+  <condition property="keepInstancesOnRedeploy" value="false">
+    <not>
+      <isset property="keepInstancesOnRedeploy"/>
+    </not>
+  </condition>
+  <condition property="scope" value="null">
+    <not>
+      <isset property="scope"/>
+    </not>
+  </condition>
+  <condition property="regenerateRuleBase" value="false">
+    <not>
+      <isset property="regenerateRuleBase"/>
+    </not>
+  </condition>
+  <condition property="configplan" value="null">
+    <not>
+      <isset property="configplan"/>
+    </not>
+  </condition>
+  <condition property="sysPropFile" value="null">
+    <not>
+      <isset property="sysPropFile"/>
+    </not>
+  </condition>
+  <condition property="failOnError" value="false">
+    <not>
+      <isset property="failOnError"/>
+    </not>
+  </condition>
+  <condition property="timeout" value="-1">
+    <not>
+      <isset property="timeout"/>
+    </not>
+  </condition>
+  <condition property="partition" value="null">
+    <not>
+      <isset property="partition"/>
+    </not>
+  </condition>
+  <condition property="folder" value="${partition}">
+    <not>
+      <isset property="folder"/>
+    </not>
+  </condition>
+  <condition property="verbose" value="1">
+    <not>
+      <isset property="verbose"/>
+    </not>
+  </condition>
+  <condition property="preview" value="false">
+    <not>
+      <isset property="preview"/>
+    </not>
+  </condition>
+  <target name="deploy">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <input message="Please enter sar location:" addproperty="sarLocation"/>
+    <input message="Please enter username:" addproperty="user"/>
+    <input message="Please enter password:" addproperty="password">
+      <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+    </input>
+    <deployComposite serverUrl="${serverURL}" sarLocation="${sarLocation}" realm="${realm}" user="${user}" password="${password}"
+      overwrite="${overwrite}" forceDefault="${forceDefault}" keepInstancesOnRedeploy="${keepInstancesOnRedeploy}"
+      regenerateRuleBase="${regenerateRuleBase}" configPlan="${configplan}" scope="${scope}"
+      sysPropFile="${sysPropFile}" failOnError="${failOnError}" timeout="${timeout}" folder="${folder}"/>
+  </target>
+
+  <target name="undeploy">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <input message="Please enter composite name:" addproperty="compositeName"/>
+    <input message="Please enter composite revision:" addproperty="revision"/>
+    <input message="Please enter password:" addproperty="password"/>
+    <undeployComposite serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+      revision="${revision}" sysPropFile="${sysPropFile}" failOnError="${failOnError}"
+      timeout="${timeout}" folder="${folder}"/>
+  </target>
+
+  <target name="undeployRetiredComposites">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <undeployRetiredComposites serverUrl="${serverURL}" realm="${realm}" user="${user}" password="${password}"
+      sysPropFile="${sysPropFile}" failOnError="${failOnError}"
+      timeout="${timeout}" folder="${folder}" preview="${preview}"/>
+  </target>
+
+  <target name="exportComposite">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <input message="Please enter type of post deployment changes to be included (none/all/property/runtime):" addproperty="updateType"/>
+    <input message="Please enter sar file name to be generated:" addproperty="sarFile"/>
+    <input message="Please enter composite name:" addproperty="compositeName"/>
+    <input message="Please enter composite revision:" addproperty="revision"/>
+    <exportComposite serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+      revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${sarFile}" updateType="${updateType}"
+      failOnError="${failOnError}" folder="${folder}"/>
+  </target>
+
+  <!--
+  <target name="exportCompositeWithAllUpdates">
+  <input message="Please enter server URL:" addproperty="serverURL"/>
+  <input message="Please enter sar file name to be generated:" addproperty="sarFile"/>
+  <input message="Please enter composite name:" addproperty="compositeName"/>
+  <input message="Please enter composite revision:" addproperty="revision"/>
+  <exportComposite serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+  revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${sarFile}" updateType="all"/>
+      </target>
+
+  <target name="exportCompositeWithPropertyUpdates">
+  <input message="Please enter server URL:" addproperty="serverURL"/>
+  <input message="Please enter sar file name to be generated:" addproperty="sarFile"/>
+  <input message="Please enter composite name:" addproperty="compositeName"/>
+  <input message="Please enter composite revision:" addproperty="revision"/>
+  <exportComposite serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+  revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${sarFile}" updateType="property"/>
+      </target>
+
+  <target name="exportCompositeWithRuntimeUpdates">
+  <input message="Please enter server URL:" addproperty="serverURL"/>
+  <input message="Please enter sar file name to be generated:" addproperty="sarFile"/>
+  <input message="Please enter composite name:" addproperty="compositeName"/>
+  <input message="Please enter composite revision:" addproperty="revision"/>
+  <exportComposite serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+  revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${sarFile}" updateType="runtime"/>
+      </target>
+  -->
+
+  <target name="exportUpdates">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <input message="Please enter post deployment update type to be exported (all/property/runtime):" addproperty="updateType"/>
+    <input message="Please enter jar file name to be generated:" addproperty="jarFile"/>
+    <input message="Please enter composite name:" addproperty="compositeName"/>
+    <input message="Please enter composite revision:" addproperty="revision"/>
+    <exportUpdates serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+      revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${jarFile}"
+      updateType="${updateType}" failOnError="${failOnError}" folder="${folder}"/>
+  </target>
+  <!--
+  <target name="exportAllUpdates">
+  <input message="Please enter server URL:" addproperty="serverURL"/>
+  <input message="Please enter jar file name to be generated:" addproperty="jarFile"/>
+  <input message="Please enter composite name:" addproperty="compositeName"/>
+  <input message="Please enter composite revision:" addproperty="revision"/>
+  <exportUpdates serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+  revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${jarFile}" updateType="all"/>
+      </target>
+
+  <target name="exportPropertyUpdates">
+  <input message="Please enter server URL:" addproperty="serverURL"/>
+  <input message="Please enter jar file name to be generated:" addproperty="jarFile"/>
+  <input message="Please enter composite name:" addproperty="compositeName"/>
+  <input message="Please enter composite revision:" addproperty="revision"/>
+  <exportUpdates serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+  revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${jarFile}" updateType="property"/>
+      </target>
+
+  <target name="exportRuntimeUpdates">
+  <input message="Please enter server URL:" addproperty="serverURL"/>
+  <input message="Please enter jar file name to be generated:" addproperty="jarFile"/>
+  <input message="Please enter composite name:" addproperty="compositeName"/>
+  <input message="Please enter composite revision:" addproperty="revision"/>
+  <exportUpdates serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+  revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${jarFile}" updateType="runtime"/>
+      </target>
+  -->
+  <target name="importUpdates">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <input message="Please enter jar file that contains post deployment updates:" addproperty="jarFile"/>
+    <input message="Please enter composite name:" addproperty="compositeName"/>
+    <input message="Please enter composite revision:" addproperty="revision"/>
+    <importUpdates serverUrl="${serverURL}" compositeName="${compositeName}" realm="${realm}" user="${user}" password="${password}"
+      revision="${revision}" sysPropFile="${sysPropFile}" jarFile="${jarFile}"
+      failOnError="${failOnError}" folder="${folder}"/>
+  </target>
+
+  <target name="exportSharedData">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <input message="Please enter jar file to be generated:" addproperty="jarFile"/>
+    <input message="Please enter document pattern:" addproperty="pattern"/>
+    <exportSharedData serverUrl="${serverURL}" pattern="${pattern}" realm="${realm}" user="${user}" password="${password}"
+      sysPropFile="${sysPropFile}" jarFile="${jarFile}" failOnError="${failOnError}"/>
+  </target>
+
+  <target name="removeSharedData">
+    <input message="Please enter server URL:" addproperty="serverURL"/>
+    <input message="Please enter shared data folder name:" addproperty="folderName"/>
+    <removeSharedData serverUrl="${serverURL}" folderName="${folderName}" realm="${realm}" user="${user}" password="${password}"
+      sysPropFile="${sysPropFile}" failOnError="${failOnError}"/>
+  </target>
+
+  <target name="mergeUpdates">
+    <input message="Please enter log file:" addproperty="logFile"/>
+    <input message="Please enter merge result file:" addproperty="resultJarFile"/>
+    <input message="Please enter composite sar file of previous revision (version 1):" addproperty="r1SarFile"/>
+    <input message="Please enter composite sar file of new revision (version 2):" addproperty="r2SarFile"/>
+    <input message="Please enter post deployment updates jar file of previous revision (version 1):" addproperty="r1modJarFile"/>
+    <!-- may need to add more jars into registryJar, all jars that contain the MergeTool classes, use separator ";" -->
+    <mergeUpdates logFile="${logFile}" resultJarFile="${resultJarFile}" r1SarFile="${r1SarFile}" r2SarFile="${r2SarFile}"
+      r1modJarFile="${r1modJarFile}" verbose="${verbose}"/>         
+  </target>
+
+  <target name="help">
+    <echo message=" ================================================================================"/>
+    <echo message="Usage : deploy (default target)"/>
+    <echo message="    ant -f ant-sca-deploy.xml -DserverURL=server.url -DsarLocation=sar.location -Doverwrite=true/false -Drealm=realm -Duser=user -Dpassword=password -DforceDefault=true/false -DkeepInstancesOnRedeploy=true/false -DregenerateRuleBase=true/false -Dconfigplan=config.plan -DfailOnError=true/false"/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:7001"/>
+    <echo message="       sarLocation - the absolute path of a sar file, or a zip file containing multiple sar and/or mar files"/>
+    <echo message="       overwrite - optional, default=false. whether to overwrite existing composite if any"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       forceDefault - optional, default=true, whether to force a new composite as default composite"/>
+    <echo message="       keepInstancesOnRedeploy - optional, default=false, whether to keep running instances during redeployment"/>
+    <echo message="       regenerateRuleBase - optional, default=false, whether to regenerate rules base dictionary"/>
+    <echo message="       configplan - optional, the absolute path of a config plan for the sar file or all sar files in the zip file"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="       folder - optional, the folder where the composite is deployed, default=default"/>
+    <echo message="    example:"/>
+    <echo message="         ant -f ant-sca-deploy.xml -DserverURL=http://host:8001 -DsarLocation=/tmp/sca_HelloWorld_rev1.0.jar"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : undeploy"/>
+    <echo message="    ant -f ant-sca-deploy.xml undeploy -DserverURL=server.url -DcompositeName=compsoite.name -Drevision=revision.id  -Drealm=realm -Duser=user -Dpassword=password -DfailOnError=true/false"/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:7001"/>
+    <echo message="       compositeName - the name of the composite"/>
+    <echo message="       revision - the revision ID of the composite"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="       folder - optional, the folder where the composite is located, default=default"/>
+    <echo message="    example:"/>
+    <echo message="       ant -f ant-sca-deploy.xml undeploy -DserverURL=http://host:8001 -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : exportComposite"/>
+    <echo message="    ant -f ant-sca-deploy.xml exportComposite -DserverURL=server.url -DupdateType=update.type -DsarFile=sar.file -DcompositeName=compsoite.name -Drevision=revision.id  -Drealm=realm -Duser=user -Dpassword=password -DfailOnError=true/false"/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:7001"/>
+    <echo message="       updateType - the type of post deployment changes to be included: none/all/property/runtime"/>
+    <echo message="       sarFile - the absolute path of a sar file, to be generated"/>
+    <echo message="       compositeName - the name of the composite"/>
+    <echo message="       revision - the revision ID of the composite"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="       folder - optional, the folder where the composite is located, default=default"/>
+    <echo message="    examples:"/>
+    <echo message="       a) export composite without any post deployment changes"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportComposite -DserverURL=http://host:8001 -DupdateType=none -DsarFile=/tmp/sca_HelloWorld_rev1.0.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="       b) export composite with all post deployment changes, if any"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportComposite -DserverURL=http://host:8001 -DupdateType=all -DsarFile=/tmp/sca_HelloWorld_rev1.0-all.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="       c) export composite with property post deployment changes, if any"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportComposite -DserverURL=http://host:8001 -DupdateType=property -DsarFile=/tmp/sca_HelloWorld_rev1.0-prop.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="       d) export composite with runtime/metadata post deployment changes, if any"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportComposite -DserverURL=http://host:8001 -DupdateType=runtime -DsarFile=/tmp/sca_HelloWorld_rev1.0-runtime.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : exportUpdates"/>
+    <echo message="    ant -f ant-sca-deploy.xml exportUpdates -DserverURL=server.url -DupdateType=update.type -DjarFile=jar.file -DcompositeName=compsoite.name -Drevision=revision.id  -Drealm=realm -Duser=user -Dpassword=password -DfailOnError=true/false"/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:7001"/>
+    <echo message="       updateType - the type of post deployment changes to be exported: all/property/runtime"/>
+    <echo message="       jarFile - the absolute path of a jar file, to be generated"/>
+    <echo message="       compositeName - the name of the composite"/>
+    <echo message="       revision - the revision ID of the composite"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="       folder - optional, the folder where the composite is located, default=default"/>
+    <echo message="    examples:"/>
+    <echo message="       a) export all post deployment changes"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportUpdates -DserverURL=http://host:8001 -DupdateType=all -DjarFile=/tmp/all-HelloWorld_rev1.0.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="       b) export property post deployment changes"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportUpdates -DserverURL=http://host:8001 -DupdateType=property -DjarFile=/tmp/prop-HelloWorld_rev1.0.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="       c) export runtime/metadata post deployment changes"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportUpdates -DserverURL=http://host:8001 -DupdateType=runtime -DjarFile=/tmp/runtime-HelloWorld_rev1.0.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : importUpdates"/>
+    <echo message="    ant -f ant-sca-deploy.xml importUpdates -DserverURL=server.url -DjarFile=jar.file -DcompositeName=compsoite.name -Drevision=revision.id  -Drealm=realm -Duser=user -Dpassword=password -DfailOnError=true/false"/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:7001"/>
+    <echo message="       jarFile - the absolute path of a jar file that contains post deployment changes"/>
+    <echo message="       compositeName - the name of the composite"/>
+    <echo message="       revision - the revision ID of the composite"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="       folder - optional, the folder where the composite is located, default=default"/>
+    <echo message="    example:"/>
+    <echo message="       ant -f ant-sca-deploy.xml importUpdates -DserverURL=http://host:8001 -DjarFile=/tmp/runtime-HelloWorld_rev1.0.jar -DcompositeName=HelloWorld -Drevision=1.0"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : exportSharedData"/>
+    <echo message="    ant -f ant-sca-deploy.xml exportSharedData -DserverURL=server.url -DjarFile=jar.file -Dpattern=doc.pattern -Drealm=realm -Duser=user -Dpassword=password -DfailOnError=true/false"/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:7001"/>
+    <echo message="       jarFile - the absolute path of a jar file to be generated"/>
+    <echo message="       pattern - the document pattern supported by MDS transfer APIs, excluding namespace '/apps'"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="    example:"/>
+    <echo message="       ant -f ant-sca-deploy.xml exportSharedData -DserverURL=http://host:8001 -DjarFile=/tmp/MySharedData.jar -Dpattern=/Project1/**;/Project2/**"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : removeSharedData"/>
+    <echo message="    ant -f ant-sca-deploy.xml removeSharedData -DserverURL=server.url -DfolderName=folder.name -Drealm=realm -Duser=user -Dpassword=password -DfailOnError=true/false"/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:7001"/>
+    <echo message="       folderName - the name of a top level shared data folder"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="    example:"/>
+    <echo message="       ant -f ant-sca-deploy.xml removeSharedData -DserverURL=http://host:8001 -DfolderName=Project1"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : mergeUpdates"/>
+    <echo message="    ant -f ant-sca-deploy.xml mergeUpdates -DlogFile=log.file -DresultJarFile=result.jar -Dr1SarFile=r1.sar.file -Dr2SarFile=r2.sar.file -Dr1modJarFile=r1.updates.jar -Dverbose=verbose.level"/>
+    <echo message="       logFile - the absolute path of the logging file"/>
+    <echo message="       resultJarFile - the abosolute path of the jar file to be created that contains the merged artifacts"/>
+    <echo message="       r1SarFile - the absolute path of the sar file that contains the previous revision of composite"/>
+    <echo message="       r2SarFile - the absolute path of the sar file that contains the new revision of composite"/>
+    <echo message="       r1modJarFile - the absolute path of the jar file that contains the post deployment changes of the previous revision"/>
+    <echo message="       verbose - optional, verbose level, default value=1"/>
+    <echo message="    example:"/>
+    <echo message="       ant -f ant-sca-deploy.xml mergeUpdates -DlogFile=/tmp/merge-log.txt -DresultJarFile=/tmp/merge-HelloWorld_rev2.0.jar -Dr1SarFile=/tmp/sca_HelloWorld_rev1.0.jar -Dr2SarFile=/tmp/sca_HelloWorld_rev2.0.jar -Dr1modJarFile=/tmp/all-HelloWorld_rev1.0.jar -Dverbose=2"/>
+    <echo message="            --------------------------------------------------------------"/>
+    <echo message="Usage : undeployRetiredComposites"/>
+    <echo message="    ant -f ant-sca-deploy.xml undeployRetiredComposites -DserverURL=server.url -Dfolder=folderName  -Drealm=realm -Duser=user -Dpassword=password -DfailOnError=true/false "/>
+    <echo message="       serverURL - the url of the server that hosts soa-infra app, e.g. http://stadp10:8001"/>
+    <echo message="       realm/user/password - required when basic authentication is configured for accessing the composite deployer servlet"/>
+    <echo message="       failOnError - optional, whether to fail ant command when error occurs, default=false"/>
+    <echo message="       folder - optional, the folder where the composite is located, default=default"/>
+    <echo message="       preview - optional, whether it is in preview mode which prints information without undeploying composites, default=false"/>
+    <echo message="    example:"/>
+    <echo message="       ant -f ant-sca-deploy.xml undeployRetiredComposites -DserverURL=http://adc0001:8001 -Dfolder=myFolder -Dpreview=true"/>
+    <echo message="================================================================================"/>
+  </target>
+
+
+</project>

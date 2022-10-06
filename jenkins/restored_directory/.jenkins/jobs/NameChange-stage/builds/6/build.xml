@@ -1,0 +1,106 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<build>
+  <actions>
+    <hudson.model.CauseAction>
+      <causeBag class="linked-hash-map">
+        <entry>
+          <com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause plugin="atlassian-bitbucket-server-integration@3.1.0">
+            <triggerRequest>
+              <actor>
+                <displayName>Sreeram Chivukula</displayName>
+                <emailAddress>chivukula.sreeram@epa.gov</emailAddress>
+                <name>schivuku</name>
+              </actor>
+              <additionalActions/>
+            </triggerRequest>
+          </com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerCause>
+          <int>1</int>
+        </entry>
+      </causeBag>
+    </hudson.model.CauseAction>
+    <hudson.plugins.git.util.BuildData plugin="git@4.10.3">
+      <buildsByBranchName>
+        <entry>
+          <string>refs/remotes/namechangeworkflow/stage</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.0">
+              <sha1>ba93d1e8584b4b8c41896821e4a7bd90f808b5be</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/namechangeworkflow/stage</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision reference="../marked"/>
+            <hudsonBuildNumber>6</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+        <entry>
+          <string>refs/remotes/namechangeworkflow/master</string>
+          <hudson.plugins.git.util.Build>
+            <marked plugin="git-client@3.11.0">
+              <sha1>8094ed869f942b7f090578a631f9e77b3b21a921</sha1>
+              <branches class="list">
+                <hudson.plugins.git.Branch>
+                  <sha1 reference="../../../sha1"/>
+                  <name>refs/remotes/namechangeworkflow/master</name>
+                </hudson.plugins.git.Branch>
+              </branches>
+            </marked>
+            <revision plugin="git-client@3.11.0">
+              <sha1 reference="../../marked/sha1"/>
+              <branches class="list">
+                <hudson.plugins.git.Branch reference="../../../marked/branches/hudson.plugins.git.Branch"/>
+              </branches>
+            </revision>
+            <hudsonBuildNumber>5</hudsonBuildNumber>
+          </hudson.plugins.git.util.Build>
+        </entry>
+      </buildsByBranchName>
+      <lastBuild reference="../buildsByBranchName/entry/hudson.plugins.git.util.Build"/>
+      <remoteUrls>
+        <string>ssh://git@bitbucket.epa.gov:2222/eiam/namechangeworkflow.git</string>
+      </remoteUrls>
+    </hudson.plugins.git.util.BuildData>
+    <hudson.scm.SCMRevisionState_-None/>
+    <com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <bitbucketSCMRepository>
+        <credentialsId></credentialsId>
+        <sshCredentialsId>Manish-SSH-KEY</sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>NameChangeWorkflow</repositoryName>
+        <repositorySlug>namechangeworkflow</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </bitbucketSCMRepository>
+      <branchName>stage</branchName>
+      <revisionSha1>ba93d1e8584b4b8c41896821e4a7bd90f808b5be</revisionSha1>
+    </com.atlassian.bitbucket.jenkins.internal.status.BitbucketRevisionAction>
+    <hudson.plugins.promoted__builds.PromotedBuildAction plugin="promoted-builds@876.v99d29788b_36b_">
+      <owner class="build" reference="../../.."/>
+      <statuses/>
+    </hudson.plugins.promoted__builds.PromotedBuildAction>
+    <hudson.plugins.promoted__builds__simple.PromoteAction plugin="promoted-builds-simple@1.9">
+      <levelValue>0</levelValue>
+    </hudson.plugins.promoted__builds__simple.PromoteAction>
+  </actions>
+  <queueId>17</queueId>
+  <timestamp>1651869088071</timestamp>
+  <startTime>1651869088074</startTime>
+  <result>SUCCESS</result>
+  <duration>131976</duration>
+  <charset>UTF-8</charset>
+  <keepLog>false</keepLog>
+  <builtOn></builtOn>
+  <workspace>/var/lib/jenkins/.jenkins/workspace/NameChange-stage</workspace>
+  <hudsonVersion>2.327</hudsonVersion>
+  <scm class="hudson.plugins.git.GitChangeLogParser" plugin="git@4.10.3">
+    <authorOrCommitter>false</authorOrCommitter>
+    <showEntireCommitSummaryInChanges>true</showEntireCommitSummaryInChanges>
+  </scm>
+  <culprits class="java.util.Collections$UnmodifiableSet">
+    <c class="sorted-set"/>
+  </culprits>
+</build>

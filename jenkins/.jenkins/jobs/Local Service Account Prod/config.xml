@@ -1,0 +1,94 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Local Local Service account in Prod</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.conjur.jenkins.configuration.ConjurJITJobProperty plugin="conjur-credentials@1.0.12">
+      <inheritFromParent>true</inheritFromParent>
+      <useJustInTime>false</useJustInTime>
+      <authWebServiceId></authWebServiceId>
+      <hostPrefix></hostPrefix>
+      <conjurConfiguration>
+        <applianceURL></applianceURL>
+        <account></account>
+        <credentialID></credentialID>
+        <certificateCredentialID></certificateCredentialID>
+      </conjurConfiguration>
+    </org.conjur.jenkins.configuration.ConjurJITJobProperty>
+    <hudson.plugins.promoted__builds.JobPropertyImpl plugin="promoted-builds@876.v99d29788b_36b_">
+      <activeProcessNames>
+        <string>Prod approved</string>
+      </activeProcessNames>
+    </hudson.plugins.promoted__builds.JobPropertyImpl>
+  </properties>
+  <scm class="com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCM" plugin="atlassian-bitbucket-server-integration@3.1.0">
+    <gitSCM plugin="git@4.10.3">
+      <configVersion>2</configVersion>
+      <userRemoteConfigs class="singleton-list">
+        <hudson.plugins.git.UserRemoteConfig>
+          <name>localserviceaccount</name>
+          <url>ssh://git@bitbucket.epa.gov:2222/eiam/localserviceaccount.git</url>
+          <credentialsId>Manish-SSH-KEY</credentialsId>
+        </hudson.plugins.git.UserRemoteConfig>
+      </userRemoteConfigs>
+      <branches>
+        <hudson.plugins.git.BranchSpec>
+          <name>*/prodlive</name>
+        </hudson.plugins.git.BranchSpec>
+      </branches>
+      <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+      <browser class="hudson.plugins.git.browser.Stash">
+        <url>https://bitbucket.epa.gov/projects/EIAM/repos/localserviceaccount</url>
+      </browser>
+      <submoduleCfg class="empty-list"/>
+      <extensions/>
+    </gitSCM>
+    <branches reference="../gitSCM/branches"/>
+    <extensions/>
+    <id>d2d8363f-c75d-4164-a1c1-4da9c5a2722f</id>
+    <repositories>
+      <com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCMRepository>
+        <credentialsId></credentialsId>
+        <sshCredentialsId>Manish-SSH-KEY</sshCredentialsId>
+        <projectKey>EIAM</projectKey>
+        <projectName>Enterprise Identity and Access Management</projectName>
+        <repositoryName>LocalServiceAccount</repositoryName>
+        <repositorySlug>localserviceaccount</repositorySlug>
+        <serverId>633df95f-3f2a-454f-b36b-0eac48a72535</serverId>
+        <mirrorName></mirrorName>
+      </com.atlassian.bitbucket.jenkins.internal.scm.BitbucketSCMRepository>
+    </repositories>
+    <isWebhookRegistered>true</isWebhookRegistered>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerImpl plugin="atlassian-bitbucket-server-integration@3.1.0">
+      <spec></spec>
+      <pullRequestTrigger>false</pullRequestTrigger>
+      <refTrigger>true</refTrigger>
+      <version>1</version>
+    </com.atlassian.bitbucket.jenkins.internal.trigger.BitbucketWebhookTriggerImpl>
+    <com.cloudbees.jenkins.plugins.BitBucketTrigger plugin="bitbucket@214.v2fd4234d0554">
+      <spec></spec>
+      <overrideUrl></overrideUrl>
+      <buildOnCreatedBranch>false</buildOnCreatedBranch>
+    </com.cloudbees.jenkins.plugins.BitBucketTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd OUDCYService</command>
+      <configuredLocalRules/>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.tasks.AntWrapper plugin="ant@1.13">
+      <installation>ANT_HOME</installation>
+    </hudson.tasks.AntWrapper>
+  </buildWrappers>
+</project>

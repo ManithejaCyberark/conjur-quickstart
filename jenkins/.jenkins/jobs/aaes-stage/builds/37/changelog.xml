@@ -1,0 +1,30 @@
+commit 10b3acb3e439fae5778565fcecd17b84389b64c6
+tree 6c98d2552e5e9db472708b8a05e992872335ef52
+parent 54c2208e66d0cd8a979399a452c5d66553a5ed91
+author kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-09-28 15:07:01 -0400
+committer kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-09-28 15:07:01 -0400
+
+    Merge code for Ebiz Adobe-from current_ad_group
+
+
+:100644 100644 3784216e58d4585084eedaa4ac2837576d2c0edb 43d2dbec27737f39ab5a5163971faada50a33dc3 M	AAESCustomization/src/com/aaes/javaTasks/ActiveDirectory.java
+:100644 100644 f6aa289e88c5f30f1c6cb49ca487f9c41a0c3440 7ce4e554bd522b24f195d6e0722adcf62daecc44 M	AAESCustomization/src/com/aaes/scheduleTasks/aaesProvisionEbizAdobeUsersToGroupinAD.java
+:100644 100644 c97e38b57957da5338af18781e7ab4482902f65c b3eab5a1247ded4c7d54c411a0990e3438f5c58d M	AAESCustomization/src/com/aaes/utils/OIMUtils.java
+commit 54c2208e66d0cd8a979399a452c5d66553a5ed91
+tree ed1d579d520203a16f3a1287c24a6cbcae39aba0
+parent 67d6719a82ba216113040e2b76d2215318da3531
+author kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-09-26 01:08:51 -0400
+committer kirubanidhi <ramachandran.kirubanidhi@epa.gov> 2022-09-26 01:08:51 -0400
+
+    Merge code for Ebiz Adobe AD Group Membership &  Fix for AWS Role
+
+
+:100644 100644 ce5bc436e9a29cd3af7217a68609144d5258e58f d1883366eca27a84da0e60f23468290b65ac41af M	AAESCustomization/1.0/plugins/customScheduleTasks/META-INF/aaesSchedulerTasks.xml
+:100644 100644 7bfdd2d144428cd8ed1a20c8503b2b6a4a3708ac 75c9bfdae7737074f308a5a3e893c61f8ce5bf38 M	AAESCustomization/1.0/plugins/customScheduleTasks/plugin.xml
+:100644 100644 83f8a3a3f8f0c712e771ce1de3bcc661e8587e5e 3784216e58d4585084eedaa4ac2837576d2c0edb M	AAESCustomization/src/com/aaes/javaTasks/ActiveDirectory.java
+:100644 100644 ba0cb4f0245f2e55277d1c2b3aaa72910b8918c2 509d43c09706181b0a533c804ed644bf65d1bce8 M	AAESCustomization/src/com/aaes/scheduleTasks/AAESexportAwsAccounts.java
+:100644 100644 5be9cf42990cefab5840ee44d72fd67d6d329778 1349f30c65d75b4e055201372c0037253aa24aad M	AAESCustomization/src/com/aaes/scheduleTasks/UsersLookup.java
+:000000 100644 0000000000000000000000000000000000000000 f6aa289e88c5f30f1c6cb49ca487f9c41a0c3440 A	AAESCustomization/src/com/aaes/scheduleTasks/aaesProvisionEbizAdobeUsersToGroupinAD.java
+:100644 100644 145ec4626868f6fd2866dd703465e10a7c8020bc 943386121e38df3f1d4e1b7518f92057baba43d9 M	AAESCustomization/src/com/aaes/utils/AAESConstants.java
+:100644 100644 56c551531efb796cf54ea6e52e427cbf47e650e9 1159cdf7db59afa9eb5e46f7c2f910a383971fc3 M	AAESCustomization/src/com/aaes/utils/ADUtils.java
+:100644 100644 f9fc279052e163bba6d152a47cf8fde69ca07fe6 c97e38b57957da5338af18781e7ab4482902f65c M	AAESCustomization/src/com/aaes/utils/OIMUtils.java

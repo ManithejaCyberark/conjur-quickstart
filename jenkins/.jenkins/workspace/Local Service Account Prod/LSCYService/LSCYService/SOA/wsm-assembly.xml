@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<orawsp:wsm-assembly xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy">
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()" attachTo="REFERENCE('CallbackService_2') and PORT('CallbackServicePort')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__CallbackService_2___and_PORT__CallbackServicePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss11_saml_token_with_message_protection_client_policy" orawsp:status="enabled"
+                         orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('RequestApprovalService') and PORT('ApprovalProcessCallback_pt')"
+                   orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__RequestApprovalService___and_PORT__ApprovalProcessCallback_pt__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss11_saml_token_with_message_protection_client_policy" orawsp:status="enabled"
+                         orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-REFERENCE()"
+                   attachTo="REFERENCE('RequestWSPartnerLink') and PORT('RequestDataServicePort')" orawsp:highId="1"
+                   xml:id="SCA-REFERENCE__REFERENCE__RequestWSPartnerLink___and_PORT__RequestDataServicePort__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss_username_token_client_policy" orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+  <sca11:policySet xmlns:sca11="http://docs.oasis-open.org/ns/opencsa/sca/200912" name="policySet"
+                   appliesTo="SCA-SERVICE()" attachTo="SERVICE('RequestApprovalService') and PORT('ApprovalProcess_pt')"
+                   orawsp:highId="1"
+                   xml:id="SCA-SERVICE__SERVICE__RequestApprovalService___and_PORT__ApprovalProcess_pt__">
+    <wsp:PolicyReference xmlns:wsp="http://www.w3.org/ns/ws-policy"
+                         DigestAlgorithm="http://www.w3.org/ns/ws-policy/Sha1Exc"
+                         URI="oracle/wss11_saml_or_username_token_with_message_protection_service_policy"
+                         orawsp:status="enabled" orawsp:id="1"/>
+  </sca11:policySet>
+</orawsp:wsm-assembly>

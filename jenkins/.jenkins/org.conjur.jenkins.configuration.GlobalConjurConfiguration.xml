@@ -1,0 +1,18 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<org.conjur.jenkins.configuration.GlobalConjurConfiguration plugin="conjur-credentials@1.0.12">
+  <conjurConfiguration>
+    <applianceURL>https://cbpsmsshsncc01.rtpnc.epa.gov</applianceURL>
+    <account>ConjurPOC</account>
+    <credentialID></credentialID>
+    <certificateCredentialID></certificateCredentialID>
+  </conjurConfiguration>
+  <enableJWKS>true</enableJWKS>
+  <authWebServiceId>authn-jwt/jenkins1</authWebServiceId>
+  <jwtAudience>https://cbpsmsshsncc01.rtpnc.epa.gov</jwtAudience>
+  <keyLifetimeInMinutes>5</keyLifetimeInMinutes>
+  <tokenDurarionInSeconds>60</tokenDurarionInSeconds>
+  <enableContextAwareCredentialStore>true</enableContextAwareCredentialStore>
+  <identityFormatFieldsFromToken>jenkins_name</identityFormatFieldsFromToken>
+  <identityFieldsSeparator>-</identityFieldsSeparator>
+  <identityFieldName>conjur_host</identityFieldName>
+</org.conjur.jenkins.configuration.GlobalConjurConfiguration>

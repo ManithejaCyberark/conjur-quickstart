@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oimplugins>
+<plugins pluginpoint="oracle.iam.identity.usermgmt.api.UserNamePolicy">
+<plugin pluginclass="com.aaes.custom.userlogin.AAESUserLoginGenerator" version="1.0" name="AAESUserLoginGenerator"/>
+</plugins>
+</oimplugins>
