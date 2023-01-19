@@ -7,9 +7,9 @@ node{
   }
  stage('git server'){
   echo "passing folder level credentials"
-   withCredentials([conjurSecretUsername(credentialsId: 'd270f370-2106-4eb3-a416-86ec470c7691', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
+   withCredentials([conjurSecretUsername(credentialsId: 'WEB_PASSWORD_new', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
    echo "$CONJUR_SECRET"
-    git branch: 'main', credentialsId: 'd270f370-2106-4eb3-a416-86ec470c7691', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
+    git branch: 'main', credentialsId: 'WEB_PASSWORD_new', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
     
    }
  }
