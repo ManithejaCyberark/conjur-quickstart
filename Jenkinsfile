@@ -9,7 +9,7 @@ node{
   echo "passing folder level credentials"
    withCredentials([conjurSecretUsername(credentialsId: 'error_1', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')])  {
    echo "$CONJUR_SECRET"
-    git branch: 'main', credentialsId: 'WEB_PASSWORD_new', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
+    git branch: 'main', credentialsId: 'error_1', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
     
    }
  }
