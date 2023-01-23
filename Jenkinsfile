@@ -7,12 +7,13 @@ node{
   }
  stage('git server'){
   echo "passing folder level credentials"
-   withCredentials([conjurSecretUsername(credentialsId: 'error_1', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')])  {
-   echo "$CONJUR_SECRET"
-    git branch: 'main', credentialsId: 'error_1', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
-    
+   withCredentials([conjurSecretCredential(credentialsId: 'test-pipeline-credential4', variable: 'CONJUR_SECRET')])  {
+    echo "$CONJUR_SECRET"
+    git branch: 'main', credentialsId: 'test-pipeline-credential4', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
    }
+  echo "completed"
  }
+ 
 //  stage('checkout'){
 //    git branch: 'main', credentialsId: 'new', url: 'https://github.com/ManithejaCyberark/conjur-quickstart.git'
 //   }
