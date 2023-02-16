@@ -7,8 +7,8 @@ node{
   }
  stage('git server'){
   echo "passing folder level credentials"
-   withCredentials([conjurSecretUsername(credentialsId: 'host11', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'username')])   {
-    echo "secret value of is: $CONJUR_SECRET and $username"
+   withCredentials([conjurSecretUsername(credentialsId: 'host11', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'Username')])   {
+    echo "secret value of is: $CONJUR_SECRET and $Username"
   //git branch: 'main', credentialsId: 'host11', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
     echo "completed"
    }
