@@ -7,10 +7,10 @@ node{
   }
  stage('git server'){
   echo "passing folder level credentials"
-   withCredentials([conjurSecretUsername(credentialsId: 'host2configuredcred', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
+   withCredentials([conjurSecretUsername(credentialsId: 'from_jenkinsfile', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
     echo "password2 and configured with host2"
     echo "secret value of is: $CONJUR_SECRET and $USERNAME"
-    git branch: 'main', credentialsId: 'host2configuredcred', url: 'https://github.com/ManithejaCyberark/conjur-quickstart.git'
+    git branch: 'main', credentialsId: 'from_jenkinsfile', url: 'https://github.com/ManithejaCyberark/conjur-quickstart.git'
     echo "completed"
    }
   echo "completed"
