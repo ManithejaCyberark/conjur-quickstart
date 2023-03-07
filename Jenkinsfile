@@ -7,11 +7,10 @@ node{
   }
  stage('git server'){
   echo "passing folder level credentials"
-   withCredentials([conjurSecretUsername(credentialsId: 'from_jenkinsfile', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')])   {
-    echo "password2 and configured with host2"
+   withCredentials([conjurSecretUsername(credentialsId: 'from_jenins_file_user1_password', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
     echo "secret value of is: $CONJUR_SECRET and $USERNAME"
-  git branch: 'main', credentialsId: 'from_jenkinsfile', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
-    echo "completed"
+   // git branch: 'main', credentialsId: 'from_jenkinsfile', url: 'https://github.com/ManithejaCyberark/building-a-multibranch-pipeline-project.git'
+   // echo "completed"
    }
   echo "completed"
  }
