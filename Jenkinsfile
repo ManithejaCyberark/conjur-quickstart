@@ -1,10 +1,9 @@
 pipeline{
-//    agent any
   
-    agent {
-    // node { label 'master-Node' } 
+  agent {
+    node { label 'master-Node' } 
     //node {label 'jenkins-slave1'}
-      node {label 'slave-2'}
+      //node {label 'slave-2'}
    }
   
     stages{
