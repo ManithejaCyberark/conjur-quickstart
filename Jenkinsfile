@@ -1,4 +1,13 @@
+// agent {
+//     node {
+//         label 'my-defined-label'
+//         customWorkspace '/some/other/path'
+//     }
+// }
 node{
+ { 
+  label 'master-Node'
+ } 
  stage('git checkout'){
      echo "git checkout"
   }
