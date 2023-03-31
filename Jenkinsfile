@@ -4,6 +4,7 @@ pipeline{
     agent {
     node { label 'master-Node' } 
     //node {label 'jenkins-slave1'}
+      node {label 'slave-2'}
    }
   
     stages{
