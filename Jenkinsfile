@@ -20,7 +20,7 @@ pipeline{
             }
         stage("test manual secret"){
             steps{
-                withCredentials([conjurSecretCredential(credentialsId: 'secret2', variable: 'CONJUR_SECRET')]) {
+                withCredentials([conjurSecretCredential(credentialsId: 'password_1_manual', variable: 'CONJUR_SECRET')]) {
                   sh 'echo $CONJUR_SECRET | base64'   
                 }
             }
