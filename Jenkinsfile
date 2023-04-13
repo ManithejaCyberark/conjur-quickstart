@@ -1,28 +1,32 @@
 pipeline{
-//    agent any
-  
-    agent {
-    node { label 'master-Node' } 
-    //node {label 'jenkins-slave1'}
-     // node {label 'slave-2'}
+  agent {
+       node { label 'executor-v2' } 
+       //node {label 'jenkins-slave1'}
+       // node {label 'worker-1'}
    }
   
-    stages{
-     stage("git checkout"){
-         steps{
-             echo "cloned the code from git repo"
-         }
-     }
- 
-     stage("print value of conjur secrets"){
-         steps{
-                echo "passing folder level credentials"
-            withCredentials([conjurSecretUsername(credentialsId: 'from_jenins_file_user1_password', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
-            echo "secret value of is: $CONJUR_SECRET and $USERNAME"
-            //git branch: 'main', credentialsId: 'ManithejaCyberark', url: 'https://github.com/ManithejaCyberark/conjur-quickstart.git'
-            echo "completed"  
+        stages{
+         stage("git checkout"){
+             steps{
+                 echo "cloned the code from git repo"
+             }
+         }    
+          
+         stage("test credentials"){
+                steps{
+                    withCredentials([conjurSecretCredential(credentialsId: 'CSUC-sa-devops-git-prod_inc', variable: 'CONJUR_SECRET')]) {
+                        sh 'echo $CONJUR_SECRET | base64'
+                    }
+                }
             }
-         }
-     }
-  }
+//         stage("test manual secret"){
+//             steps{
+//                 withCredentials([conjurSecretCredential(credentialsId: 'password_1_manual', variable: 'CONJUR_SECRET')])  {
+//                   //password_1_manual 
+//                   sh 'echo $CONJUR_SECRET | base64 '
+//                   sh 'echo $CONJUR_SECRET | base64 | base64'
+//                 }
+//             }
+//         }
+    }
 }
