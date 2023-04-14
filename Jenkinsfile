@@ -1,9 +1,12 @@
 pipeline{
-  agent {
-       node { label 'executor-v1' } 
-       //node {label 'jenkins-slave1'}
-       // node {label 'worker-1'}
-   }
+  
+   agent any
+  
+//   agent {
+//        node { label 'executor-v1' } 
+//        //node {label 'jenkins-slave1'}
+//        // node {label 'worker-1'}
+//    }
   
         stages{
          stage("git checkout"){
@@ -14,7 +17,7 @@ pipeline{
           
          stage("test credentials"){
                 steps{
-                    withCredentials([conjurSecretCredential(credentialsId: 'CSUC-sa-devops-git-prod_inc', variable: 'CONJUR_SECRET')]) {
+                    withCredentials([conjurSecretCredential(credentialsId: 'from_jenkinsfile_github', variable: 'CONJUR_SECRET')]) {
                         sh 'echo $CONJUR_SECRET | base64'
                     }
                 }
