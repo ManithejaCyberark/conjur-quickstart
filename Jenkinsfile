@@ -14,9 +14,9 @@ pipeline{
           
          stage("test credentials"){
                 steps{
-                    withCredentials([conjurSecretCredential(credentialsId: 'CSUC-sa-devops-git-prod_inc', variable: 'CONJUR_SECRET')]) {
-                        sh 'echo $CONJUR_SECRET | base64'
-                    }
+                    withCredentials([conjurSecretCredential(credentialsId: 'private_key', variable: 'CONJUR_SECRET')]) {
+                       sh "echo $CONJUR_SECRET | base64"
+                    }
                 }
             }
 //         stage("test manual secret"){
