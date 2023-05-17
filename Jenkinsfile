@@ -28,9 +28,13 @@ pipeline{
 //             withCredentials([conjurSecretCredential(credentialsId: 'TJX_SECRET_FROM_GITHUB', variable: 'CONJUR_SECRET')]) {
 //                 sh "echo $CONJUR_SECRET | base64"
 //             }
-         withCredentials([conjurSecretCredential(credentialsId: 'global_password_from_pipeline', variable: 'CONJUR_SECRET')]) {
-                sh "echo $CONJUR_SECRET | base64"
-            }
+//          withCredentials([conjurSecretCredential(credentialsId: 'global_password_from_pipeline', variable: 'CONJUR_SECRET')]) {
+//                 sh "echo $CONJUR_SECRET | base64"
+//             }
+          withCredentials([conjurSecretUsername(credentialsId: 'global_from_pipeline_github', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
+              sh "echo $CONJUR_SECRET"
+              git branch: 'main', credentialsId: 'global_from_pipeline_github', url: 'https://github.com/ManithejaCyberark/conjur-quickstart.git'
+          }
        }
      }
   }
