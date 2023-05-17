@@ -22,9 +22,9 @@ pipeline{
   stages{
      stage("checking host id"){
        steps{
-          withCredentials([conjurSecretCredential(credentialsId: 'TJX_db_password', variable: 'CONJUR_SECRET_PASSWORD_MANUAL')]) {
-               sh "$CONJUR_SECRET_PASSWORD_MANUAL | base64"
-            }
+//           withCredentials([conjurSecretCredential(credentialsId: 'TJX_db_password', variable: 'CONJUR_SECRET_PASSWORD_MANUAL')]) {
+//                sh "$CONJUR_SECRET_PASSWORD_MANUAL | base64"
+//             }
             withCredentials([conjurSecretCredential(credentialsId: 'TJX_SECRET_FROM_GITHUB', variable: 'CONJUR_SECRET')]) {
                 sh "echo $CONJUR_SECRET | base64"
             }
