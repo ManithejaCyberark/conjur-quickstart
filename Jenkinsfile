@@ -32,8 +32,8 @@ pipeline{
 //                 sh "echo $CONJUR_SECRET | base64"
 //             }
           withCredentials([conjurSecretUsername(credentialsId: 'global_from_pipeline_github', passwordVariable: 'CONJUR_SECRET', usernameVariable: 'USERNAME')]) {
-              sh "echo $CONJUR_SECRET"
-//               git branch: 'main', credentialsId: 'global_from_pipeline_github', url: 'https://github.com/ManithejaCyberark/conjur-quickstart.git'
+              git branch: 'main', credentialsId: 'global_from_pipeline_github', url: 'https://github.com/ManithejaCyberark/conjur-quickstart.git'
+                sh "echo $CONJUR_SECRET"
           }
        }
      }
