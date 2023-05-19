@@ -38,6 +38,11 @@ pipeline{
 //           withCredentials([conjurSecretCredential(credentialsId: 'without-host-configuration', variable: 'CONJUR_SECRET')]) {
 //                        sh "echo $CONJUR_SECRET | base64"
 //                     }
+         
+         //jenkins -os
+//          withCredentials([conjurSecretCredential(credentialsId: 'global_credentials_jenkins_pipeline_from_github', variable: 'CONJUR_SECRET')]) {
+//                          sh "echo $CONJUR_SECRET | base64"
+//                       }
        }
      }
   }
