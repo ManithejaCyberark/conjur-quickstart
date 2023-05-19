@@ -32,12 +32,12 @@ pipeline{
 //                 sh "echo $CONJUR_SECRET | base64"
 //             }
         
-          withCredentials([conjurSecretCredential(credentialsId: 'global_credentials_jenkins_pipeline_from_github', variable: 'CONJUR_SECRET_FROM_PIPELINE')]) {
-                   sh 'echo $CONJUR_SECRET_FROM_PIPELINE | base64'
-              }
-//           withCredentials([conjurSecretCredential(credentialsId: 'db_password_tjx', variable: 'CONJUR_SECRET')]) {
-//                  sh "echo $CONJUR_SECRET | base64"
+//           withCredentials([conjurSecretCredential(credentialsId: 'global_credentials_jenkins_pipeline_from_github', variable: 'CONJUR_SECRET_FROM_PIPELINE')]) {
+//                    sh 'echo $CONJUR_SECRET_FROM_PIPELINE | base64'
 //               }
+          withCredentials([conjurSecretCredential(credentialsId: 'db_password_tjx', variable: 'CONJUR_SECRET')]) {
+                 sh "echo $CONJUR_SECRET | base64"
+              }
        }
      }
   }
