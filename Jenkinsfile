@@ -31,13 +31,19 @@ pipeline{
 //          withCredentials([conjurSecretCredential(credentialsId: 'global_password_from_pipeline', variable: 'CONJUR_SECRET')]) {
 //                 sh "echo $CONJUR_SECRET | base64"
 //             }
-        
+         try{
           withCredentials([conjurSecretCredential(credentialsId: 'global_credentials_jenkins_pipeline_from_github', variable: 'CONJUR_SECRET_FROM_PIPELINE')]) {
                    sh 'echo $CONJUR_SECRET_FROM_PIPELINE | base64'
               }
+         }
+         catch(exc){
+           echo "404 not found"
+           throw
+         }
 //           withCredentials([conjurSecretCredential(credentialsId: 'without-host-configuration', variable: 'CONJUR_SECRET')]) {
 //                        sh "echo $CONJUR_SECRET | base64"
 //                     }
+           
          
          //jenkins -os
 //          withCredentials([conjurSecretCredential(credentialsId: 'global_credentials_jenkins_pipeline_from_github', variable: 'CONJUR_SECRET')]) {
