@@ -1,19 +1,19 @@
 pipeline{
     agent any
     stages{
-        stage("print hello"){
-            steps{
-                echo "Hello jenkins"
-            }
-        }
-        // stage("Dev team credentials"){
+        // stage("print hello"){
         //     steps{
-        //         echo "Dev team credentials"
-        //         withCredentials([conjurSecretCredential(credentialsId: 'Dev-Team-Cred', variable: 'CONJUR_SECRET')]) {
-        //              sh 'echo $CONJUR_SECRET | base64'
-        //           }
-        //      }
+        //         echo "Hello jenkins"
+        //     }
         // }
+        stage("Dev team credentials"){
+            steps{
+                echo "Dev team credentials"
+                withCredentials([conjurSecretCredential(credentialsId: 'f259e29b-51a8-4cce-a9ae-de60d08fd11b', variable: 'CONJUR_SECRET_NEW')]) {
+                     sh 'echo $CONJUR_SECRET_NEW | base64'
+                  }
+             }
+        }
         // stage("test pipeline cred"){
         //     steps{
         //         echo "test-pipeline cred"
