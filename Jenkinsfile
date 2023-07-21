@@ -6,14 +6,6 @@ pipeline{
         //         echo "Hello jenkins"
         //     }
         // }
-        stage("Dev team credentials"){
-            steps{
-                echo "Dev team credentials"
-                withCredentials([conjurSecretCredential(credentialsId: 'f259e29b-51a8-4cce-a9ae-de60d08fd11b', variable: 'CONJUR_SECRET_DEV_TEAM_1')]) {
-                   sh 'echo $CONJUR_SECRET_DEV_TEAM_1 | base64'
-                }
-             }
-        }
         stage("test pipeline cred"){
             steps{
                 echo "test-pipeline cred"
@@ -21,6 +13,14 @@ pipeline{
                   sh 'echo $CONJUR_SECRET_TEST_PIPELINE | base64'
                 }
             }
+        }
+        stage("Dev team credentials"){
+            steps{
+                echo "Dev team credentials"
+                withCredentials([conjurSecretCredential(credentialsId: 'DEV_TEAM_3', variable: 'CONJUR_SECRET')]) {
+                   sh 'echo $CONJUR_SECRET | base64'
+                }
+             }
         }
     }
 }
