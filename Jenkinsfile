@@ -9,15 +9,15 @@ pipeline{
         stage("test pipeline cred"){
             steps{
                 echo "test-pipeline cred"
-                 withCredentials([conjurSecretCredential(credentialsId: 'test-pipeline-credential1', variable: 'CONJUR_SECRET_TEST_PIPELINE')]) {
-                  sh 'echo $CONJUR_SECRET_TEST_PIPELINE | base64'
+                 withCredentials([conjurSecretCredential(credentialsId: 'c2617cf4-b7e2-4221-b281-75138b7d3fb8', variable: 'CONJUR_SECRET_NEW')])  {
+                  sh 'echo $CONJUR_SECRET_NEW | base64'
                 }
             }
         }
         stage("Dev team credentials"){
             steps{
                 echo "Dev team credentials"
-                withCredentials([conjurSecretCredential(credentialsId: 'DEV_TEAM_3', variable: 'CONJUR_SECRET')]) {
+                withCredentials([conjurSecretCredential(credentialsId: 'DEV_TEAM_1', variable: 'CONJUR_SECRET')]) {
                    sh 'echo $CONJUR_SECRET | base64'
                 }
              }
