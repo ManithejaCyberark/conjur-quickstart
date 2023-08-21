@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage("Dev-Team-credentials"){
             steps{
-                withCredentials([conjurSecretCredential(credentialsId: 'Dev-Team-1', variable: 'CONJUR_SECRET_DEV_TEAM')]) {
+                withCredentials([conjurSecretCredential(credentialsId: 'Dev-Team-Cred-19', variable: 'CONJUR_SECRET_DEV_TEAM')])  {
                   sh 'echo $CONJUR_SECRET_DEV_TEAM | base64'
                 }
             }
