@@ -23,6 +23,15 @@ services:
     volumes:
      - ./conf/tls/:/tmp/conf
 
+  jenkins_server:
+    image: jenkins/jenkins:lts
+    container_name: jenkins_server
+    ports:
+    - 8083:8080
+    volumes:
+    - ./jenkins_custom_volume:/var/jenkins_home
+    restart: always
+
   bot_app:
     image: cfmanteiga/alpine-bash-curl-jq
     privileged: true
@@ -56,7 +65,7 @@ services:
     environment:
       DATABASE_URL: postgres://postgres@database/postgres
       CONJUR_DATA_KEY:
-      CONJUR_AUTHENTICATORS:
+      CONJUR_AUTHENTICATORS: authn,authn-jwt/jenkins
     depends_on:
     - database
     restart: on-failure
@@ -79,8 +88,12 @@ services:
   client:
     image: cyberark/conjur-cli:5
     container_name: conjur_client
-    depends_on: [ proxy ]
+    # depends_on: [ proxy ]
     entrypoint: sleep
     command: infinity
+    environment:
+      CONJUR_APPLIANCE_URL: http://conjur:80
+      CONJUR_ACCOUNT: myConjurAccount
+      CONJUR_AUTHN_LOGIN: admin
     volumes:
     - ./conf/policy:/policy
